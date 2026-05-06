@@ -22,35 +22,31 @@ class MessageFormatter:
         side_hours: float,
         total_hours: float,
         report_date: date,
+        submit_time: str = "",
     ) -> str:
         """
         Format a daily report message for group notification.
-        
-        Example output:
-        👤 Amir Hossein Ghadimi
-        📌 اصلی: 6
-        📌 فرعی: 2
-        ➕ مجموع: 8
-        📅 1405/02/07 - دوشنبه
-        
+
         Args:
             user_name: User's full name
             main_hours: Main working hours
             side_hours: Secondary hours
             total_hours: Total hours
             report_date: Date of the report
-            
+            submit_time: Time of submission (HH:MM, Iran time)
+
         Returns:
             str: Formatted report message
         """
         date_str = format_date_persian(report_date)
-        
+        time_part = f"  🕐 {submit_time}" if submit_time else ""
+
         message = (
             f"👤 {user_name}\n"
             f"📌 اصلی: {main_hours}\n"
             f"📌 فرعی: {side_hours}\n"
             f"➕ مجموع: {total_hours}\n"
-            f"📅 {date_str}"
+            f"📅 {date_str}{time_part}"
         )
         return message
     
@@ -191,13 +187,13 @@ class MessageFormatter:
         if not missing_dates:
             return "هیچ گزارش کمی وجود ندارد"
         
-        message = f"⚠️ تنبیه برای {user_name}\n\n"
+        message = f"⚠️ جریمه برای {user_name}\n\n"
         message += "روزهای ثبت نشده:\n"
         
         for date in missing_dates:
             message += f"❌ {date}\n"
         
-        message += f"\nکل تنبیهات: {len(missing_dates)}"
+        message += f"\nکل جریمه‌ها: {len(missing_dates)}"
         
         return message
     
@@ -300,6 +296,6 @@ class MessageFormatter:
             "ساعت اصلی",
             "ساعت فرعی",
             "کل ساعات",
-            "تنبیهات",
+            "جریمه‌ها",
             "تاریخ",
         ]

@@ -59,6 +59,12 @@ class ProfileHandler:
                 callback_data="edit_profile",
             )
         )
+        keyboard.add_row(
+            InlineKeyboardButton(
+                text="🏠 بازگشت به منوی اصلی",
+                callback_data="main_menu",
+            )
+        )
         
         await client.send_message(
             chat_id=user_id,
@@ -96,8 +102,14 @@ class ProfileHandler:
         )
         keyboard.add_row(
             InlineKeyboardButton(
-                text="🔙 بازگشت",
-                callback_data="back_profile",
+                text="🔙 بازگشت به پروفایل",
+                callback_data="profile",
+            )
+        )
+        keyboard.add_row(
+            InlineKeyboardButton(
+                text="🏠 بازگشت به منوی اصلی",
+                callback_data="main_menu",
             )
         )
         

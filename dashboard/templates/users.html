@@ -17,10 +17,11 @@
           <th>نام</th>
           <th>شماره</th>
           <th>گزارش‌ها</th>
-          <th>تنبیه پرداخت‌نشده</th>
+          <th>جریمه پرداخت‌نشده</th>
           <th>بیوگرافی</th>
           <th>علاقه‌مندی‌ها</th>
           <th>تاریخ عضویت</th>
+          <th>عملیات</th>
         </tr>
       </thead>
       <tbody>
@@ -46,6 +47,9 @@
             {{ u.interests }}
           </td>
           <td style="color:var(--muted); font-size:.8rem;">{{ u.joined }}</td>
+          <td>
+            <button class="btn btn-sm btn-danger" onclick="deleteUser({{ u.id }}, '{{ u.name }}')">🗑️ حذف</button>
+          </td>
         </tr>
         {% endfor %}
       </tbody>
@@ -58,4 +62,26 @@
   </div>
   {% endif %}
 </div>
+{% endblock %}
+
+
+{% block extra_scripts %}
+<script>
+async function deleteUser(userId, userName) {
+  if (!confirm(`آیا مطمئنید که می‌خواهید کاربر "${userName}" و تمام گزارش‌ها و جریمه‌های او را حذف کنید؟\n\nاین عمل غیرقابل بازگشت است!`)) {
+    return;
+  }
+  try {
+    const res = await fetch(`/users/delete/${userId}`, { method: 'POST' });
+    if (res.ok) {
+      alert('کاربر با موفقیت حذف شد');
+      location.reload();
+    } else {
+      alert('خطا در حذف کاربر');
+    }
+  } catch(e) {
+    alert('خطا: ' + e.message);
+  }
+}
+</script>
 {% endblock %}

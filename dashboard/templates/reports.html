@@ -67,6 +67,7 @@
           <th>فرعی</th>
           <th>مجموع</th>
           <th>ثبت شده در</th>
+          <th>عملیات</th>
         </tr>
       </thead>
       <tbody>
@@ -83,6 +84,9 @@
             </span>
           </td>
           <td style="color:var(--muted); font-size:.8rem;">{{ r.created_at }}</td>
+          <td>
+            <button class="btn btn-sm btn-danger" onclick="deleteReport({{ r.id }})">🗑️</button>
+          </td>
         </tr>
         {% endfor %}
       </tbody>
@@ -95,4 +99,24 @@
   </div>
   {% endif %}
 </div>
+{% endblock %}
+
+
+{% block extra_scripts %}
+<script>
+async function deleteReport(reportId) {
+  if (!confirm('آیا مطمئنید که می‌خواهید این گزارش را حذف کنید؟')) return;
+  try {
+    const res = await fetch(`/reports/delete/${reportId}`, { method: 'POST' });
+    if (res.ok) {
+      alert('گزارش حذف شد');
+      location.reload();
+    } else {
+      alert('خطا در حذف');
+    }
+  } catch(e) {
+    alert('خطا: ' + e.message);
+  }
+}
+</script>
 {% endblock %}

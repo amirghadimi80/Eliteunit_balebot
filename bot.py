@@ -92,9 +92,7 @@ class EliteUniteTimeBot:
                 await self.start_handler.handle_start(client, message)
                 return
             
-            if text.startswith("/admin"):
-                await self.admin_handler.handle_admin_panel(client, message)
-                return
+            # /admin command removed — use web dashboard instead
             
             # Handle text input for ongoing flows - check start handler states first
             user_state = self.start_handler.user_states.get(user_id)
@@ -137,8 +135,7 @@ class EliteUniteTimeBot:
                 text=(
                     "👋 درود!\n\n"
                     "دستورات موجود:\n"
-                    "/start - شروع/ثبت نام\n"
-                    "/admin - پنل ادمین (فقط برای ادمین‌ها)"
+                    "/start - شروع/ثبت نام"
                 ),
             )
         
@@ -179,6 +176,9 @@ class EliteUniteTimeBot:
             # Route to appropriate handler based on callback data
             if data == "daily_report":
                 await self.task_handler.handle_daily_report_start(client, callback_query.message)
+            
+            elif data == "main_menu":
+                await self.start_handler._show_main_menu(client, callback_query.message)
             
             elif data == "weekly_report":
                 await self.task_handler.handle_weekly_report(client, callback_query.message)

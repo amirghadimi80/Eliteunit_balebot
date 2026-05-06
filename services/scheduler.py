@@ -104,7 +104,7 @@ class SchedulerService:
                         user = self.db.get_user_by_id(user_id)
                         if user:
                             message = (
-                                f"⚠️ تنبیه برای شما\n\n"
+                                f"⚠️ جریمه برای شما\n\n"
                                 f"گزارش روز {date_shamsi} را ثبت نکردید.\n"
                                 f"لطفاً در اسرع وقت گزارش خود را ثبت کنید."
                             )

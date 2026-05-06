@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% block title %}تنبیهات{% endblock %}
+{% block title %}جریمه‌ها{% endblock %}
 
 {% block content %}
 <div class="page-header">
-  <h2>⚠️ تنبیهات</h2>
-  <p>{{ rows|length }} تنبیه ثبت شده</p>
+  <h2>⚠️ جریمه‌ها</h2>
+  <p>{{ rows|length }} جریمه ثبت شده</p>
 </div>
 
 {% if rows %}
@@ -18,8 +18,7 @@
   <div class="stat-card green" style="flex:1; min-width:140px; padding:14px 18px;">
     <div class="label">پرداخت شده</div>
     <div class="value" style="font-size:1.5rem;">{{ paid|length }}</div>
-  </div>
-</div>
+  </div></div>
 {% endif %}
 
 <div class="card">
@@ -60,6 +59,7 @@
             {% else %}
             —
             {% endif %}
+            <button class="btn btn-sm btn-danger" onclick="deletePenalty({{ p.id }})">🗑️</button>
           </td>
         </tr>
         {% endfor %}
@@ -69,8 +69,27 @@
   {% else %}
   <div class="empty">
     <div class="icon">🎉</div>
-    <div>هیچ تنبیهی وجود ندارد</div>
+    <div>هیچ جریمه‌ای وجود ندارد</div>
   </div>
   {% endif %}
 </div>
+{% endblock %}
+
+
+{% block extra_scripts %}
+<script>
+async function deletePenalty(penaltyId) {
+  if (!confirm('آیا مطمئنید که می‌خواهید این جریمه را حذف کنید؟')) return;
+  try {
+    const res = await fetch(`/penalties/delete/${penaltyId}`, { method: 'POST' });
+    if (res.ok) {
+      location.reload();
+    } else {
+      alert('خطا در حذف');
+    }
+  } catch(e) {
+    alert('خطا: ' + e.message);
+  }
+}
+</script>
 {% endblock %}

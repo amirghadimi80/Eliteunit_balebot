@@ -165,6 +165,14 @@ def users():
     return render_template("users.html", users=user_data)
 
 
+@app.route("/users/delete/<int:user_id>", methods=["POST"])
+@login_required
+def delete_user(user_id):
+    if db.delete_user(user_id):
+        return jsonify({"success": True})
+    return jsonify({"success": False}), 400
+
+
 # ─────────────────────────────────────────────
 # Reports page
 # ─────────────────────────────────────────────
@@ -193,6 +201,7 @@ def reports():
         reps = db.get_reports_by_user_and_date(u.id, start_date, end_date)
         for r in reps:
             rows.append({
+                "id": r.id,
                 "user_name": u.full_name,
                 "date_shamsi": r.date_shamsi,
                 "date_gregorian": r.date_gregorian,
@@ -213,6 +222,14 @@ def reports():
         end_date=end_date,
         filter_user=filter_user,
     )
+
+
+@app.route("/reports/delete/<int:report_id>", methods=["POST"])
+@login_required
+def delete_report(report_id):
+    if db.delete_report(report_id):
+        return jsonify({"success": True})
+    return jsonify({"success": False}), 400
 
 
 # ─────────────────────────────────────────────
@@ -239,11 +256,12 @@ def penalties():
     return render_template("penalties.html", rows=rows)
 
 
-@app.route("/penalties/pay/<int:penalty_id>", methods=["POST"])
+@app.route("/penalties/delete/<int:penalty_id>", methods=["POST"])
 @login_required
-def pay_penalty(penalty_id):
-    db.mark_penalty_paid(penalty_id)
-    return redirect(url_for("penalties"))
+def delete_penalty(penalty_id):
+    if db.delete_penalty(penalty_id):
+        return redirect(url_for("penalties"))
+    return "Error", 400
 
 
 # ─────────────────────────────────────────────

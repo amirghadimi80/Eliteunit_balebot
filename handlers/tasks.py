@@ -9,7 +9,7 @@ from balethon.objects import Message, InlineKeyboard, InlineKeyboardButton
 from database.db import Database
 from services.reports import ReportService
 from config.settings import BUTTON_LABELS
-from utils.date_utils import format_date_persian, get_today_gregorian
+from utils.date_utils import format_date_persian, get_today_gregorian, get_current_time_iran
 from utils.formatter import MessageFormatter
 
 logger = logging.getLogger(__name__)
@@ -166,19 +166,31 @@ class TaskHandler:
                 # Get report details
                 user = self.db.get_user_by_id(user_db_id)
                 today = get_today_gregorian()
+                now_time = get_current_time_iran().strftime("%H:%M")
+
+                # Send confirmation to user with back button
+                keyboard = InlineKeyboard()
+                keyboard.add_row(
+                    InlineKeyboardButton(
+                        text="🏠 بازگشت به منوی اصلی",
+                        callback_data="main_menu",
+                    )
+                )
                 
-                # Send confirmation to user
                 confirmation = (
                     f"✅ گزارش شما ثبت شد!\n\n"
                     f"👤 {user.full_name}\n"
                     f"⬛️ اصلی: {main_hours}\n"
                     f"🔵 فرعی: {side_hours}\n"
-                    f"➕ مجموع: {main_hours + side_hours}"
+                    f"➕ مجموع: {main_hours + side_hours}\n\n"
+                    f"📅 {format_date_persian(today)}\n"
+                    f"🕐 ساعت ثبت: {now_time}"
                 )
                 
                 await client.send_message(
                     chat_id=user_id,
                     text=confirmation,
+                    reply_markup=keyboard,
                 )
                 
                 # Send group notification
@@ -209,14 +221,17 @@ class TaskHandler:
             report_date: Report date
         """
         from config.settings import BALE_GROUP_ID
+        from utils.date_utils import get_current_time_iran
         
         total = main_hours + side_hours
+        now_time = get_current_time_iran().strftime("%H:%M")
         message = MessageFormatter.format_daily_report_group(
             user.full_name,
             main_hours,
             side_hours,
             total,
             report_date,
+            submit_time=now_time,
         )
         
         if BALE_GROUP_ID:
@@ -260,9 +275,18 @@ class TaskHandler:
             stats.total_hours,
         )
         
+        keyboard = InlineKeyboard()
+        keyboard.add_row(
+            InlineKeyboardButton(
+                text="🏠 بازگشت به منوی اصلی",
+                callback_data="main_menu",
+            )
+        )
+        
         await client.send_message(
             chat_id=user_id,
             text=report_message,
+            reply_markup=keyboard,
         )
     
     async def handle_monthly_report(self, client: Client, message: Message):
@@ -296,7 +320,16 @@ class TaskHandler:
             stats.days_total,
         )
         
+        keyboard = InlineKeyboard()
+        keyboard.add_row(
+            InlineKeyboardButton(
+                text="🏠 بازگشت به منوی اصلی",
+                callback_data="main_menu",
+            )
+        )
+        
         await client.send_message(
             chat_id=user_id,
             text=report_message,
+            reply_markup=keyboard,
         )

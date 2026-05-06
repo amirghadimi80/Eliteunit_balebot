@@ -537,3 +537,80 @@ class Database:
         except sqlite3.Error as e:
             logger.error(f"Error getting missing report users: {e}")
             return []
+
+    # =====================
+    # DELETE OPERATIONS (Admin only)
+    # =====================
+    
+    def delete_user(self, user_id: int) -> bool:
+        """
+        Delete a user and all related data (reports, penalties).
+        
+        Args:
+            user_id: User ID to delete
+            
+        Returns:
+            bool: True if successful
+        """
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            
+            # Delete related penalties
+            cursor.execute("DELETE FROM penalties WHERE user_id = ?", (user_id,))
+            # Delete related reports
+            cursor.execute("DELETE FROM reports WHERE user_id = ?", (user_id,))
+            # Delete user
+            cursor.execute("DELETE FROM users WHERE id = ?", (user_id,))
+            
+            conn.commit()
+            conn.close()
+            logger.info(f"User {user_id} and all related data deleted")
+            return cursor.rowcount > 0
+        except sqlite3.Error as e:
+            logger.error(f"Error deleting user: {e}")
+            return False
+    
+    def delete_report(self, report_id: int) -> bool:
+        """
+        Delete a specific report.
+        
+        Args:
+            report_id: Report ID to delete
+            
+        Returns:
+            bool: True if successful
+        """
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM reports WHERE id = ?", (report_id,))
+            conn.commit()
+            conn.close()
+            logger.info(f"Report {report_id} deleted")
+            return cursor.rowcount > 0
+        except sqlite3.Error as e:
+            logger.error(f"Error deleting report: {e}")
+            return False
+    
+    def delete_penalty(self, penalty_id: int) -> bool:
+        """
+        Delete a specific penalty.
+        
+        Args:
+            penalty_id: Penalty ID to delete
+            
+        Returns:
+            bool: True if successful
+        """
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM penalties WHERE id = ?", (penalty_id,))
+            conn.commit()
+            conn.close()
+            logger.info(f"Penalty {penalty_id} deleted")
+            return cursor.rowcount > 0
+        except sqlite3.Error as e:
+            logger.error(f"Error deleting penalty: {e}")
+            return False

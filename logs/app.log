@@ -7200,3 +7200,893 @@ AttributeError: 'sqlite3.Row' object has no attribute 'get'
 2026-05-06 12:38:03,963 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
 2026-05-06 12:38:03,966 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 71}
 2026-05-06 12:38:05,847 - bot - INFO - Bot started successfully
+2026-05-06 12:44:43,467 - __main__ - INFO - ==================================================
+2026-05-06 12:44:43,467 - __main__ - INFO -   EliteUniteTime — Bot + Dashboard
+2026-05-06 12:44:43,467 - __main__ - INFO - ==================================================
+2026-05-06 12:44:43,468 - __main__ - INFO - Dashboard thread started
+2026-05-06 12:44:44,058 - database.db - INFO - Table 'users' initialized successfully
+2026-05-06 12:44:44,061 - database.db - INFO - Table 'reports' initialized successfully
+2026-05-06 12:44:44,064 - database.db - INFO - Table 'penalties' initialized successfully
+2026-05-06 12:44:44,080 - __main__ - INFO - Dashboard starting on http://0.0.0.0:5000
+2026-05-06 12:44:44,111 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.180.140.240:5000
+2026-05-06 12:44:44,112 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2026-05-06 12:44:44,286 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:44:44] "GET /users HTTP/1.1" 200 -
+2026-05-06 12:44:44,840 - database.db - INFO - Table 'users' initialized successfully
+2026-05-06 12:44:44,840 - database.db - INFO - Table 'reports' initialized successfully
+2026-05-06 12:44:44,841 - database.db - INFO - Table 'penalties' initialized successfully
+2026-05-06 12:44:44,842 - bot - INFO - Database initialized
+2026-05-06 12:44:44,842 - bot - INFO - Scheduler service initialized
+2026-05-06 12:44:44,843 - bot - INFO - All handlers initialized
+2026-05-06 12:44:44,843 - bot - INFO - Bale client initialized
+2026-05-06 12:44:44,844 - bot - INFO - Message and callback handlers registered
+2026-05-06 12:44:44,844 - bot - INFO - Starting EliteUniteTime bot...
+2026-05-06 12:44:44,844 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-05-06 12:44:44,844 - services.scheduler - INFO - Missing report check job added: daily at 10:00 Asia/Tehran
+2026-05-06 12:44:44,844 - apscheduler.scheduler - INFO - Added job "Check missing daily reports" to job store "default"
+2026-05-06 12:44:44,845 - apscheduler.scheduler - INFO - Scheduler started
+2026-05-06 12:44:44,845 - services.scheduler - INFO - Scheduler started successfully
+2026-05-06 12:44:44,845 - bot - INFO - Scheduler started successfully
+2026-05-06 12:44:45,405 - httpx - INFO - HTTP Request: GET https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getMe "HTTP/1.1 200 OK"
+2026-05-06 12:44:45,457 - httpx - INFO - HTTP Request: GET https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/deleteWebhook "HTTP/1.1 200 OK"
+2026-05-06 12:44:45,715 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:44:45] "GET /users HTTP/1.1" 200 -
+2026-05-06 12:44:50,539 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:44:55,611 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:45:00,667 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:45:05,490 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:45:05] "GET / HTTP/1.1" 200 -
+2026-05-06 12:45:05,761 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:45:10,987 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:45:16,054 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:45:21,129 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:45:26,182 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:45:31,276 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:45:35,942 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:45:35] "GET /api/stats HTTP/1.1" 200 -
+2026-05-06 12:45:36,338 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:45:41,436 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:45:46,497 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:45:51,561 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:45:56,647 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:46:01,764 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:46:05,948 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:46:05] "GET /api/stats HTTP/1.1" 200 -
+2026-05-06 12:46:06,810 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:46:11,850 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:46:16,911 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:46:21,956 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:46:27,043 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:46:32,119 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:46:35,589 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:46:35] "GET /api/stats HTTP/1.1" 200 -
+2026-05-06 12:46:37,214 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:46:42,313 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:46:47,410 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:46:52,468 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:46:57,517 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:47:02,639 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:47:05,942 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:47:05] "GET /api/stats HTTP/1.1" 200 -
+2026-05-06 12:47:07,721 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:47:09,898 - bot - INFO - Bot started successfully
+2026-05-06 12:47:10,796 - __main__ - INFO - ==================================================
+2026-05-06 12:47:10,796 - __main__ - INFO -   EliteUniteTime — Bot + Dashboard
+2026-05-06 12:47:10,796 - __main__ - INFO - ==================================================
+2026-05-06 12:47:10,797 - __main__ - INFO - Dashboard thread started
+2026-05-06 12:47:11,201 - database.db - INFO - Table 'users' initialized successfully
+2026-05-06 12:47:11,202 - database.db - INFO - Table 'reports' initialized successfully
+2026-05-06 12:47:11,202 - database.db - INFO - Table 'penalties' initialized successfully
+2026-05-06 12:47:11,213 - __main__ - INFO - Dashboard starting on http://0.0.0.0:5000
+2026-05-06 12:47:11,234 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.180.140.240:5000
+2026-05-06 12:47:11,234 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2026-05-06 12:47:11,649 - database.db - INFO - Table 'users' initialized successfully
+2026-05-06 12:47:11,649 - database.db - INFO - Table 'reports' initialized successfully
+2026-05-06 12:47:11,650 - database.db - INFO - Table 'penalties' initialized successfully
+2026-05-06 12:47:11,650 - bot - INFO - Database initialized
+2026-05-06 12:47:11,650 - bot - INFO - Scheduler service initialized
+2026-05-06 12:47:11,650 - bot - INFO - All handlers initialized
+2026-05-06 12:47:11,650 - bot - INFO - Bale client initialized
+2026-05-06 12:47:11,651 - bot - INFO - Message and callback handlers registered
+2026-05-06 12:47:11,651 - bot - INFO - Starting EliteUniteTime bot...
+2026-05-06 12:47:11,651 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-05-06 12:47:11,651 - services.scheduler - INFO - Missing report check job added: daily at 10:00 Asia/Tehran
+2026-05-06 12:47:11,651 - apscheduler.scheduler - INFO - Added job "Check missing daily reports" to job store "default"
+2026-05-06 12:47:11,651 - apscheduler.scheduler - INFO - Scheduler started
+2026-05-06 12:47:11,652 - services.scheduler - INFO - Scheduler started successfully
+2026-05-06 12:47:11,652 - bot - INFO - Scheduler started successfully
+2026-05-06 12:47:12,151 - httpx - INFO - HTTP Request: GET https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getMe "HTTP/1.1 200 OK"
+2026-05-06 12:47:12,362 - httpx - INFO - HTTP Request: GET https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/deleteWebhook "HTTP/1.1 200 OK"
+2026-05-06 12:47:17,425 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:47:22,480 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:47:27,695 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:47:28,564 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:47:28,579 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 72}
+2026-05-06 12:47:28,583 - bot - INFO - Message from user 2062332444: /start
+2026-05-06 12:47:28,588 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 2062332444, 'text': '📋 منوی اصلی:', 'reply_markup': {'inline_keyboard': [[{'text': '📊 ثبت گزارش روزانه', 'callback_data': 'daily_report'}], [{'text': '📈 گزارش هفتگی', 'callback_data': 'weekly_report'}, {'text': '📅 گزارش ماهانه', 'callback_data': 'monthly_report'}], [{'text': '👤 پروفایل من', 'callback_data': 'profile'}], [{'text': '👥 آشنایی با دوستان', 'callback_data': 'friends'}]]}}
+2026-05-06 12:47:28,924 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:47:33,637 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:47:33,641 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 72}
+2026-05-06 12:47:33,741 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:47:33,758 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 73}
+2026-05-06 12:47:33,760 - bot - INFO - Callback query from user 2062332444: weekly_report
+2026-05-06 12:47:33,762 - services.reports - INFO - Weekly stats calculated: WeeklyStats(user_id=1, total_hours=17.0h, days=2)
+2026-05-06 12:47:33,765 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 2062332444, 'text': '📈 گزارش هفتگی\n👤 لسیبلبیلر\n📅 64510/05/05 تا 64510/05/11\n\n⬛️ ساعت اصلی: 10.0\n🔵 ساعت فرعی: 7.0\n➕ مجموع: 17.0'}
+2026-05-06 12:47:34,047 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:47:34,063 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '4923569096933403531', 'text': '', 'show_alert': False}
+2026-05-06 12:47:34,093 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 12:47:35,683 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:47:35,699 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 74}
+2026-05-06 12:47:35,700 - bot - INFO - Callback query from user 2062332444: monthly_report
+2026-05-06 12:47:35,701 - services.reports - INFO - Monthly stats calculated: MonthlyStats(user_id=1, month=64510/05, total_hours=17.0h)
+2026-05-06 12:47:35,704 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 2062332444, 'text': '📅 گزارش ماهانه\n👤 لسیبلبیلر\n🗓️  64510/05\n\n⬛️ ساعت اصلی: 10.0\n🔵 ساعت فرعی: 7.0\n➕ مجموع: 17.0\n\n📊 روزهای ثبت شده: 2/31'}
+2026-05-06 12:47:35,809 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:47:35,828 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '4462177285793598098', 'text': '', 'show_alert': False}
+2026-05-06 12:47:35,874 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 12:47:35,948 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:47:35] "GET /api/stats HTTP/1.1" 200 -
+2026-05-06 12:47:40,751 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:47:40,755 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 74}
+2026-05-06 12:47:45,802 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:47:45,810 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 74}
+2026-05-06 12:47:50,858 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:47:50,862 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 74}
+2026-05-06 12:47:55,920 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:47:55,930 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 74}
+2026-05-06 12:48:00,976 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:48:00,986 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 74}
+2026-05-06 12:48:05,942 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:48:05] "GET /api/stats HTTP/1.1" 200 -
+2026-05-06 12:48:06,198 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:48:06,209 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 74}
+2026-05-06 12:48:11,302 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:48:11,310 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 74}
+2026-05-06 12:48:16,360 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:48:16,371 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 74}
+2026-05-06 12:48:21,423 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:48:21,432 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 74}
+2026-05-06 12:48:26,530 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:48:26,538 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 74}
+2026-05-06 12:48:31,796 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:48:31,803 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 74}
+2026-05-06 12:48:35,947 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:48:35] "GET /api/stats HTTP/1.1" 200 -
+2026-05-06 12:48:36,961 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:48:36,970 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 74}
+2026-05-06 12:48:42,032 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:48:42,042 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 74}
+2026-05-06 12:48:47,254 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:48:47,263 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 74}
+2026-05-06 12:48:52,305 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:48:52,312 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 74}
+2026-05-06 12:48:57,400 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:48:57,408 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 74}
+2026-05-06 12:49:02,463 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:49:02,473 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 74}
+2026-05-06 12:49:07,511 - bot - INFO - Bot started successfully
+2026-05-06 12:49:08,600 - __main__ - INFO - ==================================================
+2026-05-06 12:49:08,600 - __main__ - INFO -   EliteUniteTime — Bot + Dashboard
+2026-05-06 12:49:08,600 - __main__ - INFO - ==================================================
+2026-05-06 12:49:08,602 - __main__ - INFO - Dashboard thread started
+2026-05-06 12:49:09,056 - database.db - INFO - Table 'users' initialized successfully
+2026-05-06 12:49:09,056 - database.db - INFO - Table 'reports' initialized successfully
+2026-05-06 12:49:09,056 - database.db - INFO - Table 'penalties' initialized successfully
+2026-05-06 12:49:09,068 - __main__ - INFO - Dashboard starting on http://0.0.0.0:5000
+2026-05-06 12:49:09,085 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.180.140.240:5000
+2026-05-06 12:49:09,086 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2026-05-06 12:49:09,520 - database.db - INFO - Table 'users' initialized successfully
+2026-05-06 12:49:09,520 - database.db - INFO - Table 'reports' initialized successfully
+2026-05-06 12:49:09,521 - database.db - INFO - Table 'penalties' initialized successfully
+2026-05-06 12:49:09,521 - bot - INFO - Database initialized
+2026-05-06 12:49:09,521 - bot - INFO - Scheduler service initialized
+2026-05-06 12:49:09,521 - bot - INFO - All handlers initialized
+2026-05-06 12:49:09,521 - bot - INFO - Bale client initialized
+2026-05-06 12:49:09,521 - bot - INFO - Message and callback handlers registered
+2026-05-06 12:49:09,522 - bot - INFO - Starting EliteUniteTime bot...
+2026-05-06 12:49:09,522 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-05-06 12:49:09,522 - services.scheduler - INFO - Missing report check job added: daily at 10:00 Asia/Tehran
+2026-05-06 12:49:09,522 - apscheduler.scheduler - INFO - Added job "Check missing daily reports" to job store "default"
+2026-05-06 12:49:09,522 - apscheduler.scheduler - INFO - Scheduler started
+2026-05-06 12:49:09,523 - services.scheduler - INFO - Scheduler started successfully
+2026-05-06 12:49:09,523 - bot - INFO - Scheduler started successfully
+2026-05-06 12:49:10,251 - httpx - INFO - HTTP Request: GET https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getMe "HTTP/1.1 200 OK"
+2026-05-06 12:49:10,312 - httpx - INFO - HTTP Request: GET https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/deleteWebhook "HTTP/1.1 200 OK"
+2026-05-06 12:49:10,606 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:49:10,621 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 75}
+2026-05-06 12:49:10,623 - bot - INFO - Message from user 2062332444: /start
+2026-05-06 12:49:10,630 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 2062332444, 'text': '📋 منوی اصلی:', 'reply_markup': {'inline_keyboard': [[{'text': '📊 ثبت گزارش روزانه', 'callback_data': 'daily_report'}], [{'text': '📈 گزارش هفتگی', 'callback_data': 'weekly_report'}, {'text': '📅 گزارش ماهانه', 'callback_data': 'monthly_report'}], [{'text': '👤 پروفایل من', 'callback_data': 'profile'}], [{'text': '👥 آشنایی با دوستان', 'callback_data': 'friends'}]]}}
+2026-05-06 12:49:11,014 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:49:12,280 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:49:12,292 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 76}
+2026-05-06 12:49:12,294 - bot - INFO - Callback query from user 2062332444: daily_report
+2026-05-06 12:49:12,301 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 2062332444, 'text': '✅ شما امروز گزارش خود را ثبت کرده\u200cاید.'}
+2026-05-06 12:49:12,387 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:49:12,409 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '5415631391310218437', 'text': '', 'show_alert': False}
+2026-05-06 12:49:12,652 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 12:49:14,705 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:49:14,715 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 77}
+2026-05-06 12:49:14,717 - bot - INFO - Callback query from user 2062332444: weekly_report
+2026-05-06 12:49:14,719 - services.reports - INFO - Weekly stats calculated: WeeklyStats(user_id=1, total_hours=17.0h, days=2)
+2026-05-06 12:49:14,721 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 2062332444, 'text': '📈 گزارش هفتگی\n👤 لسیبلبیلر\n📅 64510/05/05 تا 64510/05/11\n\n⬛️ ساعت اصلی: 10.0\n🔵 ساعت فرعی: 7.0\n➕ مجموع: 17.0', 'reply_markup': {'inline_keyboard': [[{'text': '🏠 بازگشت به منوی اصلی', 'callback_data': 'main_menu'}]]}}
+2026-05-06 12:49:14,801 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:49:14,822 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '2975311526974226746', 'text': '', 'show_alert': False}
+2026-05-06 12:49:14,869 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 12:49:15,934 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:49:15,956 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 78}
+2026-05-06 12:49:15,958 - bot - INFO - Callback query from user 2062332444: main_menu
+2026-05-06 12:49:15,963 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '2310345920130222530', 'text': '', 'show_alert': False}
+2026-05-06 12:49:16,032 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 12:49:18,147 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:49:18,174 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 79}
+2026-05-06 12:49:18,178 - bot - INFO - Callback query from user 2062332444: main_menu
+2026-05-06 12:49:18,185 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '5231977514440750109', 'text': '', 'show_alert': False}
+2026-05-06 12:49:18,332 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 12:49:19,001 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:49:19,018 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 80}
+2026-05-06 12:49:19,020 - bot - INFO - Callback query from user 2062332444: main_menu
+2026-05-06 12:49:19,032 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '6803419109320328228', 'text': '', 'show_alert': False}
+2026-05-06 12:49:19,085 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 12:49:19,826 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:49:19,836 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 81}
+2026-05-06 12:49:19,838 - bot - INFO - Callback query from user 2062332444: main_menu
+2026-05-06 12:49:19,841 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '7265976333011677986', 'text': '', 'show_alert': False}
+2026-05-06 12:49:19,891 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 12:49:21,218 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:49:21,234 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 82}
+2026-05-06 12:49:21,237 - bot - INFO - Callback query from user 2062332444: monthly_report
+2026-05-06 12:49:21,239 - services.reports - INFO - Monthly stats calculated: MonthlyStats(user_id=1, month=64510/05, total_hours=17.0h)
+2026-05-06 12:49:21,241 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 2062332444, 'text': '📅 گزارش ماهانه\n👤 لسیبلبیلر\n🗓️  64510/05\n\n⬛️ ساعت اصلی: 10.0\n🔵 ساعت فرعی: 7.0\n➕ مجموع: 17.0\n\n📊 روزهای ثبت شده: 2/31', 'reply_markup': {'inline_keyboard': [[{'text': '🏠 بازگشت به منوی اصلی', 'callback_data': 'main_menu'}]]}}
+2026-05-06 12:49:21,536 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:49:21,555 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '2271513695537640456', 'text': '', 'show_alert': False}
+2026-05-06 12:49:21,612 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 12:49:22,283 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:49:22,304 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 83}
+2026-05-06 12:49:22,306 - bot - INFO - Callback query from user 2062332444: main_menu
+2026-05-06 12:49:22,310 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '2220901506738896781', 'text': '', 'show_alert': False}
+2026-05-06 12:49:22,384 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 12:49:25,177 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:49:25,193 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 84}
+2026-05-06 12:49:25,195 - bot - INFO - Callback query from user 2062332444: profile
+2026-05-06 12:49:25,200 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 2062332444, 'text': '👤 لسیبلبیلر\n📞 +989394573866\n📝 سلام\n', 'reply_markup': {'inline_keyboard': [[{'text': '✏️ ویرایش پروفایل', 'callback_data': 'edit_profile'}], [{'text': '🏠 بازگشت به منوی اصلی', 'callback_data': 'main_menu'}]]}}
+2026-05-06 12:49:25,329 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:49:25,352 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '3675088777559861102', 'text': '', 'show_alert': False}
+2026-05-06 12:49:25,603 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 12:49:28,616 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:49:28,636 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 85}
+2026-05-06 12:49:28,639 - bot - INFO - Callback query from user 2062332444: edit_profile
+2026-05-06 12:49:28,645 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 2062332444, 'text': '📝 چه چیزی را ویرایش کنید؟', 'reply_markup': {'inline_keyboard': [[{'text': '📝 ویرایش بیوگرافی', 'callback_data': 'edit_bio'}], [{'text': '⭐ ویرایش علاقه\u200cمندی\u200cها', 'callback_data': 'edit_interests'}], [{'text': '🔙 بازگشت به پروفایل', 'callback_data': 'profile'}], [{'text': '🏠 بازگشت به منوی اصلی', 'callback_data': 'main_menu'}]]}}
+2026-05-06 12:49:28,747 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:49:28,769 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '7720393398547699313', 'text': '', 'show_alert': False}
+2026-05-06 12:49:28,827 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 12:49:31,011 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:49:31,028 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 86}
+2026-05-06 12:49:31,030 - bot - INFO - Callback query from user 2062332444: edit_interests
+2026-05-06 12:49:31,036 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 2062332444, 'text': '⭐ علاقه\u200cمندی\u200cهای خود را وارد کنید:\n(مثال: ورزش، برنامه\u200cنویسی، موسیقی)'}
+2026-05-06 12:49:31,114 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:49:31,131 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '8208069291338272399', 'text': '', 'show_alert': False}
+2026-05-06 12:49:31,174 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 12:49:36,108 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:49:36,117 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 86}
+2026-05-06 12:49:36,952 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:49:36] "GET /api/stats HTTP/1.1" 200 -
+2026-05-06 12:49:41,167 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:49:41,172 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 86}
+2026-05-06 12:49:46,212 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:49:46,218 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 86}
+2026-05-06 12:49:51,281 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:49:51,289 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 86}
+2026-05-06 12:49:56,334 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:49:56,342 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 86}
+2026-05-06 12:50:01,391 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:50:01,395 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 86}
+2026-05-06 12:50:06,456 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:50:06,465 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 86}
+2026-05-06 12:50:11,541 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:50:11,550 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 86}
+2026-05-06 12:50:16,613 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:50:16,619 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 86}
+2026-05-06 12:50:21,681 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:50:21,688 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 86}
+2026-05-06 12:50:26,776 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:50:26,785 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 86}
+2026-05-06 12:50:29,758 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:50:29,776 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 87}
+2026-05-06 12:50:29,777 - bot - INFO - Message from user 1859314641: /start
+2026-05-06 12:50:29,781 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 1859314641, 'text': 'خوش آمدید به سیستم مدیریت زمان EliteUniteTime! 🎉\n\nلطفاً اطلاعات خود را کامل کنید.\n\n🔤 لطفاً نام کامل خود را وارد کنید:'}
+2026-05-06 12:50:30,283 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:50:33,958 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:50:33,973 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 88}
+2026-05-06 12:50:33,988 - bot - INFO - Message from user 1859314641: رضا
+2026-05-06 12:50:34,000 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 1859314641, 'text': '📞 لطفاً شماره تماس خود را اشتراک گذاری کنید\nیا شماره را به صورت دستی وارد کنید (مثال: 09123456789):', 'reply_markup': {'keyboard': [[{'text': '📞 اشتراک گذاری شماره', 'request_contact': True}]], 'resize_keyboard': True, 'one_time_keyboard': True}}
+2026-05-06 12:50:34,095 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:50:36,468 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:50:36,481 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 89}
+2026-05-06 12:50:36,482 - bot - INFO - Message from user 1859314641: 
+2026-05-06 12:50:36,509 - database.db - INFO - User added: رضا (ID: 2)
+2026-05-06 12:50:36,513 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 1859314641, 'text': '✅ ثبت نام شما با موفقیت انجام شد!\n\nمنوی اصلی:', 'reply_markup': {'keyboard': [], 'remove_keyboard': True}}
+2026-05-06 12:50:36,634 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:50:36,655 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 1859314641, 'text': '📋 منوی اصلی:', 'reply_markup': {'inline_keyboard': [[{'text': '📊 ثبت گزارش روزانه', 'callback_data': 'daily_report'}], [{'text': '📈 گزارش هفتگی', 'callback_data': 'weekly_report'}, {'text': '📅 گزارش ماهانه', 'callback_data': 'monthly_report'}], [{'text': '👤 پروفایل من', 'callback_data': 'profile'}], [{'text': '👥 آشنایی با دوستان', 'callback_data': 'friends'}]]}}
+2026-05-06 12:50:36,819 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:50:36,831 - handlers.start - INFO - User registered: رضا (ID: 1859314641)
+2026-05-06 12:50:37,942 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:50:37] "GET /api/stats HTTP/1.1" 200 -
+2026-05-06 12:50:41,557 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:50:41,566 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 89}
+2026-05-06 12:50:43,572 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:50:43,583 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 90}
+2026-05-06 12:50:43,584 - bot - INFO - Callback query from user 1859314641: friends
+2026-05-06 12:50:43,588 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 1859314641, 'text': '👥 آشنایی با دوستان:\n\nکاربری را انتخاب کنید:', 'reply_markup': {'inline_keyboard': [[{'text': '👤 لسیبلبیلر', 'callback_data': 'view_user_1'}]]}}
+2026-05-06 12:50:43,974 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:50:43,988 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '5941094389321354998', 'text': '', 'show_alert': False}
+2026-05-06 12:50:44,027 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 12:50:44,993 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:50:45,014 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:50:45,015 - bot - INFO - Callback query from user 1859314641: view_user_1
+2026-05-06 12:50:45,020 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 1859314641, 'text': '👤 لسیبلبیلر\n📝 سلام\n'}
+2026-05-06 12:50:45,130 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:50:45,142 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '2419413643291556924', 'text': '', 'show_alert': False}
+2026-05-06 12:50:45,240 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 12:50:50,061 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:50:50,069 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:50:55,133 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:50:55,141 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:51:00,185 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:51:00,190 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:51:05,244 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:51:05,248 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:51:10,295 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:51:10,303 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:51:15,354 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:51:15,362 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:51:20,410 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:51:20,419 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:51:25,508 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:51:25,513 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:51:30,548 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:51:30,555 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:51:35,601 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:51:35,609 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:51:38,941 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:51:38] "GET /api/stats HTTP/1.1" 200 -
+2026-05-06 12:51:40,656 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:51:40,666 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:51:45,709 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:51:45,717 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:51:48,411 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:51:48] "GET / HTTP/1.1" 200 -
+2026-05-06 12:51:50,756 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:51:50,782 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:51:53,980 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:51:53] "GET /users HTTP/1.1" 200 -
+2026-05-06 12:51:56,090 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:51:56,115 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:51:56,230 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:51:56] "GET /penalties HTTP/1.1" 200 -
+2026-05-06 12:52:01,239 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:52:01,255 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:52:06,337 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:52:06,348 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:52:11,552 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:52:11,555 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:52:16,598 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:52:16,627 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:52:21,728 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:52:21,781 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 91}
+2026-05-06 12:52:25,209 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:52:25,254 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 92}
+2026-05-06 12:52:25,261 - bot - INFO - Message from user 1336848033: علی حسنی پور
+2026-05-06 12:52:25,308 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 1336848033, 'text': '👋 درود!\n\nدستورات موجود:\n/start - شروع/ثبت نام'}
+2026-05-06 12:52:25,515 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:52:30,382 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:52:30,394 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 92}
+2026-05-06 12:52:35,617 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:52:35,642 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 92}
+2026-05-06 12:52:40,738 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:52:40,765 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 92}
+2026-05-06 12:52:41,145 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:52:41,197 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 93}
+2026-05-06 12:52:41,204 - bot - INFO - Message from user 1336848033: /start
+2026-05-06 12:52:41,237 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 1336848033, 'text': 'خوش آمدید به سیستم مدیریت زمان EliteUniteTime! 🎉\n\nلطفاً اطلاعات خود را کامل کنید.\n\n🔤 لطفاً نام کامل خود را وارد کنید:'}
+2026-05-06 12:52:41,642 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:52:46,468 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:52:46,549 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 93}
+2026-05-06 12:52:48,831 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:52:48,933 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 94}
+2026-05-06 12:52:48,943 - bot - INFO - Message from user 1336848033: علی حسنی پور
+2026-05-06 12:52:49,006 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 1336848033, 'text': '📞 لطفاً شماره تماس خود را اشتراک گذاری کنید\nیا شماره را به صورت دستی وارد کنید (مثال: 09123456789):', 'reply_markup': {'keyboard': [[{'text': '📞 اشتراک گذاری شماره', 'request_contact': True}]], 'resize_keyboard': True, 'one_time_keyboard': True}}
+2026-05-06 12:52:49,257 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:52:54,151 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:52:54,179 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 94}
+2026-05-06 12:52:55,933 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:52:56,019 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 95}
+2026-05-06 12:52:56,027 - bot - INFO - Message from user 1336848033: 09124619049
+2026-05-06 12:52:56,062 - database.db - INFO - User added: علی حسنی پور (ID: 3)
+2026-05-06 12:52:56,111 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 1336848033, 'text': '✅ ثبت نام شما با موفقیت انجام شد!\n\nمنوی اصلی:', 'reply_markup': {'keyboard': [], 'remove_keyboard': True}}
+2026-05-06 12:52:56,400 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:52:56,459 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 1336848033, 'text': '📋 منوی اصلی:', 'reply_markup': {'inline_keyboard': [[{'text': '📊 ثبت گزارش روزانه', 'callback_data': 'daily_report'}], [{'text': '📈 گزارش هفتگی', 'callback_data': 'weekly_report'}, {'text': '📅 گزارش ماهانه', 'callback_data': 'monthly_report'}], [{'text': '👤 پروفایل من', 'callback_data': 'profile'}], [{'text': '👥 آشنایی با دوستان', 'callback_data': 'friends'}]]}}
+2026-05-06 12:52:56,748 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:52:56,782 - handlers.start - INFO - User registered: علی حسنی پور (ID: 1336848033)
+2026-05-06 12:53:01,257 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:53:01,282 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 95}
+2026-05-06 12:53:06,368 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:53:06,401 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 95}
+2026-05-06 12:53:11,666 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:53:11,703 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 95}
+2026-05-06 12:53:16,755 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:53:16,783 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 95}
+2026-05-06 12:53:21,853 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:53:21,898 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 95}
+2026-05-06 12:53:25,629 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:53:25,711 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:53:25,720 - bot - INFO - Callback query from user 1336848033: daily_report
+2026-05-06 12:53:25,825 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 1336848033, 'text': '📊 ثبت گزارش روزانه\n\n📅 امروز: دوشنبه 64510/05/09\n\n⬛️ لطفاً ساعت کاری اصلی را وارد کنید:\n(مثال: 6 یا 6.5)'}
+2026-05-06 12:53:26,302 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:53:26,373 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '4107565012042113632', 'text': '', 'show_alert': False}
+2026-05-06 12:53:26,427 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 12:53:30,941 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:53:30,961 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:53:36,082 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:53:36,117 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:53:41,499 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:53:41,519 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:53:46,595 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:53:46,643 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:53:49,689 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:53:49] "GET /penalties HTTP/1.1" 200 -
+2026-05-06 12:53:51,417 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:53:51] "GET / HTTP/1.1" 200 -
+2026-05-06 12:53:51,693 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:53:51,704 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:53:54,680 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:53:54] "GET /reports HTTP/1.1" 200 -
+2026-05-06 12:53:56,974 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:53:57,094 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:53:57,602 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:53:57] "GET / HTTP/1.1" 200 -
+2026-05-06 12:54:02,180 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:54:02,192 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:54:07,259 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:54:07,268 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:54:10,909 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:54:10] "GET / HTTP/1.1" 200 -
+2026-05-06 12:54:12,315 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:54:12,329 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:54:13,290 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:54:13] "GET /users HTTP/1.1" 200 -
+2026-05-06 12:54:17,390 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:54:17,406 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:54:19,078 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 12:54:19] "GET /reports HTTP/1.1" 200 -
+2026-05-06 12:54:22,469 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:54:22,483 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:54:27,567 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:54:27,579 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:54:32,656 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:54:32,672 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:54:37,722 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:54:37,731 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:54:42,872 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:54:42,887 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:54:47,945 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:54:47,953 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:54:53,048 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:54:53,076 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:54:58,122 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:54:58,225 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 96}
+2026-05-06 12:55:00,459 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:55:00,501 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 97}
+2026-05-06 12:55:00,507 - bot - INFO - Callback query from user 1859314641: daily_report
+2026-05-06 12:55:00,531 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 1859314641, 'text': '📊 ثبت گزارش روزانه\n\n📅 امروز: دوشنبه 64510/05/09\n\n⬛️ لطفاً ساعت کاری اصلی را وارد کنید:\n(مثال: 6 یا 6.5)'}
+2026-05-06 12:55:00,849 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:55:00,889 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '4652886947118848893', 'text': '', 'show_alert': False}
+2026-05-06 12:55:00,938 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 12:55:05,433 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:55:05,484 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 98}
+2026-05-06 12:55:05,494 - bot - INFO - Message from user 1859314641: 6
+2026-05-06 12:55:05,514 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 1859314641, 'text': '🔵 لطفاً ساعت کاری فرعی را وارد کنید:\n(ورزش، پادکست، یادگیری، ...)\n\n(مثال: 2 یا 2.5)'}
+2026-05-06 12:55:05,625 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:55:08,318 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:55:08,380 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:55:08,387 - bot - INFO - Message from user 1859314641: 1
+2026-05-06 12:55:08,406 - database.db - INFO - Report added: user_id=2, date=64510/05/09
+2026-05-06 12:55:08,407 - services.reports - INFO - Report submitted: user_id=2, date=64510/05/09
+2026-05-06 12:55:08,425 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 1859314641, 'text': '✅ گزارش شما ثبت شد!\n\n👤 رضا\n⬛️ اصلی: 6.0\n🔵 فرعی: 1.0\n➕ مجموع: 7.0', 'reply_markup': {'inline_keyboard': [[{'text': '🏠 بازگشت به منوی اصلی', 'callback_data': 'main_menu'}]]}}
+2026-05-06 12:55:08,599 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:55:08,649 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 4365329116, 'text': '👤 رضا\n📌 اصلی: 6.0\n📌 فرعی: 1.0\n➕ مجموع: 7.0\n📅 دوشنبه 64510/05/09'}
+2026-05-06 12:55:08,782 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 12:55:08,795 - handlers.tasks - INFO - Group notification sent for user رضا
+2026-05-06 12:55:08,796 - handlers.tasks - INFO - Report submitted: user=رضا, main=6.0, side=1.0
+2026-05-06 12:55:13,613 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:55:13,638 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:55:18,710 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:55:18,728 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:55:23,821 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:55:23,834 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:55:28,927 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:55:28,930 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:55:33,972 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:55:33,980 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:55:39,053 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:55:39,062 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:55:44,220 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:55:44,228 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:55:49,288 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:55:49,292 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:55:54,341 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:55:54,350 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:55:59,443 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:55:59,448 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:56:04,564 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:56:04,572 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:56:09,679 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:56:09,688 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:56:14,811 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:56:14,819 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:56:20,179 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:56:20,191 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:56:25,251 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:56:25,267 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:56:30,359 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:56:30,380 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:56:35,452 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:56:35,462 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:56:40,504 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:56:40,512 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:56:45,684 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:56:45,692 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:56:50,784 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:56:50,793 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:56:55,870 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:56:55,880 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:57:01,290 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:57:01,299 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:57:06,348 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:57:06,358 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:57:11,444 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:57:11,452 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:57:16,529 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:57:16,538 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:57:21,585 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:57:21,592 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:57:27,057 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:57:27,066 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:57:32,144 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:57:32,154 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:57:37,213 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:57:37,222 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:57:42,299 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:57:42,307 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:57:47,354 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:57:47,362 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:57:52,407 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:57:52,414 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:57:57,476 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:57:57,488 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:58:02,547 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:58:02,555 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:58:07,600 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:58:07,609 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:58:12,669 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:58:12,673 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:58:17,797 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:58:17,807 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:58:22,914 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:58:22,921 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:58:28,184 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:58:28,197 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:58:33,308 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:58:33,323 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:58:38,390 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:58:38,394 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:58:43,533 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:58:43,541 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:58:48,832 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:58:48,887 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:58:55,151 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:58:55,265 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:59:00,313 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:59:00,342 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:59:05,584 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:59:05,623 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:59:10,680 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:59:10,721 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:59:15,766 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:59:15,792 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:59:21,075 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:59:21,108 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:59:26,182 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:59:26,217 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:59:31,470 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:59:31,511 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:59:36,570 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:59:36,607 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:59:41,691 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:59:41,716 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:59:46,937 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:59:46,969 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:59:52,021 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:59:52,041 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 12:59:57,101 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 12:59:57,110 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:00:02,151 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:00:02,157 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:00:07,704 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:00:07,709 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:00:12,769 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:00:12,776 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:00:17,842 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:00:17,849 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:00:22,897 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:00:22,906 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:00:27,956 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:00:27,960 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:00:33,015 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:00:33,023 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:00:38,069 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:00:38,076 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:00:43,134 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:00:43,155 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:00:48,253 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:00:48,261 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:00:53,310 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:00:53,323 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:00:58,371 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:00:58,378 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:01:03,418 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:01:03,426 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:01:08,466 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:01:08,477 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:01:13,545 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:01:13,550 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:01:18,615 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:01:18,624 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:01:23,668 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:01:23,675 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:01:28,716 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:01:28,725 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:01:33,766 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:01:33,771 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:01:38,896 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:01:38,907 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:01:43,944 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:01:43,950 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:01:48,991 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:01:48,999 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:01:54,131 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:01:54,138 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:01:59,700 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:01:59,741 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:02:04,790 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:02:04,827 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:02:09,902 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:02:09,942 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:02:14,994 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:02:15,000 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:02:20,051 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:02:20,055 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:02:25,138 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:02:25,145 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:02:30,191 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:02:30,199 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:02:35,250 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:02:35,254 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:02:40,297 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:02:40,304 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:02:45,354 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:02:45,359 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:02:50,408 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:02:50,415 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:02:55,463 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:02:55,472 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:03:00,568 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:03:00,573 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 99}
+2026-05-06 13:03:02,036 - bot - INFO - Bot started successfully
+2026-05-06 13:03:02,972 - __main__ - INFO - ==================================================
+2026-05-06 13:03:02,973 - __main__ - INFO -   EliteUniteTime — Bot + Dashboard
+2026-05-06 13:03:02,973 - __main__ - INFO - ==================================================
+2026-05-06 13:03:02,974 - __main__ - INFO - Dashboard thread started
+2026-05-06 13:03:03,518 - database.db - INFO - Table 'users' initialized successfully
+2026-05-06 13:03:03,519 - database.db - INFO - Table 'reports' initialized successfully
+2026-05-06 13:03:03,519 - database.db - INFO - Table 'penalties' initialized successfully
+2026-05-06 13:03:03,532 - __main__ - INFO - Dashboard starting on http://0.0.0.0:5000
+2026-05-06 13:03:03,547 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.180.140.240:5000
+2026-05-06 13:03:03,547 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2026-05-06 13:03:03,998 - database.db - INFO - Table 'users' initialized successfully
+2026-05-06 13:03:03,998 - database.db - INFO - Table 'reports' initialized successfully
+2026-05-06 13:03:03,999 - database.db - INFO - Table 'penalties' initialized successfully
+2026-05-06 13:03:03,999 - bot - INFO - Database initialized
+2026-05-06 13:03:03,999 - bot - INFO - Scheduler service initialized
+2026-05-06 13:03:03,999 - bot - INFO - All handlers initialized
+2026-05-06 13:03:04,000 - bot - INFO - Bale client initialized
+2026-05-06 13:03:04,001 - bot - INFO - Message and callback handlers registered
+2026-05-06 13:03:04,001 - bot - INFO - Starting EliteUniteTime bot...
+2026-05-06 13:03:04,001 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-05-06 13:03:04,001 - services.scheduler - INFO - Missing report check job added: daily at 10:00 Asia/Tehran
+2026-05-06 13:03:04,002 - apscheduler.scheduler - INFO - Added job "Check missing daily reports" to job store "default"
+2026-05-06 13:03:04,002 - apscheduler.scheduler - INFO - Scheduler started
+2026-05-06 13:03:04,003 - services.scheduler - INFO - Scheduler started successfully
+2026-05-06 13:03:04,003 - bot - INFO - Scheduler started successfully
+2026-05-06 13:03:04,758 - httpx - INFO - HTTP Request: GET https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getMe "HTTP/1.1 200 OK"
+2026-05-06 13:03:04,927 - httpx - INFO - HTTP Request: GET https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/deleteWebhook "HTTP/1.1 200 OK"
+2026-05-06 13:03:07,603 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 13:03:07] "GET /reports HTTP/1.1" 200 -
+2026-05-06 13:03:10,022 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:03:10,697 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 13:03:10] "GET / HTTP/1.1" 200 -
+2026-05-06 13:03:12,488 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 13:03:12] "GET /users HTTP/1.1" 200 -
+2026-05-06 13:03:14,891 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 13:03:14] "GET /reports HTTP/1.1" 200 -
+2026-05-06 13:03:15,113 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:03:20,184 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:03:25,234 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:03:30,387 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:03:35,504 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:03:40,594 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:03:45,648 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:03:50,733 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:03:56,079 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:04:01,176 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:04:06,259 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:04:11,357 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:04:16,430 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:04:21,985 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:04:27,329 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:04:32,945 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:04:38,029 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:04:43,337 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:04:48,548 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:04:53,897 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:04:59,034 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:05:04,145 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:05:09,259 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:05:14,362 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:05:19,460 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:05:24,604 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:05:29,707 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:05:34,861 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:05:39,938 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:05:45,055 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:05:49,139 - bot - INFO - Bot started successfully
+2026-05-06 13:05:49,886 - __main__ - INFO - ==================================================
+2026-05-06 13:05:49,887 - __main__ - INFO -   EliteUniteTime — Bot + Dashboard
+2026-05-06 13:05:49,887 - __main__ - INFO - ==================================================
+2026-05-06 13:05:49,887 - __main__ - INFO - Dashboard thread started
+2026-05-06 13:05:50,293 - database.db - INFO - Table 'users' initialized successfully
+2026-05-06 13:05:50,293 - database.db - INFO - Table 'reports' initialized successfully
+2026-05-06 13:05:50,294 - database.db - INFO - Table 'penalties' initialized successfully
+2026-05-06 13:05:50,308 - __main__ - INFO - Dashboard starting on http://0.0.0.0:5000
+2026-05-06 13:05:50,353 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://10.180.140.240:5000
+2026-05-06 13:05:50,377 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2026-05-06 13:05:50,869 - database.db - INFO - Table 'users' initialized successfully
+2026-05-06 13:05:50,870 - database.db - INFO - Table 'reports' initialized successfully
+2026-05-06 13:05:50,870 - database.db - INFO - Table 'penalties' initialized successfully
+2026-05-06 13:05:50,871 - bot - INFO - Database initialized
+2026-05-06 13:05:50,872 - bot - INFO - Scheduler service initialized
+2026-05-06 13:05:50,872 - bot - INFO - All handlers initialized
+2026-05-06 13:05:50,873 - bot - INFO - Bale client initialized
+2026-05-06 13:05:50,874 - bot - INFO - Message and callback handlers registered
+2026-05-06 13:05:50,874 - bot - INFO - Starting EliteUniteTime bot...
+2026-05-06 13:05:50,875 - apscheduler.scheduler - INFO - Adding job tentatively -- it will be properly scheduled when the scheduler starts
+2026-05-06 13:05:50,875 - services.scheduler - INFO - Missing report check job added: daily at 10:00 Asia/Tehran
+2026-05-06 13:05:50,876 - apscheduler.scheduler - INFO - Added job "Check missing daily reports" to job store "default"
+2026-05-06 13:05:50,877 - apscheduler.scheduler - INFO - Scheduler started
+2026-05-06 13:05:50,879 - services.scheduler - INFO - Scheduler started successfully
+2026-05-06 13:05:50,880 - bot - INFO - Scheduler started successfully
+2026-05-06 13:05:51,574 - httpx - INFO - HTTP Request: GET https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getMe "HTTP/1.1 200 OK"
+2026-05-06 13:05:51,622 - httpx - INFO - HTTP Request: GET https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/deleteWebhook "HTTP/1.1 200 OK"
+2026-05-06 13:05:52,436 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 13:05:52] "GET /reports HTTP/1.1" 200 -
+2026-05-06 13:05:55,014 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 13:05:55] "GET / HTTP/1.1" 200 -
+2026-05-06 13:05:56,898 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:05:57,649 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 13:05:57] "GET /users HTTP/1.1" 200 -
+2026-05-06 13:06:02,009 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:06:03,813 - database.db - INFO - User 1 and all related data deleted
+2026-05-06 13:06:03,817 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 13:06:03] "POST /users/delete/1 HTTP/1.1" 200 -
+2026-05-06 13:06:05,464 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 13:06:05] "GET /users HTTP/1.1" 200 -
+2026-05-06 13:06:07,094 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:06:12,160 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:06:12,976 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:06:13,070 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 100}
+2026-05-06 13:06:13,082 - bot - INFO - Message from user 2062332444: /start
+2026-05-06 13:06:13,168 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 2062332444, 'text': 'خوش آمدید به سیستم مدیریت زمان EliteUniteTime! 🎉\n\nلطفاً اطلاعات خود را کامل کنید.\n\n🔤 لطفاً نام کامل خود را وارد کنید:'}
+2026-05-06 13:06:13,443 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 13:06:17,388 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:06:17,445 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 101}
+2026-05-06 13:06:17,453 - bot - INFO - Message from user 2062332444: امیرحسین قدیمی
+2026-05-06 13:06:17,487 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 2062332444, 'text': '📞 لطفاً شماره تماس خود را اشتراک گذاری کنید\nیا شماره را به صورت دستی وارد کنید (مثال: 09123456789):', 'reply_markup': {'keyboard': [[{'text': '📞 اشتراک گذاری شماره', 'request_contact': True}]], 'resize_keyboard': True, 'one_time_keyboard': True}}
+2026-05-06 13:06:17,683 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 13:06:19,558 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:06:19,634 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:06:19,645 - bot - INFO - Message from user 2062332444: 
+2026-05-06 13:06:19,667 - database.db - INFO - User added: امیرحسین قدیمی (ID: 4)
+2026-05-06 13:06:19,707 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 2062332444, 'text': '✅ ثبت نام شما با موفقیت انجام شد!\n\nمنوی اصلی:', 'reply_markup': {'keyboard': [], 'remove_keyboard': True}}
+2026-05-06 13:06:19,823 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 13:06:19,875 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 2062332444, 'text': '📋 منوی اصلی:', 'reply_markup': {'inline_keyboard': [[{'text': '📊 ثبت گزارش روزانه', 'callback_data': 'daily_report'}], [{'text': '📈 گزارش هفتگی', 'callback_data': 'weekly_report'}, {'text': '📅 گزارش ماهانه', 'callback_data': 'monthly_report'}], [{'text': '👤 پروفایل من', 'callback_data': 'profile'}], [{'text': '👥 آشنایی با دوستان', 'callback_data': 'friends'}]]}}
+2026-05-06 13:06:20,001 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 13:06:20,040 - handlers.start - INFO - User registered: امیرحسین قدیمی (ID: 2062332444)
+2026-05-06 13:06:24,780 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:06:24,817 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:06:29,882 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:06:29,896 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:06:30,810 - werkzeug - INFO - 127.0.0.1 - - [06/May/2026 13:06:30] "GET /penalties HTTP/1.1" 200 -
+2026-05-06 13:06:34,976 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:06:34,996 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:06:40,060 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:06:40,082 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:06:45,135 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:06:45,139 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:06:50,194 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:06:50,201 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:06:55,447 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:06:55,452 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:07:00,500 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:07:00,506 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:07:05,541 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:07:05,548 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:07:10,600 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:07:10,603 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:07:15,632 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:07:15,635 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:07:20,687 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:07:20,694 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:07:25,751 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:07:25,761 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:07:30,902 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:07:30,909 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:07:35,980 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:07:35,991 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:07:41,077 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:07:41,086 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:07:46,181 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:07:46,188 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:07:51,323 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:07:51,334 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:07:56,395 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:07:56,399 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:08:01,451 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:08:01,457 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:08:06,583 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:08:06,594 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:08:11,691 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:08:11,704 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:08:16,839 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:08:16,848 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:08:22,026 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:08:22,034 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:08:27,099 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:08:27,102 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:08:32,263 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:08:32,271 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:08:37,327 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:08:37,330 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 102}
+2026-05-06 13:08:41,222 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:08:41,243 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 103}
+2026-05-06 13:08:41,244 - bot - INFO - Callback query from user 2062332444: daily_report
+2026-05-06 13:08:41,252 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 2062332444, 'text': '📊 ثبت گزارش روزانه\n\n📅 امروز: چهارشنبه 1405/02/16\n\n⬛️ لطفاً ساعت کاری اصلی را وارد کنید:\n(مثال: 6 یا 6.5)'}
+2026-05-06 13:08:41,569 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 13:08:41,583 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '4279681562189488080', 'text': '', 'show_alert': False}
+2026-05-06 13:08:41,622 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 13:08:46,296 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:08:46,301 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 103}
+2026-05-06 13:08:46,487 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:08:46,501 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 104}
+2026-05-06 13:08:46,503 - bot - INFO - Message from user 2062332444: 4
+2026-05-06 13:08:46,507 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 2062332444, 'text': '🔵 لطفاً ساعت کاری فرعی را وارد کنید:\n(ورزش، پادکست، یادگیری، ...)\n\n(مثال: 2 یا 2.5)'}
+2026-05-06 13:08:46,596 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 13:08:49,720 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:08:49,735 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 105}
+2026-05-06 13:08:49,737 - bot - INFO - Message from user 2062332444: 1
+2026-05-06 13:08:49,763 - database.db - INFO - Report added: user_id=4, date=1405/02/16
+2026-05-06 13:08:49,764 - services.reports - INFO - Report submitted: user_id=4, date=1405/02/16
+2026-05-06 13:08:49,770 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 2062332444, 'text': '✅ گزارش شما ثبت شد!\n\n👤 امیرحسین قدیمی\n⬛️ اصلی: 4.0\n🔵 فرعی: 1.0\n➕ مجموع: 5.0\n\n📅 چهارشنبه 1405/02/16\n🕐 ساعت ثبت: 13:08', 'reply_markup': {'inline_keyboard': [[{'text': '🏠 بازگشت به منوی اصلی', 'callback_data': 'main_menu'}]]}}
+2026-05-06 13:08:49,865 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 13:08:49,882 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 4365329116, 'text': '👤 امیرحسین قدیمی\n📌 اصلی: 4.0\n📌 فرعی: 1.0\n➕ مجموع: 5.0\n📅 چهارشنبه 1405/02/16  🕐 13:08'}
+2026-05-06 13:08:49,974 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 13:08:49,983 - handlers.tasks - INFO - Group notification sent for user امیرحسین قدیمی
+2026-05-06 13:08:49,984 - handlers.tasks - INFO - Report submitted: user=امیرحسین قدیمی, main=4.0, side=1.0
+2026-05-06 13:08:54,838 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:08:54,842 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 105}
+2026-05-06 13:08:56,731 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:08:56,750 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 106}
+2026-05-06 13:08:56,752 - bot - INFO - Callback query from user 2062332444: main_menu
+2026-05-06 13:08:56,754 - balethon.network.connection - INFO - [sendMessage] JSON{'chat_id': 2062332444, 'text': '📋 منوی اصلی:', 'reply_markup': {'inline_keyboard': [[{'text': '📊 ثبت گزارش روزانه', 'callback_data': 'daily_report'}], [{'text': '📈 گزارش هفتگی', 'callback_data': 'weekly_report'}, {'text': '📅 گزارش ماهانه', 'callback_data': 'monthly_report'}], [{'text': '👤 پروفایل من', 'callback_data': 'profile'}], [{'text': '👥 آشنایی با دوستان', 'callback_data': 'friends'}]]}}
+2026-05-06 13:08:56,976 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/sendMessage "HTTP/1.1 200 OK"
+2026-05-06 13:08:56,990 - balethon.network.connection - INFO - [answerCallbackQuery] JSON{'callback_query_id': '6445671077192539929', 'text': '', 'show_alert': False}
+2026-05-06 13:08:57,053 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/answerCallbackQuery "HTTP/1.1 200 OK"
+2026-05-06 13:09:01,823 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:09:01,830 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 106}
+2026-05-06 13:09:06,876 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:09:06,886 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 106}
+2026-05-06 13:09:11,946 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:09:11,953 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 106}
+2026-05-06 13:09:17,022 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
+2026-05-06 13:09:17,030 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 106}
+2026-05-06 13:09:20,979 - bot - INFO - Bot started successfully

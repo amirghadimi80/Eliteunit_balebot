@@ -90,7 +90,7 @@ class AdminHandler:
         )
         keyboard.add_row(
             InlineKeyboardButton(
-                text="⚠️ مدیریت تنبیهات",
+                text="⚠️ مدیریت جریمه‌ها",
                 callback_data="admin_penalties",
             )
         )
@@ -240,14 +240,14 @@ class AdminHandler:
         if not summary:
             await client.send_message(
                 chat_id=message.chat.id,
-                text="✅ تمام تنبیهات پرداخت شده‌اند.",
+                text="✅ تمام جریمه‌ها پرداخت شده‌اند.",
             )
             return
         
         # Format penalty summary
-        penalty_msg = "⚠️ خلاصه تنبیهات:\n\n"
+        penalty_msg = "⚠️ خلاصه جریمه‌ها:\n\n"
         for user_name, count in sorted(summary.items(), key=lambda x: x[1], reverse=True):
-            penalty_msg += f"👤 {user_name}: {count} تنبیه\n"
+            penalty_msg += f"👤 {user_name}: {count} جریمه\n"
         
         await client.send_message(
             chat_id=message.chat.id,
@@ -275,11 +275,11 @@ class AdminHandler:
             created = penalty_service.check_and_create_missing_report_penalties()
             
             if created:
-                msg = f"✅ {len(created)} تنبیه جدید ایجاد شد:\n\n"
+                msg = f"✅ {len(created)} جریمه جدید ایجاد شد:\n\n"
                 for user_id, user_name, date_shamsi in created:
                     msg += f"❌ {user_name} - {date_shamsi}\n"
             else:
-                msg = "✅ هیچ تنبیه جدیدی ایجاد نشد."
+                msg = "✅ هیچ جریمه جدیدی ایجاد نشد."
             
             await client.send_message(
                 chat_id=message.chat.id,

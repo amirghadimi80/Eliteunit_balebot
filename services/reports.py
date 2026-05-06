@@ -320,7 +320,7 @@ class ReportService:
                 "ساعت اصلی": stats.main_hours,
                 "ساعت فرعی": stats.side_hours,
                 "کل ساعات": stats.total_hours,
-                "تنبیهات": penalty_count,
+                "جریمه‌ها": penalty_count,
                 "تاریخ": date_str,
             })
         
