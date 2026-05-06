@@ -208,8 +208,8 @@ class TaskHandler:
             side_hours: Side hours
             report_date: Report date
         """
-        # This would be implemented with the actual group chat ID
-        # For now, just log it
+        from config.settings import BALE_GROUP_ID
+        
         total = main_hours + side_hours
         message = MessageFormatter.format_daily_report_group(
             user.full_name,
@@ -218,7 +218,18 @@ class TaskHandler:
             total,
             report_date,
         )
-        logger.info(f"Group notification would be sent:\n{message}")
+        
+        if BALE_GROUP_ID:
+            try:
+                await client.send_message(
+                    chat_id=int(BALE_GROUP_ID),
+                    text=message,
+                )
+                logger.info(f"Group notification sent for user {user.full_name}")
+            except Exception as e:
+                logger.error(f"Failed to send group notification: {e}")
+        else:
+            logger.warning("BALE_GROUP_ID not set, skipping group notification")
     
     async def handle_weekly_report(self, client: Client, message: Message):
         """

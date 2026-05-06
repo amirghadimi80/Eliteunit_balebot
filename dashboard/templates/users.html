@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}کاربران{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h2>👥 کاربران</h2>
+  <p>{{ users|length }} کاربر ثبت‌نام کرده</p>
+</div>
+
+<div class="card">
+  {% if users %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>نام</th>
+          <th>شماره</th>
+          <th>گزارش‌ها</th>
+          <th>تنبیه پرداخت‌نشده</th>
+          <th>بیوگرافی</th>
+          <th>علاقه‌مندی‌ها</th>
+          <th>تاریخ عضویت</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td style="color:var(--muted);">{{ loop.index }}</td>
+          <td><strong>{{ u.name }}</strong></td>
+          <td style="direction:ltr; text-align:right;">{{ u.phone }}</td>
+          <td>
+            <span class="badge badge-blue">{{ u.total_reports }}</span>
+          </td>
+          <td>
+            {% if u.unpaid_penalties > 0 %}
+            <span class="badge badge-red">{{ u.unpaid_penalties }}</span>
+            {% else %}
+            <span class="badge badge-green">0</span>
+            {% endif %}
+          </td>
+          <td style="max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--muted);">
+            {{ u.bio }}
+          </td>
+          <td style="max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--muted);">
+            {{ u.interests }}
+          </td>
+          <td style="color:var(--muted); font-size:.8rem;">{{ u.joined }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty">
+    <div class="icon">👤</div>
+    <div>هیچ کاربری وجود ندارد</div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

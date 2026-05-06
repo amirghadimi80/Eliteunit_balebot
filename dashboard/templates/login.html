@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ورود | EliteUniteTime</title>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0f1117; --surface: #1a1d27; --border: #2e3250;
+      --accent: #6c63ff; --text: #e2e8f0; --muted: #8892b0;
+      --red: #ef4444;
+    }
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 40px 36px;
+      width: 100%;
+      max-width: 380px;
+      box-shadow: 0 8px 40px rgba(0,0,0,.5);
+    }
+    .login-box h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #a78bfa;
+      margin-bottom: 4px;
+    }
+    .login-box p {
+      color: var(--muted);
+      font-size: .85rem;
+      margin-bottom: 28px;
+    }
+    label {
+      display: block;
+      font-size: .82rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    input[type="password"] {
+      width: 100%;
+      background: #22263a;
+      border: 1px solid var(--border);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-family: inherit;
+      font-size: .95rem;
+      outline: none;
+      transition: border-color .2s;
+      margin-bottom: 20px;
+    }
+    input[type="password"]:focus { border-color: var(--accent); }
+    button {
+      width: 100%;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 13px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity .2s;
+    }
+    button:hover { opacity: .88; }
+    .error {
+      background: rgba(239,68,68,.12);
+      border: 1px solid rgba(239,68,68,.3);
+      color: var(--red);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: .85rem;
+      margin-bottom: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h1>⚡ EliteUniteTime</h1>
+    <p>برای ورود به پنل مدیریت، رمز عبور را وارد کنید</p>
+
+    {% if error %}
+    <div class="error">❌ {{ error }}</div>
+    {% endif %}
+
+    <form method="POST">
+      <label for="password">رمز عبور</label>
+      <input type="password" id="password" name="password" placeholder="••••••••" autofocus />
+      <button type="submit">ورود به داشبورد</button>
+    </form>
+  </div>
+</body>
+</html>

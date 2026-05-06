@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}تنبیهات{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h2>⚠️ تنبیهات</h2>
+  <p>{{ rows|length }} تنبیه ثبت شده</p>
+</div>
+
+{% if rows %}
+{% set unpaid = rows | selectattr('status', 'equalto', 'unpaid') | list %}
+{% set paid   = rows | selectattr('status', 'equalto', 'paid')   | list %}
+<div style="display:flex; gap:16px; margin-bottom:20px; flex-wrap:wrap;">
+  <div class="stat-card red" style="flex:1; min-width:140px; padding:14px 18px;">
+    <div class="label">پرداخت نشده</div>
+    <div class="value" style="font-size:1.5rem;">{{ unpaid|length }}</div>
+  </div>
+  <div class="stat-card green" style="flex:1; min-width:140px; padding:14px 18px;">
+    <div class="label">پرداخت شده</div>
+    <div class="value" style="font-size:1.5rem;">{{ paid|length }}</div>
+  </div>
+</div>
+{% endif %}
+
+<div class="card">
+  {% if rows %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>نام</th>
+          <th>تاریخ</th>
+          <th>دلیل</th>
+          <th>مقدار</th>
+          <th>وضعیت</th>
+          <th>عملیات</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in rows %}
+        <tr>
+          <td style="color:var(--muted);">{{ loop.index }}</td>
+          <td><strong>{{ p.user_name }}</strong></td>
+          <td>{{ p.date_shamsi }}</td>
+          <td style="color:var(--muted); font-size:.85rem;">{{ p.reason }}</td>
+          <td>{{ p.amount }}</td>
+          <td>
+            {% if p.status == 'unpaid' %}
+            <span class="badge badge-red">پرداخت نشده</span>
+            {% else %}
+            <span class="badge badge-green">پرداخت شده</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if p.status == 'unpaid' %}
+            <form method="POST" action="{{ url_for('pay_penalty', penalty_id=p.id) }}" style="display:inline;">
+              <button type="submit" class="btn btn-sm btn-primary">✓ پرداخت</button>
+            </form>
+            {% else %}
+            —
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty">
+    <div class="icon">🎉</div>
+    <div>هیچ تنبیهی وجود ندارد</div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

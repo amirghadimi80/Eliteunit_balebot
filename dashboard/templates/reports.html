@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}گزارش‌ها{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <h2>📊 گزارش‌ها</h2>
+  <p>{{ rows|length }} گزارش در بازه انتخابی</p>
+</div>
+
+<!-- Filters -->
+<form method="GET" class="filters">
+  <div class="filter-group">
+    <label>از تاریخ</label>
+    <input type="date" name="start" value="{{ start_date }}" />
+  </div>
+  <div class="filter-group">
+    <label>تا تاریخ</label>
+    <input type="date" name="end" value="{{ end_date }}" />
+  </div>
+  <div class="filter-group">
+    <label>کاربر</label>
+    <select name="user">
+      <option value="">همه کاربران</option>
+      {% for u in users %}
+      <option value="{{ u.id }}" {% if filter_user == u.id|string %}selected{% endif %}>
+        {{ u.full_name }}
+      </option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="filter-group" style="justify-content:flex-end;">
+    <button type="submit" class="btn btn-primary">اعمال فیلتر</button>
+  </div>
+</form>
+
+<!-- Summary bar -->
+{% if rows %}
+{% set total_main  = rows | sum(attribute='main') %}
+{% set total_side  = rows | sum(attribute='side') %}
+{% set total_all   = rows | sum(attribute='total') %}
+<div style="display:flex; gap:16px; margin-bottom:20px; flex-wrap:wrap;">
+  <div class="stat-card blue" style="flex:1; min-width:140px; padding:14px 18px;">
+    <div class="label">کل اصلی</div>
+    <div class="value" style="font-size:1.5rem;">{{ "%.1f"|format(total_main) }}</div>
+  </div>
+  <div class="stat-card purple" style="flex:1; min-width:140px; padding:14px 18px;">
+    <div class="label">کل فرعی</div>
+    <div class="value" style="font-size:1.5rem;">{{ "%.1f"|format(total_side) }}</div>
+  </div>
+  <div class="stat-card green" style="flex:1; min-width:140px; padding:14px 18px;">
+    <div class="label">مجموع کل</div>
+    <div class="value" style="font-size:1.5rem;">{{ "%.1f"|format(total_all) }}</div>
+  </div>
+</div>
+{% endif %}
+
+<div class="card">
+  {% if rows %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>نام</th>
+          <th>تاریخ شمسی</th>
+          <th>اصلی</th>
+          <th>فرعی</th>
+          <th>مجموع</th>
+          <th>ثبت شده در</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in rows %}
+        <tr>
+          <td style="color:var(--muted);">{{ loop.index }}</td>
+          <td><strong>{{ r.user_name }}</strong></td>
+          <td>{{ r.date_shamsi }}</td>
+          <td>{{ r.main }}</td>
+          <td>{{ r.side }}</td>
+          <td>
+            <span class="badge {% if r.total >= 8 %}badge-green{% elif r.total >= 4 %}badge-yellow{% else %}badge-red{% endif %}">
+              {{ r.total }}
+            </span>
+          </td>
+          <td style="color:var(--muted); font-size:.8rem;">{{ r.created_at }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty">
+    <div class="icon">📭</div>
+    <div>هیچ گزارشی در این بازه وجود ندارد</div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
