@@ -1,0 +1,20 @@
+# Environment & secrets
+.env
+
+# Database (نگه داشتن ساختار، نه داده)
+data/database.db
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Logs
+logs/*.log
+
+# OS
+.DS_Store
+Thumbs.db

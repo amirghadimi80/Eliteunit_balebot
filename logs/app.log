@@ -8090,3 +8090,11 @@ AttributeError: 'sqlite3.Row' object has no attribute 'get'
 2026-05-06 13:09:17,022 - httpx - INFO - HTTP Request: POST https://tapi.bale.ai/bot2029474166:MzkMDmPbKHhF6JT0Dn9AYuq84mnTq20L1wk/getUpdates "HTTP/1.1 200 OK"
 2026-05-06 13:09:17,030 - balethon.network.connection - INFO - [getUpdates] JSON{'offset': 106}
 2026-05-06 13:09:20,979 - bot - INFO - Bot started successfully
+2026-05-31 12:28:57,865 - __main__ - INFO - ==================================================
+2026-05-31 12:28:57,867 - __main__ - INFO -   EliteUniteTime — Bot + Dashboard
+2026-05-31 12:28:57,868 - __main__ - INFO - ==================================================
+2026-05-31 12:28:57,871 - __main__ - INFO - Dashboard thread started
+2026-05-31 12:29:00,622 - database.db - INFO - Table 'users' initialized successfully
+2026-05-31 12:29:00,623 - database.db - INFO - Table 'reports' initialized successfully
+2026-05-31 12:29:00,623 - database.db - INFO - Table 'penalties' initialized successfully
+2026-05-31 12:29:00,636 - __main__ - INFO - Dashboard starting on http://0.0.0.0:5000

@@ -1,0 +1,28 @@
+{
+  "name": "EliteUniteTime",
+  "image": "mcr.microsoft.com/devcontainers/python:3.11",
+
+  // پورت‌هایی که باید forward بشن
+  "forwardPorts": [5000],
+  "portsAttributes": {
+    "5000": {
+      "label": "Dashboard",
+      "onAutoForward": "openBrowser"
+    }
+  },
+
+  // نصب خودکار وابستگی‌ها بعد از ساخت container
+  "postCreateCommand": "pip install -r requirements.txt && bash .devcontainer/setup-env.sh",
+
+  // اجرای خودکار بات + داشبورد بعد از باز شدن Codespace
+  "postStartCommand": "bash .devcontainer/start.sh",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.pylint"
+      ]
+    }
+  }
+}
