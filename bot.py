@@ -69,6 +69,10 @@ class EliteUniteTimeBot:
             message: Message object
         """
         try:
+            # Skip group/channel messages — only handle private chats
+            if message.chat and hasattr(message.chat, 'type') and message.chat.type in ('group', 'supergroup', 'channel'):
+                return
+
             # Get user ID safely
             if message.author:
                 user_id = message.author.id
@@ -76,6 +80,11 @@ class EliteUniteTimeBot:
                 user_id = message.chat.id
             else:
                 logger.warning("Message with no author or chat, skipping")
+                return
+
+            # Extra safety: skip if chat id looks like a group (negative id)
+            chat_id = message.chat.id if message.chat else user_id
+            if chat_id < 0:
                 return
 
             text = message.text or ""
@@ -160,6 +169,14 @@ class EliteUniteTimeBot:
             callback_query: CallbackQuery object
         """
         try:
+            # Skip callbacks from groups
+            if callback_query.message and callback_query.message.chat:
+                chat = callback_query.message.chat
+                if hasattr(chat, 'type') and chat.type in ('group', 'supergroup', 'channel'):
+                    return
+                if chat.id < 0:
+                    return
+
             # Get user_id safely
             if hasattr(callback_query, 'author') and callback_query.author:
                 user_id = callback_query.author.id

@@ -47,16 +47,7 @@ class TaskHandler:
             )
             return
         
-        # Check if already reported today
         today = get_today_gregorian()
-        today_gregorian = today.strftime("%Y-%m-%d")
-        
-        if self.db.report_exists(user.id, today_gregorian):
-            await client.send_message(
-                chat_id=user_id,
-                text="✅ شما امروز گزارش خود را ثبت کرده‌اید.",
-            )
-            return
         
         # Initialize user state
         self.user_states[user_id] = {
