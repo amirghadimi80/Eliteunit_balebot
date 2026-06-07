@@ -353,6 +353,10 @@
      class="nav-item {% if request.endpoint == 'penalties' %}active{% endif %}">
     <span class="icon">⚠️</span> جریمه‌ها
   </a>
+  <a href="{{ url_for('analytics') }}"
+     class="nav-item {% if request.endpoint == 'analytics' %}active{% endif %}">
+    <span class="icon">📈</span> نمودارها
+  </a>
 
   <div class="sidebar-footer">
     <a href="{{ url_for('logout') }}" class="logout-btn">🚪 خروج</a>
@@ -364,6 +368,7 @@
   {% block content %}{% endblock %}
 </main>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 {% block extra_scripts %}{% endblock %}
 </body>
 </html>

@@ -10,7 +10,7 @@ from pathlib import Path
 # Add project root to path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from flask import Flask, render_template, jsonify, request, redirect, url_for, session
+from flask import Flask, render_template, jsonify, request, redirect, url_for, session, send_file
 from functools import wraps
 from datetime import datetime, date, timedelta
 
@@ -232,6 +232,32 @@ def delete_report(report_id):
     return jsonify({"success": False}), 400
 
 
+@app.route("/reports/add", methods=["POST"])
+@login_required
+def add_report():
+    user_id = int(request.form.get("user_id"))
+    date_shamsi = request.form.get("date_shamsi")
+    main_hours = float(request.form.get("main_hours"))
+    side_hours = float(request.form.get("side_hours"))
+    
+    # Convert Jalali to Gregorian
+    from utils.date_utils import jalali_to_gregorian
+    parts = date_shamsi.split('/')
+    g_date = jalali_to_gregorian(int(parts[0]), int(parts[1]), int(parts[2]))
+    
+    success, message = report_service.submit_daily_report(
+        user_id=user_id,
+        main_hours=main_hours,
+        side_hours=side_hours,
+        report_date=g_date
+    )
+    
+    if success:
+        return redirect(url_for("reports"))
+    else:
+        return f"Error: {message}", 400
+
+
 # ─────────────────────────────────────────────
 # Penalties page
 # ─────────────────────────────────────────────
@@ -239,18 +265,19 @@ def delete_report(report_id):
 @app.route("/penalties")
 @login_required
 def penalties():
-    all_users = db.get_all_users()
+    all_penalties = db.get_all_penalties()
     rows = []
-    for u in all_users:
-        pens = db.get_penalties_by_user(u.id)
-        for p in pens:
+    for p in all_penalties:
+        user = db.get_user_by_id(p.user_id)
+        if user:
             rows.append({
-                "user_name": u.full_name,
-                "date_shamsi": p.date_shamsi,
-                "reason": p.reason,
-                "amount": p.amount,
-                "status": p.status,
                 "id": p.id,
+                "user_name": user.full_name,
+                "date_shamsi": p.date_shamsi,
+                "amount": p.amount,
+                "reason": p.reason,
+                "status": p.status,
+                "created_at": p.created_at,
             })
     rows.sort(key=lambda x: x["date_shamsi"], reverse=True)
     return render_template("penalties.html", rows=rows)
@@ -302,7 +329,175 @@ def api_today_reports():
     return jsonify(rows)
 
 
+# ─────────────────────────────────────────────
+# Analytics & Charts
+# ─────────────────────────────────────────────
+
+@app.route("/analytics")
+@login_required
+def analytics():
+    all_users = db.get_all_users()
+    return render_template("analytics.html", users=all_users)
+
+
+@app.route("/api/user_chart_data/<int:user_id>")
+@login_required
+def api_user_chart_data(user_id):
+    from datetime import timedelta
+    
+    today = get_today_gregorian()
+    view_type = request.args.get("view_type", "daily")  # daily or weekly
+    
+    # Get ALL data (no time limit)
+    all_reports = db.get_reports_by_user_and_date(
+        user_id,
+        "2000-01-01",  # Start from very old date to get all data
+        today.strftime("%Y-%m-%d")
+    )
+    
+    # Group data based on view type
+    if view_type == "weekly":
+        # Group by week
+        weeks_data = {}
+        for r in all_reports:
+            report_date = datetime.strptime(r.date_gregorian, "%Y-%m-%d").date()
+            # Calculate week number (weeks since start of data)
+            # Find the earliest date
+            if not weeks_data:
+                earliest_date = report_date
+            
+            days_since_start = (report_date - earliest_date).days if 'earliest_date' in locals() else 0
+            week_num = days_since_start // 7
+            
+            if week_num not in weeks_data:
+                weeks_data[week_num] = {"main": 0, "side": 0, "total": 0, "date": r.date_shamsi}
+            
+            weeks_data[week_num]["main"] += r.main_hours
+            weeks_data[week_num]["side"] += r.side_hours
+            weeks_data[week_num]["total"] += r.total_hours
+        
+        # Convert to list
+        reports_data = []
+        for week_num in sorted(weeks_data.keys()):
+            data = weeks_data[week_num]
+            reports_data.append({
+                "date_shamsi": f"هفته {week_num + 1}",
+                "main": round(data["main"], 1),
+                "side": round(data["side"], 1),
+                "total": round(data["total"], 1),
+            })
+    else:
+        # Daily view - individual reports
+        reports_data = []
+        for r in all_reports:
+            reports_data.append({
+                "date_shamsi": r.date_shamsi,
+                "main": round(r.main_hours, 1),
+                "side": round(r.side_hours, 1),
+                "total": round(r.total_hours, 1),
+            })
+        
+        # Sort by date
+        reports_data.sort(key=lambda x: x["date_shamsi"])
+    
+    # Calculate totals
+    total_main = sum(r["main"] for r in reports_data)
+    total_side = sum(r["side"] for r in reports_data)
+    
+    # Get user info
+    user = db.get_user_by_id(user_id)
+    user_name = user.full_name if user else ""
+    
+    # Calculate stats
+    if view_type == "weekly":
+        weeks_reported = len(reports_data)
+        avg_weekly = (total_main + total_side) / weeks_reported if weeks_reported > 0 else 0
+    else:
+        days_reported = len(reports_data)
+        avg_daily = (total_main + total_side) / days_reported if days_reported > 0 else 0
+        avg_weekly = avg_daily * 7
+        weeks_reported = days_reported // 7
+    
+    return jsonify({
+        "user_name": user_name,
+        "reports": reports_data,
+        "stats": {
+            "total_main": round(total_main, 1),
+            "total_side": round(total_side, 1),
+            "avg_weekly": round(avg_weekly, 2),
+            "weeks_reported": weeks_reported,
+        }
+    })
+
+
+@app.route("/api/all_users_chart")
+@login_required
+def api_all_users_chart():
+    all_users = db.get_all_users()
+    today = get_today_gregorian()
+    
+    data = []
+    for u in all_users:
+        # Get ALL data for each user
+        all_reports = db.get_reports_by_user_and_date(
+            u.id,
+            "2000-01-01",
+            today.strftime("%Y-%m-%d")
+        )
+        
+        total_main = sum(r.main_hours for r in all_reports)
+        total_side = sum(r.side_hours for r in all_reports)
+        
+        data.append({
+            "name": u.full_name,
+            "main": round(total_main, 1),
+            "side": round(total_side, 1),
+            "total": round(total_main + total_side, 1),
+        })
+    
+    return jsonify(data)
+
+
+# ─────────────────────────────────────────────
+# Excel Export
+# ─────────────────────────────────────────────
+
+@app.route("/export/excel")
+@login_required
+def export_excel():
+    import pandas as pd
+    from io import BytesIO
+    
+    all_users = db.get_all_users()
+    today = get_today_gregorian()
+    
+    rows = []
+    for u in all_users:
+        reps = db.get_reports_by_user_and_date(
+            u.id, "2000-01-01", today.strftime("%Y-%m-%d")
+        )
+        for r in reps:
+            rows.append({
+                "Name": u.full_name,
+                "Date (Shamsi)": r.date_shamsi,
+                "Date (Gregorian)": r.date_gregorian,
+                "Main Hours": r.main_hours,
+                "Side Hours": r.side_hours,
+                "Total Hours": r.total_hours,
+            })
+    
+    df = pd.DataFrame(rows)
+    output = BytesIO()
+    df.to_excel(output, index=False)
+    output.seek(0)
+    
+    return send_file(
+        output,
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        as_attachment=True,
+        download_name=f"elite_unite_time_export_{today.strftime('%Y%m%d')}.xlsx"
+    )
+
+
 if __name__ == "__main__":
-    port = int(os.getenv("DASHBOARD_PORT", 5000))
-    debug = os.getenv("DASHBOARD_DEBUG", "false").lower() == "true"
-    app.run(host="0.0.0.0", port=port, debug=debug)
+    app.run(host="0.0.0.0", port=5000, debug=True)

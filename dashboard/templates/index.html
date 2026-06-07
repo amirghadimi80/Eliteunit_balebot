@@ -7,6 +7,16 @@
   <p>امروز: {{ today_jalali }}</p>
 </div>
 
+<!-- Quick Export Buttons -->
+<div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+  <a href="/export/excel?type=weekly" class="btn btn-primary">
+    📥 دانلود اکسل هفتگی
+  </a>
+  <a href="/export/excel?type=monthly" class="btn btn-success">
+    📥 دانلود اکسل ماهانه
+  </a>
+</div>
+
 <!-- Stats -->
 <div class="stats-grid" id="stats-grid">
   <div class="stat-card blue">

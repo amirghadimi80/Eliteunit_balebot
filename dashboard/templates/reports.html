@@ -7,6 +7,47 @@
   <p>{{ rows|length }} گزارش در بازه انتخابی</p>
 </div>
 
+<!-- Excel Export Buttons -->
+<div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+  <a href="/export/excel?type=weekly" class="btn btn-primary">
+    📥 دانلود اکسل هفتگی
+  </a>
+  <a href="/export/excel?type=monthly" class="btn btn-success">
+    📥 دانلود اکسل ماهانه
+  </a>
+</div>
+
+<!-- Add Report Form (Admin) -->
+<div class="card" style="margin-bottom:20px;">
+  <div class="card-title">➕ ثبت گزارش دستی</div>
+  <form method="POST" action="/reports/add" class="filters" style="margin:0;">
+    <div class="filter-group">
+      <label>کاربر</label>
+      <select name="user_id" required>
+        <option value="">انتخاب کنید</option>
+        {% for u in users %}
+        <option value="{{ u.id }}">{{ u.full_name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>تاریخ شمسی</label>
+      <input type="text" name="date_shamsi" placeholder="1405/02/15" required />
+    </div>
+    <div class="filter-group">
+      <label>ساعت اصلی</label>
+      <input type="number" name="main_hours" step="0.5" min="0" max="12" required />
+    </div>
+    <div class="filter-group">
+      <label>ساعت فرعی</label>
+      <input type="number" name="side_hours" step="0.5" min="0" max="8" required />
+    </div>
+    <div class="filter-group" style="justify-content:flex-end;">
+      <button type="submit" class="btn btn-success">💾 ذخیره گزارش</button>
+    </div>
+  </form>
+</div>
+
 <!-- Filters -->
 <form method="GET" class="filters">
   <div class="filter-group">
