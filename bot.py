@@ -14,7 +14,7 @@ from handlers.start import StartHandler
 from handlers.tasks import TaskHandler
 from handlers.profile import ProfileHandler
 from handlers.admin import AdminHandler
-from config.settings import BALE_API_TOKEN
+from config.settings import BALE_API_TOKEN, BALE_GROUP_IDS
 
 # Setup logging
 logging.basicConfig(
@@ -43,6 +43,10 @@ class EliteUniteTimeBot:
         self.profile_handler = ProfileHandler(self.db)
         self.admin_handler = AdminHandler(self.db)
         logger.info("All handlers initialized")
+        if BALE_GROUP_IDS:
+            logger.info(f"Group notifications enabled for {len(BALE_GROUP_IDS)} group(s): {BALE_GROUP_IDS}")
+        else:
+            logger.warning("BALE_GROUP_ID not set — group notifications disabled")
         
         # Initialize bot client
         self.client = Client(token=BALE_API_TOKEN)

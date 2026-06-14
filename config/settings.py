@@ -17,8 +17,18 @@ BASE_DIR = Path(__file__).parent.parent
 # BALE BOT CONFIGURATION
 # ======================
 BALE_API_TOKEN = os.getenv("BALE_API_TOKEN", "")
-BALE_GROUP_ID = os.getenv("BALE_GROUP_ID", "")
-BALE_ADMIN_IDS = list(map(int, os.getenv("BALE_ADMIN_IDS", "0").split(",")))
+
+
+def _parse_int_list(raw: str) -> list[int]:
+    """Parse comma-separated integer IDs from env (empty/placeholder → [])."""
+    if not raw or raw.strip() in ("", "your_group_id_here"):
+        return []
+    return [int(item.strip()) for item in raw.split(",") if item.strip()]
+
+
+# One or more group chat IDs (comma-separated in .env)
+BALE_GROUP_IDS = _parse_int_list(os.getenv("BALE_GROUP_ID", ""))
+BALE_ADMIN_IDS = _parse_int_list(os.getenv("BALE_ADMIN_IDS", "0")) or [0]
 
 # ======================
 # TIMEZONE CONFIGURATION

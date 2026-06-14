@@ -211,7 +211,7 @@ class TaskHandler:
             side_hours: Side hours
             report_date: Report date
         """
-        from config.settings import BALE_GROUP_ID
+        from config.settings import BALE_GROUP_IDS
         from utils.date_utils import get_current_time_iran
         
         total = main_hours + side_hours
@@ -225,17 +225,23 @@ class TaskHandler:
             submit_time=now_time,
         )
         
-        if BALE_GROUP_ID:
+        if not BALE_GROUP_IDS:
+            logger.warning("BALE_GROUP_ID not set, skipping group notification")
+            return
+
+        for group_id in BALE_GROUP_IDS:
             try:
                 await client.send_message(
-                    chat_id=int(BALE_GROUP_ID),
+                    chat_id=group_id,
                     text=message,
                 )
-                logger.info(f"Group notification sent for user {user.full_name}")
+                logger.info(
+                    f"Group notification sent to {group_id} for user {user.full_name}"
+                )
             except Exception as e:
-                logger.error(f"Failed to send group notification: {e}")
-        else:
-            logger.warning("BALE_GROUP_ID not set, skipping group notification")
+                logger.error(
+                    f"Failed to send group notification to {group_id}: {e}"
+                )
     
     async def handle_weekly_report(self, client: Client, message: Message):
         """
