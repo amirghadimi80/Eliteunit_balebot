@@ -26,6 +26,9 @@ def _parse_int_list(raw: str) -> list[int]:
     return [int(item.strip()) for item in raw.split(",") if item.strip()]
 
 
+# One or more group chat IDs (comma-separated in .env)
+BALE_GROUP_IDS = _parse_int_list(os.getenv("BALE_GROUP_ID", ""))
+
 # Imported/placeholder users use fake Bale IDs below this; real Bale IDs are larger
 PLACEHOLDER_BALE_ID_MAX = int(os.getenv("PLACEHOLDER_BALE_ID_MAX", "999999999"))
 BALE_ADMIN_IDS = _parse_int_list(os.getenv("BALE_ADMIN_IDS", "0")) or [0]
