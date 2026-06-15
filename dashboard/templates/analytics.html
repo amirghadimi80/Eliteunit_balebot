@@ -1,36 +1,57 @@
 {% extends "base.html" %}
 {% block title %}نمودارها{% endblock %}
 
+{% block extra_head %}
+<style>
+  .chart-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  .chart-box {
+    height: 320px;
+    position: relative;
+  }
+  .chart-box canvas { max-height: 100%; }
+  @media (max-width: 900px) {
+    .chart-grid { grid-template-columns: 1fr; }
+  }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="page-header">
-  <h2>📈 نمودارهای تحلیلی</h2>
-  <p>مشاهده گزارش‌ها به صورت نمودار</p>
+  <div>
+    <h2>نمودارها</h2>
+    <p>تحلیل ساعات کاری به تفکیک کاربر</p>
+  </div>
 </div>
 
-<!-- Controls -->
-<div style="display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap; align-items:center;">
-  <div class="filter-group">
-    <label>انتخاب کاربر</label>
-    <select id="userSelect">
-      <option value="all">همه کاربران</option>
-      {% for u in users %}
-      <option value="{{ u.id }}">{{ u.full_name }}</option>
-      {% endfor %}
-    </select>
+<div class="card" style="margin-bottom:20px;">
+  <div class="card-body">
+    <div class="filters">
+      <div class="filter-group">
+        <label>کاربر</label>
+        <select id="userSelect">
+          <option value="all">همه کاربران</option>
+          {% for u in users %}
+          <option value="{{ u.id }}">{{ u.full_name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>بازه</label>
+        <select id="viewType">
+          <option value="daily">روزانه</option>
+          <option value="weekly">هفتگی</option>
+        </select>
+      </div>
+      <button type="button" class="btn btn-primary" onclick="loadCharts()">نمایش</button>
+    </div>
   </div>
-  <div class="filter-group">
-    <label>نمایش</label>
-    <select id="viewType">
-      <option value="daily">روزانه</option>
-      <option value="weekly">هفتگی</option>
-    </select>
-  </div>
-  <button class="btn btn-primary" onclick="loadCharts()" style="margin-top:20px;">
-    🔄 بروزرسانی
-  </button>
 </div>
 
-<!-- Stats Cards -->
 <div class="stats-grid" id="statsGrid" style="display:none;">
   <div class="stat-card blue">
     <div class="label">ساعت اصلی</div>
@@ -50,38 +71,38 @@
   </div>
 </div>
 
-<!-- Charts Grid -->
-<div style="display:grid; grid-template-columns: 2fr 1fr; gap:20px; margin-bottom:20px;">
-  <!-- Main Bar Chart - Weekly -->
+<div class="chart-grid" id="chartsRow">
   <div class="card">
-    <div class="card-title">📊 ساعت‌های کاری هفتگی</div>
-    <div style="height:300px;">
+    <div class="card-header">
+      <div class="card-title">ساعات کاری</div>
+    </div>
+    <div class="card-body chart-box">
       <canvas id="barChart"></canvas>
     </div>
   </div>
-  
-  <!-- Pie Chart -->
   <div class="card">
-    <div class="card-title">🥧 نسبت اصلی به فرعی</div>
-    <div style="height:300px; display:flex; justify-content:center; align-items:center;">
+    <div class="card-header">
+      <div class="card-title">نسبت اصلی / فرعی</div>
+    </div>
+    <div class="card-body chart-box">
       <canvas id="pieChart"></canvas>
     </div>
   </div>
 </div>
 
-<!-- All Users Comparison -->
-<div class="card" id="comparisonCard" style="display:none;">
-  <div class="card-title">👥 مقایسه کاربران</div>
-  <div style="height:300px;">
+<div class="card" id="comparisonCard" style="display:none; margin-bottom:20px;">
+  <div class="card-header">
+    <div class="card-title">مقایسه کاربران</div>
+  </div>
+  <div class="card-body chart-box">
     <canvas id="comparisonChart"></canvas>
   </div>
 </div>
 
-<!-- Empty State -->
 <div class="card" id="emptyState">
   <div class="empty">
     <div class="icon">📊</div>
-    <div>کاربر و دوره را انتخاب کنید</div>
+    <div>کاربر را انتخاب کنید و «نمایش» را بزنید</div>
   </div>
 </div>
 {% endblock %}
@@ -92,19 +113,26 @@ let barChart = null;
 let pieChart = null;
 let comparisonChart = null;
 
+const chartColors = {
+  main: '#6366f1',
+  side: '#a78bfa',
+  grid: '#2a3044',
+  text: '#94a3b8',
+  legend: '#e2e8f0',
+};
+
 async function loadCharts() {
   const userId = document.getElementById('userSelect').value;
   const viewType = document.getElementById('viewType').value;
-  
+
   document.getElementById('emptyState').style.display = 'none';
-  
+  document.getElementById('chartsRow').style.display = userId === 'all' ? 'none' : 'grid';
+
   if (userId === 'all') {
-    // Load comparison chart for all users
-    await loadAllUsersChart(viewType);
+    await loadAllUsersChart();
     document.getElementById('statsGrid').style.display = 'none';
     document.getElementById('comparisonCard').style.display = 'block';
   } else {
-    // Load individual user charts
     await loadUserChart(userId, viewType);
     document.getElementById('statsGrid').style.display = 'grid';
     document.getElementById('comparisonCard').style.display = 'none';
@@ -115,80 +143,44 @@ async function loadUserChart(userId, viewType = 'daily') {
   try {
     const res = await fetch(`/api/user_chart_data/${userId}?view_type=${viewType}`);
     const data = await res.json();
-    
-    // Update stats
+
     document.getElementById('statMain').textContent = data.stats.total_main.toFixed(1);
     document.getElementById('statSide').textContent = data.stats.total_side.toFixed(1);
     document.getElementById('statAvg').textContent = data.stats.avg_weekly.toFixed(1);
     document.getElementById('statDays').textContent = data.stats.weeks_reported;
-    
-    // Prepare chart data
+
     const labels = data.reports.map(r => r.date_shamsi);
     const mainData = data.reports.map(r => r.main);
     const sideData = data.reports.map(r => r.side);
-    
-    // Bar Chart - Stacked
+
     const barCtx = document.getElementById('barChart').getContext('2d');
     if (barChart) barChart.destroy();
-    
+
     barChart = new Chart(barCtx, {
       type: 'bar',
       data: {
-        labels: labels,
+        labels,
         datasets: [
-          {
-            label: 'ساعت اصلی',
-            data: mainData,
-            backgroundColor: '#166534',
-            borderRadius: 4,
-          },
-          {
-            label: 'ساعت فرعی',
-            data: sideData,
-            backgroundColor: '#4ade80',
-            borderRadius: 4,
-          }
-        ]
+          { label: 'اصلی', data: mainData, backgroundColor: chartColors.main, borderRadius: 6 },
+          { label: 'فرعی', data: sideData, backgroundColor: chartColors.side, borderRadius: 6 },
+        ],
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-            stacked: true,
-            ticks: { color: '#8892b0', font: { family: 'Vazirmatn' } }
-          },
-          y: {
-            stacked: true,
-            ticks: { color: '#8892b0', font: { family: 'Vazirmatn' } },
-            grid: { color: '#2e3250' }
-          }
-        },
-        plugins: {
-          legend: {
-            labels: { color: '#e2e8f0', font: { family: 'Vazirmatn' } }
-          }
-        }
-      }
+      options: chartOptions(true),
     });
-    
-    // Pie Chart
+
     const pieCtx = document.getElementById('pieChart').getContext('2d');
     if (pieChart) pieChart.destroy();
-    
-    const totalMain = data.stats.total_main;
-    const totalSide = data.stats.total_side;
-    
+
     pieChart = new Chart(pieCtx, {
-      type: 'pie',
+      type: 'doughnut',
       data: {
         labels: ['اصلی', 'فرعی'],
         datasets: [{
-          data: [totalMain, totalSide],
-          backgroundColor: ['#166534', '#4ade80'],
-          borderColor: '#1a1d27',
-          borderWidth: 2
-        }]
+          data: [data.stats.total_main, data.stats.total_side],
+          backgroundColor: [chartColors.main, chartColors.side],
+          borderColor: '#181c26',
+          borderWidth: 3,
+        }],
       },
       options: {
         responsive: true,
@@ -196,75 +188,64 @@ async function loadUserChart(userId, viewType = 'daily') {
         plugins: {
           legend: {
             position: 'bottom',
-            labels: { color: '#e2e8f0', font: { family: 'Vazirmatn' } }
-          }
-        }
-      }
+            labels: { color: chartColors.legend, font: { family: 'Vazirmatn' }, padding: 16 },
+          },
+        },
+      },
     });
-    
   } catch(e) {
-    console.error('Error loading chart:', e);
+    console.error(e);
   }
 }
 
 async function loadAllUsersChart() {
   try {
-    const res = await fetch(`/api/all_users_chart`);
+    const res = await fetch('/api/all_users_chart');
     const data = await res.json();
-    
-    // Comparison Bar Chart
+
     const compCtx = document.getElementById('comparisonChart').getContext('2d');
     if (comparisonChart) comparisonChart.destroy();
-    
-    const names = data.map(d => d.name);
-    const mainData = data.map(d => d.main);
-    const sideData = data.map(d => d.side);
-    
+
     comparisonChart = new Chart(compCtx, {
       type: 'bar',
       data: {
-        labels: names,
+        labels: data.map(d => d.name),
         datasets: [
-          {
-            label: 'ساعت اصلی',
-            data: mainData,
-            backgroundColor: '#166534',
-            borderRadius: 4,
-          },
-          {
-            label: 'ساعت فرعی',
-            data: sideData,
-            backgroundColor: '#4ade80',
-            borderRadius: 4,
-          }
-        ]
+          { label: 'اصلی', data: data.map(d => d.main), backgroundColor: chartColors.main, borderRadius: 6 },
+          { label: 'فرعی', data: data.map(d => d.side), backgroundColor: chartColors.side, borderRadius: 6 },
+        ],
       },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          x: {
-            ticks: { color: '#8892b0', font: { family: 'Vazirmatn', size: 10 } }
-          },
-          y: {
-            ticks: { color: '#8892b0', font: { family: 'Vazirmatn' } },
-            grid: { color: '#2e3250' }
-          }
-        },
-        plugins: {
-          legend: {
-            labels: { color: '#e2e8f0', font: { family: 'Vazirmatn' } }
-          }
-        }
-      }
+      options: chartOptions(false),
     });
-    
   } catch(e) {
-    console.error('Error loading comparison chart:', e);
+    console.error(e);
   }
 }
 
-// Load on page load with first user
+function chartOptions(stacked) {
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      x: {
+        stacked,
+        ticks: { color: chartColors.text, font: { family: 'Vazirmatn', size: 10 } },
+        grid: { display: false },
+      },
+      y: {
+        stacked,
+        ticks: { color: chartColors.text, font: { family: 'Vazirmatn' } },
+        grid: { color: chartColors.grid },
+      },
+    },
+    plugins: {
+      legend: {
+        labels: { color: chartColors.legend, font: { family: 'Vazirmatn' } },
+      },
+    },
+  };
+}
+
 window.addEventListener('load', () => {
   const userSelect = document.getElementById('userSelect');
   if (userSelect.options.length > 1) {

@@ -4,52 +4,74 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ورود | EliteUniteTime</title>
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg: #0f1117; --surface: #1a1d27; --border: #2e3250;
-      --accent: #6c63ff; --text: #e2e8f0; --muted: #8892b0;
-      --red: #ef4444;
+      --bg: #0b0d12;
+      --surface: #181c26;
+      --border: #2a3044;
+      --accent: #6366f1;
+      --accent-hover: #818cf8;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --red: #f43f5e;
     }
     body {
       font-family: 'Vazirmatn', sans-serif;
       background: var(--bg);
+      background-image:
+        radial-gradient(ellipse 70% 50% at 50% -20%, rgba(99,102,241,.15), transparent);
       color: var(--text);
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 24px;
+    }
+    .login-wrap { width: 100%; max-width: 400px; }
+    .login-brand {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .login-brand .icon {
+      width: 52px;
+      height: 52px;
+      margin: 0 auto 14px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--accent), #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      box-shadow: 0 8px 24px rgba(99,102,241,.35);
+    }
+    .login-brand h1 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .login-brand p {
+      color: var(--muted);
+      font-size: .88rem;
     }
     .login-box {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 16px;
-      padding: 40px 36px;
-      width: 100%;
-      max-width: 380px;
-      box-shadow: 0 8px 40px rgba(0,0,0,.5);
-    }
-    .login-box h1 {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #a78bfa;
-      margin-bottom: 4px;
-    }
-    .login-box p {
-      color: var(--muted);
-      font-size: .85rem;
-      margin-bottom: 28px;
+      padding: 28px 26px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.35);
     }
     label {
       display: block;
-      font-size: .82rem;
+      font-size: .8rem;
+      font-weight: 500;
       color: var(--muted);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
     }
     input[type="password"] {
       width: 100%;
-      background: #22263a;
+      background: #0f1219;
       border: 1px solid var(--border);
       color: var(--text);
       border-radius: 10px;
@@ -57,10 +79,13 @@
       font-family: inherit;
       font-size: .95rem;
       outline: none;
-      transition: border-color .2s;
+      transition: border-color .15s, box-shadow .15s;
       margin-bottom: 20px;
     }
-    input[type="password"]:focus { border-color: var(--accent); }
+    input[type="password"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(99,102,241,.15);
+    }
     button {
       width: 100%;
       background: var(--accent);
@@ -69,37 +94,42 @@
       border-radius: 10px;
       padding: 13px;
       font-family: inherit;
-      font-size: 1rem;
+      font-size: .95rem;
       font-weight: 600;
       cursor: pointer;
-      transition: opacity .2s;
+      transition: background .15s;
     }
-    button:hover { opacity: .88; }
+    button:hover { background: var(--accent-hover); }
     .error {
-      background: rgba(239,68,68,.12);
-      border: 1px solid rgba(239,68,68,.3);
+      background: rgba(244,63,94,.1);
+      border: 1px solid rgba(244,63,94,.25);
       color: var(--red);
-      border-radius: 8px;
-      padding: 10px 14px;
+      border-radius: 10px;
+      padding: 11px 14px;
       font-size: .85rem;
       margin-bottom: 16px;
     }
   </style>
 </head>
 <body>
-  <div class="login-box">
-    <h1>⚡ EliteUniteTime</h1>
-    <p>برای ورود به پنل مدیریت، رمز عبور را وارد کنید</p>
+  <div class="login-wrap">
+    <div class="login-brand">
+      <div class="icon">⚡</div>
+      <h1>EliteUniteTime</h1>
+      <p>ورود به پنل مدیریت</p>
+    </div>
 
-    {% if error %}
-    <div class="error">❌ {{ error }}</div>
-    {% endif %}
+    <div class="login-box">
+      {% if error %}
+      <div class="error">{{ error }}</div>
+      {% endif %}
 
-    <form method="POST">
-      <label for="password">رمز عبور</label>
-      <input type="password" id="password" name="password" placeholder="••••••••" autofocus />
-      <button type="submit">ورود به داشبورد</button>
-    </form>
+      <form method="POST">
+        <label for="password">رمز عبور</label>
+        <input type="password" id="password" name="password" placeholder="رمز عبور را وارد کنید" autofocus />
+        <button type="submit">ورود</button>
+      </form>
+    </div>
   </div>
 </body>
 </html>

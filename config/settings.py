@@ -26,8 +26,8 @@ def _parse_int_list(raw: str) -> list[int]:
     return [int(item.strip()) for item in raw.split(",") if item.strip()]
 
 
-# One or more group chat IDs (comma-separated in .env)
-BALE_GROUP_IDS = _parse_int_list(os.getenv("BALE_GROUP_ID", ""))
+# Imported/placeholder users use fake Bale IDs below this; real Bale IDs are larger
+PLACEHOLDER_BALE_ID_MAX = int(os.getenv("PLACEHOLDER_BALE_ID_MAX", "999999999"))
 BALE_ADMIN_IDS = _parse_int_list(os.getenv("BALE_ADMIN_IDS", "0")) or [0]
 
 # ======================
@@ -49,8 +49,15 @@ DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
 MISSING_REPORT_CHECK_HOUR = 10
 MISSING_REPORT_CHECK_MINUTE = 0
 
-# Penalty amount for missing daily report
-PENALTY_AMOUNT = 1  # Penalty points
+# Penalty amounts (Toman) — checked daily at 10 AM for yesterday's missing report
+PENALTY_AMOUNT_ONE_DAY = int(os.getenv("PENALTY_AMOUNT_ONE_DAY", "100"))
+PENALTY_AMOUNT_TWO_DAYS = int(os.getenv("PENALTY_AMOUNT_TWO_DAYS", "300"))
+
+# Payment details shown in penalty notifications
+PAYMENT_CARD_NUMBER = os.getenv("PAYMENT_CARD_NUMBER", "5859831143308848")
+PAYMENT_CARD_HOLDER = os.getenv("PAYMENT_CARD_HOLDER", "محمد دهقانی")
+PAYMENT_APPROVER_NAME = os.getenv("PAYMENT_APPROVER_NAME", "محمد دهقانی")
+PAYMENT_APPROVER_PIN = os.getenv("PAYMENT_APPROVER_PIN", "1234")
 
 # ======================
 # REPORT CONFIGURATION

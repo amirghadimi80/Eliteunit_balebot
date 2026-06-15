@@ -3,94 +3,95 @@
 
 {% block content %}
 <div class="page-header">
-  <h2>📊 گزارش‌ها</h2>
-  <p>{{ rows|length }} گزارش در بازه انتخابی</p>
+  <div>
+    <h2>گزارش‌ها</h2>
+    <p>مشاهده، فیلتر و ثبت دستی گزارش‌های روزانه</p>
+  </div>
+  <span class="page-meta">{{ rows|length }} رکورد</span>
 </div>
 
-<!-- Excel Export Buttons -->
-<div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
-  <a href="/export/excel?type=weekly" class="btn btn-primary">
-    📥 دانلود اکسل هفتگی
-  </a>
-  <a href="/export/excel?type=monthly" class="btn btn-success">
-    📥 دانلود اکسل ماهانه
-  </a>
+<div class="toolbar">
+  <a href="{{ url_for('export_excel') }}" class="btn btn-secondary">📥 دانلود اکسل</a>
 </div>
 
-<!-- Add Report Form (Admin) -->
+<div class="card form-card" style="margin-bottom:20px;">
+  <div class="card-header">
+    <div class="card-title">ثبت گزارش دستی</div>
+  </div>
+  <div class="card-body">
+    <form method="POST" action="{{ url_for('add_report') }}" class="filters">
+      <div class="filter-group">
+        <label>کاربر</label>
+        <select name="user_id" required>
+          <option value="">انتخاب کنید</option>
+          {% for u in users %}
+          <option value="{{ u.id }}">{{ u.full_name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>تاریخ شمسی</label>
+        <input type="text" name="date_shamsi" placeholder="1405/03/24" required />
+      </div>
+      <div class="filter-group">
+        <label>ساعت اصلی</label>
+        <input type="number" name="main_hours" step="0.5" min="0" max="12" required />
+      </div>
+      <div class="filter-group">
+        <label>ساعت فرعی</label>
+        <input type="number" name="side_hours" step="0.5" min="0" max="8" required />
+      </div>
+      <button type="submit" class="btn btn-success">ذخیره</button>
+    </form>
+  </div>
+</div>
+
 <div class="card" style="margin-bottom:20px;">
-  <div class="card-title">➕ ثبت گزارش دستی</div>
-  <form method="POST" action="/reports/add" class="filters" style="margin:0;">
-    <div class="filter-group">
-      <label>کاربر</label>
-      <select name="user_id" required>
-        <option value="">انتخاب کنید</option>
-        {% for u in users %}
-        <option value="{{ u.id }}">{{ u.full_name }}</option>
-        {% endfor %}
-      </select>
-    </div>
-    <div class="filter-group">
-      <label>تاریخ شمسی</label>
-      <input type="text" name="date_shamsi" placeholder="1405/02/15" required />
-    </div>
-    <div class="filter-group">
-      <label>ساعت اصلی</label>
-      <input type="number" name="main_hours" step="0.5" min="0" max="12" required />
-    </div>
-    <div class="filter-group">
-      <label>ساعت فرعی</label>
-      <input type="number" name="side_hours" step="0.5" min="0" max="8" required />
-    </div>
-    <div class="filter-group" style="justify-content:flex-end;">
-      <button type="submit" class="btn btn-success">💾 ذخیره گزارش</button>
-    </div>
-  </form>
+  <div class="card-header">
+    <div class="card-title">فیلتر</div>
+  </div>
+  <div class="card-body">
+    <form method="GET" class="filters">
+      <div class="filter-group">
+        <label>از تاریخ</label>
+        <input type="date" name="start" value="{{ start_date }}" />
+      </div>
+      <div class="filter-group">
+        <label>تا تاریخ</label>
+        <input type="date" name="end" value="{{ end_date }}" />
+      </div>
+      <div class="filter-group">
+        <label>کاربر</label>
+        <select name="user">
+          <option value="">همه</option>
+          {% for u in users %}
+          <option value="{{ u.id }}" {% if filter_user == u.id|string %}selected{% endif %}>
+            {{ u.full_name }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">اعمال</button>
+    </form>
+  </div>
 </div>
 
-<!-- Filters -->
-<form method="GET" class="filters">
-  <div class="filter-group">
-    <label>از تاریخ</label>
-    <input type="date" name="start" value="{{ start_date }}" />
-  </div>
-  <div class="filter-group">
-    <label>تا تاریخ</label>
-    <input type="date" name="end" value="{{ end_date }}" />
-  </div>
-  <div class="filter-group">
-    <label>کاربر</label>
-    <select name="user">
-      <option value="">همه کاربران</option>
-      {% for u in users %}
-      <option value="{{ u.id }}" {% if filter_user == u.id|string %}selected{% endif %}>
-        {{ u.full_name }}
-      </option>
-      {% endfor %}
-    </select>
-  </div>
-  <div class="filter-group" style="justify-content:flex-end;">
-    <button type="submit" class="btn btn-primary">اعمال فیلتر</button>
-  </div>
-</form>
-
-<!-- Summary bar -->
 {% if rows %}
-{% set total_main  = rows | sum(attribute='main') %}
-{% set total_side  = rows | sum(attribute='side') %}
-{% set total_all   = rows | sum(attribute='total') %}
-<div style="display:flex; gap:16px; margin-bottom:20px; flex-wrap:wrap;">
-  <div class="stat-card blue" style="flex:1; min-width:140px; padding:14px 18px;">
+{% set total_main = rows | sum(attribute='main') %}
+{% set total_side = rows | sum(attribute='side') %}
+{% set total_all  = rows | sum(attribute='total') %}
+<div class="grid-stats-inline">
+  <div class="stat-card blue compact">
     <div class="label">کل اصلی</div>
-    <div class="value" style="font-size:1.5rem;">{{ "%.1f"|format(total_main) }}</div>
+    <div class="value">{{ "%.1f"|format(total_main) }}</div>
   </div>
-  <div class="stat-card purple" style="flex:1; min-width:140px; padding:14px 18px;">
+  <div class="stat-card purple compact">
     <div class="label">کل فرعی</div>
-    <div class="value" style="font-size:1.5rem;">{{ "%.1f"|format(total_side) }}</div>
+    <div class="value">{{ "%.1f"|format(total_side) }}</div>
   </div>
-  <div class="stat-card green" style="flex:1; min-width:140px; padding:14px 18px;">
-    <div class="label">مجموع کل</div>
-    <div class="value" style="font-size:1.5rem;">{{ "%.1f"|format(total_all) }}</div>
+  <div class="stat-card green compact">
+    <div class="label">مجموع</div>
+    <div class="value">{{ "%.1f"|format(total_all) }}</div>
   </div>
 </div>
 {% endif %}
@@ -103,18 +104,18 @@
         <tr>
           <th>#</th>
           <th>نام</th>
-          <th>تاریخ شمسی</th>
+          <th>تاریخ</th>
           <th>اصلی</th>
           <th>فرعی</th>
           <th>مجموع</th>
-          <th>ثبت شده در</th>
-          <th>عملیات</th>
+          <th>ثبت</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         {% for r in rows %}
         <tr>
-          <td style="color:var(--muted);">{{ loop.index }}</td>
+          <td class="cell-muted">{{ loop.index }}</td>
           <td><strong>{{ r.user_name }}</strong></td>
           <td>{{ r.date_shamsi }}</td>
           <td>{{ r.main }}</td>
@@ -124,9 +125,9 @@
               {{ r.total }}
             </span>
           </td>
-          <td style="color:var(--muted); font-size:.8rem;">{{ r.created_at }}</td>
+          <td class="cell-muted">{{ r.created_at }}</td>
           <td>
-            <button class="btn btn-sm btn-danger" onclick="deleteReport({{ r.id }})">🗑️</button>
+            <button type="button" class="btn btn-sm btn-danger btn-delete-report" data-id="{{ r.id }}">حذف</button>
           </td>
         </tr>
         {% endfor %}
@@ -134,30 +135,33 @@
     </table>
   </div>
   {% else %}
-  <div class="empty">
-    <div class="icon">📭</div>
-    <div>هیچ گزارشی در این بازه وجود ندارد</div>
+  <div class="card-body">
+    <div class="empty">
+      <div class="icon">📭</div>
+      <div>گزارشی در این بازه پیدا نشد</div>
+    </div>
   </div>
   {% endif %}
 </div>
 {% endblock %}
 
-
 {% block extra_scripts %}
 <script>
 async function deleteReport(reportId) {
-  if (!confirm('آیا مطمئنید که می‌خواهید این گزارش را حذف کنید؟')) return;
+  if (!confirm('این گزارش حذف شود؟')) return;
   try {
     const res = await fetch(`/reports/delete/${reportId}`, { method: 'POST' });
-    if (res.ok) {
-      alert('گزارش حذف شد');
-      location.reload();
-    } else {
-      alert('خطا در حذف');
-    }
+    if (res.ok) location.reload();
+    else alert('خطا در حذف');
   } catch(e) {
     alert('خطا: ' + e.message);
   }
 }
+
+document.querySelectorAll('.btn-delete-report').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    deleteReport(this.dataset.id);
+  });
+});
 </script>
 {% endblock %}

@@ -247,7 +247,7 @@ class AdminHandler:
         # Format penalty summary
         penalty_msg = "⚠️ خلاصه جریمه‌ها:\n\n"
         for user_name, count in sorted(summary.items(), key=lambda x: x[1], reverse=True):
-            penalty_msg += f"👤 {user_name}: {count} جریمه\n"
+            penalty_msg += f"👤 {user_name}: {count:,} تومان\n"
         
         await client.send_message(
             chat_id=message.chat.id,
@@ -273,11 +273,21 @@ class AdminHandler:
             
             penalty_service = PenaltyService(self.db)
             created = penalty_service.check_and_create_missing_report_penalties()
-            
+
+            from services.notifications import notify_penalty_created
+            for item in created:
+                notify_penalty_created(
+                    user_name=item.user_name,
+                    bale_id=item.bale_id,
+                    date_shamsi=item.date_shamsi,
+                    amount=item.amount,
+                    consecutive_days=item.consecutive_days,
+                )
+
             if created:
                 msg = f"✅ {len(created)} جریمه جدید ایجاد شد:\n\n"
-                for user_id, user_name, date_shamsi in created:
-                    msg += f"❌ {user_name} - {date_shamsi}\n"
+                for item in created:
+                    msg += f"❌ {item.user_name} — {item.amount:,} تومان ({item.date_shamsi})\n"
             else:
                 msg = "✅ هیچ جریمه جدیدی ایجاد نشد."
             

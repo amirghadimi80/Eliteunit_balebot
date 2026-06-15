@@ -17,6 +17,7 @@ from datetime import datetime, date, timedelta
 from database.db import Database
 from services.reports import ReportService
 from services.penalty import PenaltyService
+from services.notifications import notify_penalty_created, notify_penalty_paid
 from utils.date_utils import (
     gregorian_to_jalali_str,
     get_today_gregorian,
@@ -24,7 +25,13 @@ from utils.date_utils import (
     get_month_start_end,
     format_date_persian,
 )
-from config.settings import BALE_ADMIN_IDS
+from config.settings import (
+    BALE_ADMIN_IDS,
+    PAYMENT_APPROVER_NAME,
+    PAYMENT_APPROVER_PIN,
+    PAYMENT_CARD_HOLDER,
+    PAYMENT_CARD_NUMBER,
+)
 
 app = Flask(__name__)
 app.secret_key = os.getenv("DASHBOARD_SECRET_KEY", "elite-unite-time-secret-2024")
@@ -129,12 +136,20 @@ def index():
     # Missing users
     missing_users = [u.full_name for u in all_users if u.id not in reported_ids]
 
+    unpaid_penalties = penalty_service.get_recent_unpaid_penalties(limit=10)
+    all_unpaid = [p for p in db.get_all_penalties() if p.status == "unpaid"]
+    total_unpaid_toman = sum(p.amount for p in all_unpaid)
+
     return render_template(
         "index.html",
         stats=stats,
         today_rows=today_rows,
         missing_users=missing_users,
         today_jalali=today_jalali,
+        unpaid_penalties=unpaid_penalties,
+        total_unpaid_toman=total_unpaid_toman,
+        payment_card=PAYMENT_CARD_NUMBER,
+        payment_holder=PAYMENT_CARD_HOLDER,
     )
 
 
@@ -161,6 +176,7 @@ def users():
             "total_reports": total_reports,
             "unpaid_penalties": len(penalties),
             "joined": u.created_at,
+            "bot_linked": not db.is_placeholder_bale_id(u.bale_id),
         })
     return render_template("users.html", users=user_data)
 
@@ -280,7 +296,54 @@ def penalties():
                 "created_at": p.created_at,
             })
     rows.sort(key=lambda x: x["date_shamsi"], reverse=True)
-    return render_template("penalties.html", rows=rows)
+    return render_template(
+        "penalties.html",
+        rows=rows,
+        approver_name=PAYMENT_APPROVER_NAME,
+        payment_card=PAYMENT_CARD_NUMBER,
+        payment_holder=PAYMENT_CARD_HOLDER,
+        is_approver=session.get("payment_approver", False),
+        flash_msg=request.args.get("msg"),
+        flash_type=request.args.get("type", "ok"),
+    )
+
+
+@app.route("/penalties/approver", methods=["POST"])
+@login_required
+def penalties_approver_login():
+    pin = request.form.get("approver_pin", "").strip()
+    if pin == PAYMENT_APPROVER_PIN:
+        session["payment_approver"] = True
+        return redirect(url_for("penalties", msg="دسترسی تأیید پرداخت فعال شد", type="ok"))
+    return redirect(url_for("penalties", msg="رمز تأیید‌کننده اشتباه است", type="error"))
+
+
+@app.route("/penalties/pay/<int:penalty_id>", methods=["POST"])
+@login_required
+def pay_penalty(penalty_id):
+    if not session.get("payment_approver"):
+        return redirect(url_for("penalties", msg="ابتدا با رمز تأیید‌کننده وارد شوید", type="error"))
+
+    penalty = db.get_penalty_by_id(penalty_id)
+    if not penalty:
+        return redirect(url_for("penalties", msg="جریمه یافت نشد", type="error"))
+    if penalty.status == "paid":
+        return redirect(url_for("penalties", msg="این جریمه قبلاً پرداخت شده", type="error"))
+
+    user = db.get_user_by_id(penalty.user_id)
+    if not user:
+        return redirect(url_for("penalties", msg="کاربر یافت نشد", type="error"))
+
+    if db.mark_penalty_paid(penalty_id):
+        notify_penalty_paid(user.full_name, user.bale_id, penalty.amount)
+        return redirect(
+            url_for(
+                "penalties",
+                msg=f"پرداخت جریمه {user.full_name} ({penalty.amount:,} تومان) تأیید شد",
+                type="ok",
+            )
+        )
+    return redirect(url_for("penalties", msg="خطا در تأیید پرداخت", type="error"))
 
 
 @app.route("/penalties/delete/<int:penalty_id>", methods=["POST"])

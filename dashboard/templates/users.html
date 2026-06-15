@@ -3,8 +3,11 @@
 
 {% block content %}
 <div class="page-header">
-  <h2>👥 کاربران</h2>
-  <p>{{ users|length }} کاربر ثبت‌نام کرده</p>
+  <div>
+    <h2>کاربران</h2>
+    <p>مدیریت اعضای ثبت‌نام‌شده در بات</p>
+  </div>
+  <span class="page-meta">{{ users|length }} کاربر</span>
 </div>
 
 <div class="card">
@@ -17,38 +20,40 @@
           <th>نام</th>
           <th>شماره</th>
           <th>گزارش‌ها</th>
-          <th>جریمه پرداخت‌نشده</th>
+          <th>جریمه</th>
+          <th>بات</th>
           <th>بیوگرافی</th>
-          <th>علاقه‌مندی‌ها</th>
-          <th>تاریخ عضویت</th>
-          <th>عملیات</th>
+          <th>علاقه‌مندی</th>
+          <th>عضویت</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         {% for u in users %}
         <tr>
-          <td style="color:var(--muted);">{{ loop.index }}</td>
+          <td class="cell-muted">{{ loop.index }}</td>
           <td><strong>{{ u.name }}</strong></td>
-          <td style="direction:ltr; text-align:right;">{{ u.phone }}</td>
-          <td>
-            <span class="badge badge-blue">{{ u.total_reports }}</span>
-          </td>
+          <td class="cell-ltr">{{ u.phone }}</td>
+          <td><span class="badge badge-blue">{{ u.total_reports }}</span></td>
           <td>
             {% if u.unpaid_penalties > 0 %}
-            <span class="badge badge-red">{{ u.unpaid_penalties }}</span>
+            <span class="badge badge-red">{{ u.unpaid_penalties }} پرداخت‌نشده</span>
             {% else %}
-            <span class="badge badge-green">0</span>
+            <span class="badge badge-green">بدون جریمه</span>
             {% endif %}
           </td>
-          <td style="max-width:180px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--muted);">
-            {{ u.bio }}
-          </td>
-          <td style="max-width:160px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:var(--muted);">
-            {{ u.interests }}
-          </td>
-          <td style="color:var(--muted); font-size:.8rem;">{{ u.joined }}</td>
           <td>
-            <button class="btn btn-sm btn-danger" onclick="deleteUser({{ u.id }}, '{{ u.name }}')">🗑️ حذف</button>
+            {% if u.bot_linked %}
+            <span class="badge badge-green">متصل</span>
+            {% else %}
+            <span class="badge badge-yellow">منتظر ثبت‌نام</span>
+            {% endif %}
+          </td>
+          <td class="cell-truncate cell-muted">{{ u.bio }}</td>
+          <td class="cell-truncate cell-muted">{{ u.interests }}</td>
+          <td class="cell-muted">{{ u.joined }}</td>
+          <td>
+            <button class="btn btn-sm btn-danger" onclick="deleteUser({{ u.id }}, '{{ u.name }}')">حذف</button>
           </td>
         </tr>
         {% endfor %}
@@ -56,29 +61,24 @@
     </table>
   </div>
   {% else %}
-  <div class="empty">
-    <div class="icon">👤</div>
-    <div>هیچ کاربری وجود ندارد</div>
+  <div class="card-body">
+    <div class="empty">
+      <div class="icon">👤</div>
+      <div>هنوز کاربری ثبت‌نام نکرده</div>
+    </div>
   </div>
   {% endif %}
 </div>
 {% endblock %}
 
-
 {% block extra_scripts %}
 <script>
 async function deleteUser(userId, userName) {
-  if (!confirm(`آیا مطمئنید که می‌خواهید کاربر "${userName}" و تمام گزارش‌ها و جریمه‌های او را حذف کنید؟\n\nاین عمل غیرقابل بازگشت است!`)) {
-    return;
-  }
+  if (!confirm(`حذف کاربر «${userName}» و تمام داده‌هایش؟\n\nاین عمل برگشت‌پذیر نیست.`)) return;
   try {
     const res = await fetch(`/users/delete/${userId}`, { method: 'POST' });
-    if (res.ok) {
-      alert('کاربر با موفقیت حذف شد');
-      location.reload();
-    } else {
-      alert('خطا در حذف کاربر');
-    }
+    if (res.ok) location.reload();
+    else alert('خطا در حذف کاربر');
   } catch(e) {
     alert('خطا: ' + e.message);
   }

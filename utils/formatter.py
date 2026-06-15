@@ -5,6 +5,7 @@ Contains functions to format messages, reports, and group notifications.
 
 from typing import List, Dict, Optional
 from datetime import datetime, date
+from config.settings import PAYMENT_CARD_NUMBER, PAYMENT_CARD_HOLDER
 from utils.date_utils import (
     gregorian_to_jalali_str,
     get_jalali_day_name,
@@ -196,6 +197,58 @@ class MessageFormatter:
         message += f"\nکل جریمه‌ها: {len(missing_dates)}"
         
         return message
+
+    @staticmethod
+    def _payment_block() -> str:
+        return (
+            f"سریع واریز کنید به کارت:\n"
+            f"💳 {PAYMENT_CARD_NUMBER}\n"
+            f"به نام {PAYMENT_CARD_HOLDER}"
+        )
+
+    @staticmethod
+    def format_penalty_user_message(
+        user_name: str,
+        amount: int,
+        date_shamsi: str,
+        consecutive_days: int,
+    ) -> str:
+        """Private message to penalized user."""
+        days_note = ""
+        if consecutive_days >= 2:
+            days_note = f"\n({consecutive_days} روز متوالی گزارش ثبت نشده)"
+        return (
+            f"⚠️ {user_name} عزیز\n\n"
+            f"شما {amount:,} تومان جریمه شدید.{days_note}\n"
+            f"گزارش روز {date_shamsi} ثبت نشده.\n"
+            f"مهلت: تا ساعت ۱۰ صبح روز بعد.\n\n"
+            f"{MessageFormatter._payment_block()}"
+        )
+
+    @staticmethod
+    def format_penalty_group_message(
+        user_name: str,
+        amount: int,
+        date_shamsi: str,
+        consecutive_days: int,
+    ) -> str:
+        """Group announcement for a new penalty."""
+        days_note = ""
+        if consecutive_days >= 2:
+            days_note = f" ({consecutive_days} روز متوالی)"
+        return (
+            f"⚠️ {user_name} — {amount:,} تومان جریمه شد{days_note}\n"
+            f"گزارش روز {date_shamsi} ثبت نشده.\n\n"
+            f"{MessageFormatter._payment_block()}"
+        )
+
+    @staticmethod
+    def format_penalty_paid_message(user_name: str, amount: int) -> str:
+        """Notification when penalty payment is confirmed."""
+        return (
+            f"✅ جریمه {user_name} ({amount:,} تومان) پرداخت شد.\n"
+            f"تأیید شده توسط {PAYMENT_CARD_HOLDER}"
+        )
     
     @staticmethod
     def format_admin_weekly_summary(

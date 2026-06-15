@@ -3,22 +3,59 @@
 
 {% block content %}
 <div class="page-header">
-  <h2>⚠️ جریمه‌ها</h2>
-  <p>{{ rows|length }} جریمه ثبت شده</p>
+  <div>
+    <h2>جریمه‌ها</h2>
+    <p>۱ روز = ۱۰۰ تومان · ۲ روز متوالی = ۳۰۰ تومان · مهلت ثبت تا ۱۰ صبح روز بعد</p>
+  </div>
+  <span class="page-meta">{{ rows|length }} مورد</span>
+</div>
+
+{% if flash_msg %}
+<div class="alert alert-{{ flash_type }}">{{ flash_msg }}</div>
+{% endif %}
+
+<div class="card" style="margin-bottom:20px;">
+  <div class="card-header">
+    <div>
+      <div class="card-title">اطلاعات واریز</div>
+      <div class="payment-info">💳 {{ payment_card }} — به نام {{ payment_holder }}</div>
+    </div>
+  </div>
+  <div class="card-body">
+    {% if is_approver %}
+    <div class="alert alert-ok">
+      ✅ دسترسی تأیید پرداخت فعال است ({{ approver_name }})
+    </div>
+    {% else %}
+    <form method="POST" action="{{ url_for('penalties_approver_login') }}" class="filters" style="margin:0;">
+      <div class="filter-group" style="min-width:220px;">
+        <label>رمز تأیید‌کننده ({{ approver_name }})</label>
+        <input type="password" name="approver_pin" placeholder="رمز تأیید پرداخت" required />
+      </div>
+      <button type="submit" class="btn btn-primary">فعال‌سازی تأیید پرداخت</button>
+    </form>
+    {% endif %}
+  </div>
 </div>
 
 {% if rows %}
 {% set unpaid = rows | selectattr('status', 'equalto', 'unpaid') | list %}
 {% set paid   = rows | selectattr('status', 'equalto', 'paid')   | list %}
-<div style="display:flex; gap:16px; margin-bottom:20px; flex-wrap:wrap;">
-  <div class="stat-card red" style="flex:1; min-width:140px; padding:14px 18px;">
+<div class="grid-stats-inline">
+  <div class="stat-card red compact">
     <div class="label">پرداخت نشده</div>
-    <div class="value" style="font-size:1.5rem;">{{ unpaid|length }}</div>
+    <div class="value">{{ unpaid|length }}</div>
   </div>
-  <div class="stat-card green" style="flex:1; min-width:140px; padding:14px 18px;">
+  <div class="stat-card green compact">
     <div class="label">پرداخت شده</div>
-    <div class="value" style="font-size:1.5rem;">{{ paid|length }}</div>
-  </div></div>
+    <div class="value">{{ paid|length }}</div>
+  </div>
+  <div class="stat-card yellow compact">
+    <div class="label">بدهی کل</div>
+    <div class="value" style="font-size:1.2rem;">{{ "{:,}".format(unpaid | sum(attribute='amount')) }}</div>
+    <div class="sub">تومان</div>
+  </div>
+</div>
 {% endif %}
 
 <div class="card">
@@ -31,19 +68,19 @@
           <th>نام</th>
           <th>تاریخ</th>
           <th>دلیل</th>
-          <th>مقدار</th>
+          <th>مبلغ</th>
           <th>وضعیت</th>
-          <th>عملیات</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
         {% for p in rows %}
         <tr>
-          <td style="color:var(--muted);">{{ loop.index }}</td>
+          <td class="cell-muted">{{ loop.index }}</td>
           <td><strong>{{ p.user_name }}</strong></td>
           <td>{{ p.date_shamsi }}</td>
-          <td style="color:var(--muted); font-size:.85rem;">{{ p.reason }}</td>
-          <td>{{ p.amount }}</td>
+          <td class="cell-muted">{{ p.reason }}</td>
+          <td><strong>{{ "{:,}".format(p.amount) }}</strong> تومان</td>
           <td>
             {% if p.status == 'unpaid' %}
             <span class="badge badge-red">پرداخت نشده</span>
@@ -52,14 +89,15 @@
             {% endif %}
           </td>
           <td>
-            {% if p.status == 'unpaid' %}
-            <form method="POST" action="{{ url_for('pay_penalty', penalty_id=p.id) }}" style="display:inline;">
-              <button type="submit" class="btn btn-sm btn-primary">✓ پرداخت</button>
-            </form>
-            {% else %}
-            —
-            {% endif %}
-            <button class="btn btn-sm btn-danger" onclick="deletePenalty({{ p.id }})">🗑️</button>
+            <div class="cell-actions">
+              {% if p.status == 'unpaid' and is_approver %}
+              <form method="POST" action="{{ url_for('pay_penalty', penalty_id=p.id) }}" style="display:inline;"
+                    onsubmit="return confirm('پرداخت {{ p.amount }} تومان {{ p.user_name }} تأیید شود؟')">
+                <button type="submit" class="btn btn-sm btn-success">✓ تأیید پرداخت</button>
+              </form>
+              {% endif %}
+              <button class="btn btn-sm btn-danger" onclick="deletePenalty({{ p.id }})">حذف</button>
+            </div>
           </td>
         </tr>
         {% endfor %}
@@ -67,26 +105,24 @@
     </table>
   </div>
   {% else %}
-  <div class="empty">
-    <div class="icon">🎉</div>
-    <div>هیچ جریمه‌ای وجود ندارد</div>
+  <div class="card-body">
+    <div class="empty">
+      <div class="icon">✓</div>
+      <div>جریمه‌ای ثبت نشده</div>
+    </div>
   </div>
   {% endif %}
 </div>
 {% endblock %}
 
-
 {% block extra_scripts %}
 <script>
 async function deletePenalty(penaltyId) {
-  if (!confirm('آیا مطمئنید که می‌خواهید این جریمه را حذف کنید؟')) return;
+  if (!confirm('این جریمه حذف شود؟')) return;
   try {
     const res = await fetch(`/penalties/delete/${penaltyId}`, { method: 'POST' });
-    if (res.ok) {
-      location.reload();
-    } else {
-      alert('خطا در حذف');
-    }
+    if (res.ok) location.reload();
+    else alert('خطا در حذف');
   } catch(e) {
     alert('خطا: ' + e.message);
   }

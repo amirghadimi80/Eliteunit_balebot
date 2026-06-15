@@ -5,6 +5,7 @@ Handles all database operations including user, report, and penalty records.
 
 import sqlite3
 import logging
+import re
 from typing import Optional, List, Tuple
 from datetime import date, datetime
 from pathlib import Path
@@ -125,6 +126,60 @@ class Database:
             created_at=d.get("created_at"),
             updated_at=d.get("updated_at"),
         )
+
+    @staticmethod
+    def normalize_name(name: str) -> str:
+        """Normalize name for matching (spaces, Persian chars)."""
+        name = name.strip()
+        name = re.sub(r"\s+", " ", name)
+        for old, new in (("ي", "ی"), ("ك", "ک"), ("\u200c", " ")):
+            name = name.replace(old, new)
+        return re.sub(r"\s+", " ", name).strip()
+
+    def get_user_by_full_name(self, full_name: str) -> Optional[User]:
+        """Find user by full name (normalized match)."""
+        target = self.normalize_name(full_name)
+        try:
+            for user in self.get_all_users():
+                if self.normalize_name(user.full_name) == target:
+                    return user
+            return None
+        except sqlite3.Error as e:
+            logger.error(f"Error finding user by name: {e}")
+            return None
+
+    @staticmethod
+    def is_placeholder_bale_id(bale_id: int) -> bool:
+        """True for users created by import/fake scripts (not yet linked to Bale)."""
+        from config.settings import PLACEHOLDER_BALE_ID_MAX
+        return bale_id <= PLACEHOLDER_BALE_ID_MAX
+
+    def link_bale_account(self, user_id: int, bale_id: int, phone: str) -> bool:
+        """
+        Attach a real Bale account to an imported placeholder user.
+        Keeps existing reports and penalties on the same user_id.
+        """
+        user = self.get_user_by_id(user_id)
+        if not user or not self.is_placeholder_bale_id(user.bale_id):
+            return False
+        if self.user_exists(bale_id):
+            return False
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                """UPDATE users
+                   SET bale_id = ?, phone = ?, updated_at = CURRENT_TIMESTAMP
+                   WHERE id = ?""",
+                (bale_id, phone, user_id),
+            )
+            conn.commit()
+            conn.close()
+            logger.info(f"Linked Bale account {bale_id} to user {user.full_name} (ID: {user_id})")
+            return cursor.rowcount > 0
+        except sqlite3.Error as e:
+            logger.error(f"Error linking Bale account: {e}")
+            return False
 
     def get_user_by_bale_id(self, bale_id: int) -> Optional[User]:
         """
@@ -439,6 +494,20 @@ class Database:
             logger.error(f"Error adding penalty: {e}")
             return None
     
+    @staticmethod
+    def _row_to_penalty(row) -> "Penalty":
+        d = dict(row)
+        return Penalty(
+            id=d.get("id"),
+            user_id=d.get("user_id"),
+            date_shamsi=d.get("date_shamsi", ""),
+            date_gregorian=d.get("date_gregorian", ""),
+            amount=d.get("amount", 1),
+            reason=d.get("reason", ""),
+            status=d.get("status", "unpaid"),
+            created_at=d.get("created_at"),
+        )
+
     def get_penalties_by_user(self, user_id: int, status: Optional[str] = None) -> List[Penalty]:
         """
         Get penalties for a user.
@@ -467,24 +536,36 @@ class Database:
             
             rows = cursor.fetchall()
             conn.close()
-            
-            penalties = []
-            for row in rows:
-                penalty = Penalty(
-                    id=row["id"],
-                    user_id=row["user_id"],
-                    date_shamsi=row["date_shamsi"],
-                    date_gregorian=row["date_gregorian"],
-                    amount=row["amount"],
-                    reason=row["reason"],
-                    status=row["status"],
-                    created_at=row["created_at"],
-                )
-                penalties.append(penalty)
-            return penalties
+            return [self._row_to_penalty(row) for row in rows]
         except sqlite3.Error as e:
             logger.error(f"Error getting penalties: {e}")
             return []
+
+    def get_all_penalties(self) -> List[Penalty]:
+        """Get all penalty records, newest first."""
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM penalties ORDER BY created_at DESC")
+            rows = cursor.fetchall()
+            conn.close()
+            return [self._row_to_penalty(row) for row in rows]
+        except sqlite3.Error as e:
+            logger.error(f"Error getting all penalties: {e}")
+            return []
+
+    def get_penalty_by_id(self, penalty_id: int) -> Optional[Penalty]:
+        """Get a single penalty by ID."""
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM penalties WHERE id = ?", (penalty_id,))
+            row = cursor.fetchone()
+            conn.close()
+            return self._row_to_penalty(row) if row else None
+        except sqlite3.Error as e:
+            logger.error(f"Error getting penalty: {e}")
+            return None
     
     def mark_penalty_paid(self, penalty_id: int) -> bool:
         """
