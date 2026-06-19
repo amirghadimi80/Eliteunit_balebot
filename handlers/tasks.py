@@ -47,23 +47,41 @@ class TaskHandler:
             )
             return
         
-        today = get_today_gregorian()
-        
+        target_date, is_backdated = self.report_service.get_next_report_date(user.id)
+        date_gregorian = target_date.strftime("%Y-%m-%d")
+
+        if self.db.report_exists(user.id, date_gregorian):
+            await client.send_message(
+                chat_id=user_id,
+                text=f"✅ گزارش روز {format_date_persian(target_date)} قبلاً ثبت شده است.",
+            )
+            return
+
         # Initialize user state
         self.user_states[user_id] = {
             "state": "waiting_main_hours",
             "user_id": user.id,
+            "report_date": target_date,
         }
-        
-        # Show today's date
-        today_date_persian = format_date_persian(today)
-        
-        message_text = (
-            f"📊 ثبت گزارش روزانه\n\n"
-            f"📅 امروز: {today_date_persian}\n\n"
-            f"⬛️ لطفاً ساعت کاری اصلی را وارد کنید:\n"
-            f"(مثال: 6 یا 6.5)"
-        )
+
+        target_date_persian = format_date_persian(target_date)
+
+        if is_backdated:
+            message_text = (
+                f"📊 ثبت گزارش روزانه\n\n"
+                f"⚠️ گزارش روزهای قبل ثبت نشده.\n"
+                f"اول این گزارش را وارد کنید، بعد گزارش امروز.\n\n"
+                f"📅 تاریخ: {target_date_persian}\n\n"
+                f"⬛️ لطفاً ساعت کاری اصلی را وارد کنید:\n"
+                f"(مثال: 6 یا 6.5)"
+            )
+        else:
+            message_text = (
+                f"📊 ثبت گزارش روزانه\n\n"
+                f"📅 امروز: {target_date_persian}\n\n"
+                f"⬛️ لطفاً ساعت کاری اصلی را وارد کنید:\n"
+                f"(مثال: 6 یا 6.5)"
+            )
         
         await client.send_message(
             chat_id=user_id,
@@ -143,11 +161,13 @@ class TaskHandler:
             # Submit report
             main_hours = user_data.get("main_hours")
             user_db_id = user_data.get("user_id")
-            
+            report_date = user_data.get("report_date") or get_today_gregorian()
+
             success, msg = self.report_service.submit_daily_report(
                 user_db_id,
                 main_hours,
                 side_hours,
+                report_date=report_date,
             )
             
             if success:
@@ -156,8 +176,20 @@ class TaskHandler:
                 
                 # Get report details
                 user = self.db.get_user_by_id(user_db_id)
-                today = get_today_gregorian()
                 now_time = get_current_time_iran().strftime("%H:%M")
+                next_date, still_backdated = self.report_service.get_next_report_date(user_db_id)
+
+                follow_up = ""
+                if still_backdated:
+                    follow_up = (
+                        f"\n\n⚠️ هنوز گزارش روز {format_date_persian(next_date)} "
+                        f"ثبت نشده.\n"
+                        f"دوباره «ثبت گزارش روزانه» را بزنید."
+                    )
+                elif report_date != get_today_gregorian():
+                    follow_up = (
+                        "\n\n✅ حالا می‌توانید گزارش امروز را ثبت کنید."
+                    )
 
                 # Send confirmation to user with back button
                 keyboard = InlineKeyboard()
@@ -174,8 +206,9 @@ class TaskHandler:
                     f"⬛️ اصلی: {main_hours}\n"
                     f"🔵 فرعی: {side_hours}\n"
                     f"➕ مجموع: {main_hours + side_hours}\n\n"
-                    f"📅 {format_date_persian(today)}\n"
+                    f"📅 {format_date_persian(report_date)}\n"
                     f"🕐 ساعت ثبت: {now_time}"
+                    f"{follow_up}"
                 )
                 
                 await client.send_message(
@@ -185,7 +218,9 @@ class TaskHandler:
                 )
                 
                 # Send group notification
-                await self._send_group_notification(client, user, main_hours, side_hours, today)
+                await self._send_group_notification(
+                    client, user, main_hours, side_hours, report_date
+                )
                 
                 logger.info(f"Report submitted: user={user.full_name}, main={main_hours}, side={side_hours}")
             else:

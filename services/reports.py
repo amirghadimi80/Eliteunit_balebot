@@ -5,13 +5,14 @@ Handles daily, weekly, and monthly reports with calculations.
 
 import logging
 from typing import List, Tuple
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from dataclasses import dataclass
 
 from database.db import Database
 from models.models import Report, DailyStats, WeeklyStats, MonthlyStats
 from utils.date_utils import (
     get_today_gregorian,
+    get_yesterday,
     gregorian_to_jalali,
     gregorian_to_jalali_str,
     get_week_start_end,
@@ -36,6 +37,30 @@ class ReportService:
     # =====================
     # DAILY REPORT OPERATIONS
     # =====================
+
+    def get_next_report_date(self, user_id: int) -> Tuple[date, bool]:
+        """
+        Determine which date the user should submit next.
+
+        Returns:
+            Tuple[date, bool]: (target_date, is_backdated)
+            If older reports are missing, returns the oldest missing date
+            (walking back from yesterday). Otherwise returns today.
+        """
+        today = get_today_gregorian()
+        oldest_missing = None
+        d = get_yesterday()
+
+        while d >= today - timedelta(days=31):
+            if not self.db.report_exists(user_id, d.strftime("%Y-%m-%d")):
+                oldest_missing = d
+                d -= timedelta(days=1)
+            else:
+                break
+
+        if oldest_missing:
+            return oldest_missing, True
+        return today, False
     
     def submit_daily_report(
         self,

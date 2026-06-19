@@ -207,6 +207,14 @@ class MessageFormatter:
         )
 
     @staticmethod
+    def _bot_report_reminder() -> str:
+        return (
+            "📝 گزارش را داخل بات ثبت کنید:\n"
+            "منو → 📊 ثبت گزارش روزانه\n\n"
+            "⚠️ اول گزارش دیروز را وارد کنید، سپس گزارش امروز."
+        )
+
+    @staticmethod
     def format_penalty_user_message(
         user_name: str,
         amount: int,
@@ -222,6 +230,7 @@ class MessageFormatter:
             f"شما {amount:,} تومان جریمه شدید.{days_note}\n"
             f"گزارش روز {date_shamsi} ثبت نشده.\n"
             f"مهلت: تا ساعت ۱۰ صبح روز بعد.\n\n"
+            f"{MessageFormatter._bot_report_reminder()}\n\n"
             f"{MessageFormatter._payment_block()}"
         )
 
@@ -239,6 +248,7 @@ class MessageFormatter:
         return (
             f"⚠️ {user_name} — {amount:,} تومان جریمه شد{days_note}\n"
             f"گزارش روز {date_shamsi} ثبت نشده.\n\n"
+            f"{MessageFormatter._bot_report_reminder()}\n\n"
             f"{MessageFormatter._payment_block()}"
         )
 
