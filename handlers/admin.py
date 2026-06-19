@@ -281,7 +281,6 @@ class AdminHandler:
                     bale_id=item.bale_id,
                     date_shamsi=item.date_shamsi,
                     amount=item.amount,
-                    consecutive_days=item.consecutive_days,
                 )
 
             if created:

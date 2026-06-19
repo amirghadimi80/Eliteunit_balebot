@@ -590,6 +590,24 @@ class Database:
         except sqlite3.Error as e:
             logger.error(f"Error marking penalty as paid: {e}")
             return False
+
+    def mark_all_user_penalties_paid(self, user_id: int) -> int:
+        """Mark all unpaid penalties for a user as paid. Returns count updated."""
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                "UPDATE penalties SET status = 'paid' WHERE user_id = ? AND status = 'unpaid'",
+                (user_id,),
+            )
+            updated = cursor.rowcount
+            conn.commit()
+            conn.close()
+            logger.info(f"Marked {updated} penalties paid for user_id={user_id}")
+            return updated
+        except sqlite3.Error as e:
+            logger.error(f"Error marking all penalties paid: {e}")
+            return 0
     
     def get_missing_report_users(self, date_gregorian: str) -> List[Tuple[int, str]]:
         """
@@ -695,3 +713,18 @@ class Database:
         except sqlite3.Error as e:
             logger.error(f"Error deleting penalty: {e}")
             return False
+
+    def delete_all_penalties(self) -> int:
+        """Delete all penalty records. Returns number of rows deleted."""
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute("DELETE FROM penalties")
+            deleted = cursor.rowcount
+            conn.commit()
+            conn.close()
+            logger.info(f"Deleted all penalties ({deleted} rows)")
+            return deleted
+        except sqlite3.Error as e:
+            logger.error(f"Error deleting all penalties: {e}")
+            return 0

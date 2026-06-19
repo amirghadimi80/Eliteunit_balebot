@@ -73,7 +73,6 @@ class SchedulerService:
                         bale_id=item.bale_id,
                         date_shamsi=item.date_shamsi,
                         amount=item.amount,
-                        consecutive_days=item.consecutive_days,
                     )
                 except Exception as e:
                     logger.error(f"Error notifying {item.user_name}: {e}")
@@ -90,7 +89,6 @@ class SchedulerService:
                 bale_id=item.bale_id,
                 date_shamsi=item.date_shamsi,
                 amount=item.amount,
-                consecutive_days=item.consecutive_days,
             )
         return len(created)
 

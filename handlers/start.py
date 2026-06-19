@@ -291,6 +291,14 @@ class StartHandler:
                 callback_data="friends",
             )
         )
+
+        # Penalty payment button
+        keyboard.add_row(
+            InlineKeyboardButton(
+                text=BUTTON_LABELS.get("pay_penalty", "💳 پرداخت جریمه"),
+                callback_data="pay_penalty",
+            )
+        )
         
         await client.send_message(
             chat_id=user_id,

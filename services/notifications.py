@@ -4,12 +4,16 @@ Uses Bale HTTP API directly so it works from scheduler and Flask.
 """
 
 import logging
-from typing import Optional
+from typing import Optional, TYPE_CHECKING
 
 import httpx
 
 from config.settings import BALE_API_TOKEN, BALE_GROUP_IDS
 from utils.formatter import MessageFormatter
+
+if TYPE_CHECKING:
+    from balethon import Client
+    from balethon.objects import Message
 
 logger = logging.getLogger(__name__)
 
@@ -48,14 +52,13 @@ def notify_penalty_created(
     bale_id: int,
     date_shamsi: str,
     amount: int,
-    consecutive_days: int,
 ) -> None:
     """Notify user (DM) and groups about a new penalty."""
     user_msg = MessageFormatter.format_penalty_user_message(
-        user_name, amount, date_shamsi, consecutive_days
+        user_name, amount, date_shamsi
     )
     group_msg = MessageFormatter.format_penalty_group_message(
-        user_name, amount, date_shamsi, consecutive_days
+        user_name, amount, date_shamsi
     )
 
     if bale_id:
@@ -71,3 +74,51 @@ def notify_penalty_paid(user_name: str, bale_id: Optional[int], amount: int) -> 
         send_bale_message(bale_id, msg)
     send_to_groups(msg)
     logger.info(f"Penalty paid notifications sent for {user_name}")
+
+
+async def _download_bale_file(client: "Client", file_id: str) -> bytes:
+    """Download file bytes from Bale (file_id from user chat may not work in groups)."""
+    file = await client.get_file(file_id)
+    if file.path:
+        url = f"{client.connection.base_url}/file/bot{client.connection.token}/{file.path}"
+    else:
+        url = client.connection.file_url(file_id)
+    response = await client.connection.client.get(url, timeout=30)
+    response.raise_for_status()
+    return response.content
+
+
+async def send_receipt_to_groups(
+    client: "Client",
+    message: "Message",
+    file_id: str,
+    caption: str,
+) -> int:
+    """
+    Send receipt image + caption to all groups.
+    Re-uploads the image so it works across chats; falls back to forward + text.
+    Returns count of successful group sends.
+    """
+    sent = 0
+    for group_id in BALE_GROUP_IDS:
+        try:
+            photo_bytes = await _download_bale_file(client, file_id)
+            await client.send_photo(
+                chat_id=group_id,
+                photo=photo_bytes,
+                caption=caption,
+            )
+            sent += 1
+            logger.info(f"Receipt photo+caption sent to group {group_id}")
+        except Exception as e:
+            logger.warning(
+                f"Re-upload receipt to {group_id} failed ({e}), trying forward"
+            )
+            try:
+                await message.forward(group_id)
+                await client.send_message(chat_id=group_id, text=caption)
+                sent += 1
+                logger.info(f"Receipt forwarded + caption sent to group {group_id}")
+            except Exception as e2:
+                logger.error(f"Failed to send receipt to group {group_id}: {e2}")
+    return sent

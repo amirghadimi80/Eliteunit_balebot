@@ -52,9 +52,8 @@ DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
 MISSING_REPORT_CHECK_HOUR = 10
 MISSING_REPORT_CHECK_MINUTE = 0
 
-# Penalty amounts (Toman) — checked daily at 10 AM for yesterday's missing report
-PENALTY_AMOUNT_ONE_DAY = int(os.getenv("PENALTY_AMOUNT_ONE_DAY", "100"))
-PENALTY_AMOUNT_TWO_DAYS = int(os.getenv("PENALTY_AMOUNT_TWO_DAYS", "300"))
+# Penalty amount (Toman) per missed day — checked daily at 10 AM for yesterday's missing report
+PENALTY_AMOUNT_PER_DAY = int(os.getenv("PENALTY_AMOUNT_PER_DAY", os.getenv("PENALTY_AMOUNT_ONE_DAY", "100")))
 
 # Payment details shown in penalty notifications
 PAYMENT_CARD_NUMBER = os.getenv("PAYMENT_CARD_NUMBER", "5859831143308848")
@@ -95,6 +94,7 @@ BUTTON_LABELS = {
     "monthly_report": "📅 گزارش ماهانه",
     "profile": "👤 پروفایل من",
     "friends": "👥 آشنایی با دوستان",
+    "pay_penalty": "💳 پرداخت جریمه",
     "admin": "⚙️ پنل ادمین",
     "share_contact": "📞 اشتراک گذاری شماره",
 }

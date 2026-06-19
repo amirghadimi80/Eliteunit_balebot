@@ -140,6 +140,29 @@ def get_yesterday() -> datetime.date:
     return get_today_gregorian() - datetime.timedelta(days=1)
 
 
+def get_effective_report_deadline_day() -> datetime.date:
+    """
+    Calendar day whose report is in the normal submission window.
+
+    Before 10 AM Iran time, yesterday's report can still be submitted
+    (grace period until 10 AM the next day).
+    """
+    from config.settings import MISSING_REPORT_CHECK_HOUR
+
+    now = get_current_time_iran()
+    today = now.date()
+    if now.hour < MISSING_REPORT_CHECK_HOUR:
+        return today - datetime.timedelta(days=1)
+    return today
+
+
+def is_within_report_grace_period() -> bool:
+    """True if before 10 AM — yesterday's report is still due normally."""
+    from config.settings import MISSING_REPORT_CHECK_HOUR
+
+    return get_current_time_iran().hour < MISSING_REPORT_CHECK_HOUR
+
+
 def is_leap_gregorian(year: int) -> bool:
     return (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0)
 

@@ -14,6 +14,7 @@ from handlers.start import StartHandler
 from handlers.tasks import TaskHandler
 from handlers.profile import ProfileHandler
 from handlers.admin import AdminHandler
+from handlers.penalty_payment import PenaltyPaymentHandler
 from config.settings import BALE_API_TOKEN, BALE_GROUP_IDS
 
 # Setup logging
@@ -42,6 +43,7 @@ class EliteUniteTimeBot:
         self.task_handler = TaskHandler(self.db)
         self.profile_handler = ProfileHandler(self.db)
         self.admin_handler = AdminHandler(self.db)
+        self.penalty_payment_handler = PenaltyPaymentHandler(self.db)
         logger.info("All handlers initialized")
         if BALE_GROUP_IDS:
             logger.info(f"Group notifications enabled for {len(BALE_GROUP_IDS)} group(s): {BALE_GROUP_IDS}")
@@ -99,6 +101,14 @@ class EliteUniteTimeBot:
             if message.contact:
                 await self.start_handler.handle_phone_input(client, message)
                 return
+
+            # Receipt photo for penalty payment
+            if message.photo or message.document:
+                handled = await self.penalty_payment_handler.handle_receipt_upload(
+                    client, message
+                )
+                if handled:
+                    return
             
             # Handle commands
             if text.startswith("/start"):
@@ -197,8 +207,20 @@ class EliteUniteTimeBot:
             # Route to appropriate handler based on callback data
             if data == "daily_report":
                 await self.task_handler.handle_daily_report_start(client, callback_query.message)
+
+            elif data.startswith("report_pick_"):
+                date_str = data[len("report_pick_"):]
+                await self.task_handler.handle_report_date_pick(
+                    client, callback_query.message, date_str
+                )
             
+            elif data == "pay_penalty":
+                await self.penalty_payment_handler.handle_pay_penalty_start(
+                    client, callback_query.message
+                )
+
             elif data == "main_menu":
+                self.penalty_payment_handler.cancel_payment(user_id)
                 await self.start_handler._show_main_menu(client, callback_query.message)
             
             elif data == "weekly_report":

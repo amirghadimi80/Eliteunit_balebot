@@ -12,7 +12,6 @@ from database.db import Database
 from models.models import Report, DailyStats, WeeklyStats, MonthlyStats
 from utils.date_utils import (
     get_today_gregorian,
-    get_yesterday,
     gregorian_to_jalali,
     gregorian_to_jalali_str,
     get_week_start_end,
@@ -38,29 +37,31 @@ class ReportService:
     # DAILY REPORT OPERATIONS
     # =====================
 
-    def get_next_report_date(self, user_id: int) -> Tuple[date, bool]:
+    def get_missing_report_dates(
+        self, user_id: int, max_days_back: int = 31
+    ) -> List[date]:
         """
-        Determine which date the user should submit next.
-
-        Returns:
-            Tuple[date, bool]: (target_date, is_backdated)
-            If older reports are missing, returns the oldest missing date
-            (walking back from yesterday). Otherwise returns today.
+        All calendar days before today without a report, oldest first.
         """
         today = get_today_gregorian()
-        oldest_missing = None
-        d = get_yesterday()
+        missing: List[date] = []
+        d = today - timedelta(days=1)
+        start = today - timedelta(days=max_days_back)
 
-        while d >= today - timedelta(days=31):
+        while d >= start:
             if not self.db.report_exists(user_id, d.strftime("%Y-%m-%d")):
-                oldest_missing = d
-                d -= timedelta(days=1)
-            else:
-                break
+                missing.append(d)
+            d -= timedelta(days=1)
 
-        if oldest_missing:
-            return oldest_missing, True
-        return today, False
+        missing.sort()
+        return missing
+
+    def get_next_report_date(self, user_id: int) -> Tuple[date, bool]:
+        """Next required report: oldest missing day, or today if caught up."""
+        missing = self.get_missing_report_dates(user_id)
+        if missing:
+            return missing[0], True
+        return get_today_gregorian(), False
     
     def submit_daily_report(
         self,

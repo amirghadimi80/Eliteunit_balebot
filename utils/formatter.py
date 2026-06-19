@@ -24,6 +24,7 @@ class MessageFormatter:
         total_hours: float,
         report_date: date,
         submit_time: str = "",
+        is_late: bool = False,
     ) -> str:
         """
         Format a daily report message for group notification.
@@ -35,14 +36,17 @@ class MessageFormatter:
             total_hours: Total hours
             report_date: Date of the report
             submit_time: Time of submission (HH:MM, Iran time)
+            is_late: True for backfilled reports of past days
 
         Returns:
             str: Formatted report message
         """
         date_str = format_date_persian(report_date)
         time_part = f"  🕐 {submit_time}" if submit_time else ""
+        header = "📋 گزارش معوقه\n" if is_late else ""
 
         message = (
+            f"{header}"
             f"👤 {user_name}\n"
             f"📌 اصلی: {main_hours}\n"
             f"📌 فرعی: {side_hours}\n"
@@ -207,11 +211,19 @@ class MessageFormatter:
         )
 
     @staticmethod
+    def format_bot_report_action(date_shamsi: str) -> str:
+        return (
+            f"📝 الان برو توی بات و گزارش روز {date_shamsi} را وارد کن:\n"
+            f"منو → 📊 ثبت گزارش روزانه\n\n"
+            f"⚠️ ابتدا همه روزهای قبلی که ثبت نشده را وارد کن، بعد گزارش امروز."
+        )
+
+    @staticmethod
     def _bot_report_reminder() -> str:
         return (
             "📝 گزارش را داخل بات ثبت کنید:\n"
             "منو → 📊 ثبت گزارش روزانه\n\n"
-            "⚠️ اول گزارش دیروز را وارد کنید، سپس گزارش امروز."
+            "⚠️ ابتدا روزهای قبلی که ثبت نشده را وارد کن، بعد گزارش امروز."
         )
 
     @staticmethod
@@ -219,18 +231,14 @@ class MessageFormatter:
         user_name: str,
         amount: int,
         date_shamsi: str,
-        consecutive_days: int,
     ) -> str:
         """Private message to penalized user."""
-        days_note = ""
-        if consecutive_days >= 2:
-            days_note = f"\n({consecutive_days} روز متوالی گزارش ثبت نشده)"
         return (
             f"⚠️ {user_name} عزیز\n\n"
-            f"شما {amount:,} تومان جریمه شدید.{days_note}\n"
+            f"شما {amount:,} تومان جریمه شدید.\n"
             f"گزارش روز {date_shamsi} ثبت نشده.\n"
             f"مهلت: تا ساعت ۱۰ صبح روز بعد.\n\n"
-            f"{MessageFormatter._bot_report_reminder()}\n\n"
+            f"{MessageFormatter.format_bot_report_action(date_shamsi)}\n\n"
             f"{MessageFormatter._payment_block()}"
         )
 
@@ -239,25 +247,34 @@ class MessageFormatter:
         user_name: str,
         amount: int,
         date_shamsi: str,
-        consecutive_days: int,
     ) -> str:
         """Group announcement for a new penalty."""
-        days_note = ""
-        if consecutive_days >= 2:
-            days_note = f" ({consecutive_days} روز متوالی)"
         return (
-            f"⚠️ {user_name} — {amount:,} تومان جریمه شد{days_note}\n"
+            f"⚠️ {user_name} — {amount:,} تومان جریمه شد\n"
             f"گزارش روز {date_shamsi} ثبت نشده.\n\n"
-            f"{MessageFormatter._bot_report_reminder()}\n\n"
+            f"{MessageFormatter.format_bot_report_action(date_shamsi)}\n\n"
             f"{MessageFormatter._payment_block()}"
         )
 
     @staticmethod
-    def format_penalty_paid_message(user_name: str, amount: int) -> str:
+    def format_penalty_paid_message(user_name: str, amount: int, days_count: int = 1) -> str:
         """Notification when penalty payment is confirmed."""
+        days_part = f"{days_count} روز — " if days_count > 1 else ""
         return (
-            f"✅ جریمه {user_name} ({amount:,} تومان) پرداخت شد.\n"
-            f"تأیید شده توسط {PAYMENT_CARD_HOLDER}"
+            f"✅ جریمه {user_name} پرداخت شد.\n"
+            f"{days_part}{amount:,} تومان"
+        )
+
+    @staticmethod
+    def format_penalty_payment_receipt_caption(
+        user_name: str, amount: int, days_count: int
+    ) -> str:
+        """Caption for receipt photo posted in group."""
+        return (
+            f"✅ جریمه {user_name} پرداخت شد\n\n"
+            f"👤 {user_name}\n"
+            f"📅 تعداد روز گزارش ثبت‌نشده: {days_count} روز\n"
+            f"💰 مبلغ: {amount:,} تومان"
         )
     
     @staticmethod
