@@ -122,6 +122,10 @@ class PenaltyService:
             return days_count, total_amount
         return 0, 0
 
+    def cleanup_paid_penalties(self, user_id: int) -> int:
+        """Delete already-paid penalties for a user to keep DB small."""
+        return self.db.delete_paid_penalties_by_user(user_id)
+
     def get_user_missing_dates(self, user_id: int, days_back: int = 7) -> List[str]:
         penalties = self.get_user_all_penalties(user_id)
         cutoff_date = get_today_gregorian() - timedelta(days=days_back)

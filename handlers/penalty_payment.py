@@ -159,6 +159,14 @@ class PenaltyPaymentHandler:
         )
         if groups_sent == 0:
             logger.warning("Receipt was not sent to any group")
+        else:
+            # Receipt itself is not persisted in DB; keep DB slim by
+            # removing now-paid penalty rows after successful group delivery.
+            deleted_paid = self.penalty_service.cleanup_paid_penalties(user_db_id)
+            logger.info(
+                f"Cleanup paid penalties after receipt upload: "
+                f"user_id={user_db_id}, deleted={deleted_paid}"
+            )
 
         keyboard = InlineKeyboard()
         keyboard.add_row(

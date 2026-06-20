@@ -214,27 +214,24 @@ class StartHandler:
         if user_id_db:
             del self.user_states[user_id]
 
-            success_text = (
+            header = (
                 f"✅ حساب بات به پروفایل «{existing_by_name.full_name}» وصل شد!\n"
-                f"گزارش‌ها و جریمه‌های قبلی‌تان حفظ شده.\n\nمنوی اصلی:"
+                f"گزارش‌ها و جریمه‌های قبلی‌تان حفظ شده."
                 if linked
-                else "✅ ثبت نام شما با موفقیت انجام شد!\n\nمنوی اصلی:"
+                else "✅ ثبت نام شما با موفقیت انجام شد!"
             )
 
             try:
                 from balethon.objects import ReplyKeyboard
                 await client.send_message(
                     chat_id=user_id,
-                    text=success_text,
+                    text="‌",
                     reply_markup=ReplyKeyboard(remove=True),
                 )
             except Exception:
-                await client.send_message(
-                    chat_id=user_id,
-                    text=success_text,
-                )
+                pass
 
-            await self._show_main_menu(client, message)
+            await self._show_main_menu(client, message, header=header)
             action = "linked" if linked else "registered"
             logger.info(f"User {action}: {full_name} (ID: {user_id_db})")
         else:
@@ -243,16 +240,22 @@ class StartHandler:
                 text="❌ خطا در ثبت نام. لطفاً دوباره تلاش کنید.",
             )
     
-    async def _show_main_menu(self, client: Client, message: Message):
+    async def _show_main_menu(
+        self, client: Client, message: Message, header: str = None
+    ):
         """
         Show main menu buttons.
         
         Args:
             client: Balethon client instance
             message: Message object
+            header: Optional text shown above the menu (e.g. after registration)
         """
         user_id = message.chat.id
-        
+        menu_text = "📋 منوی اصلی:"
+        if header:
+            menu_text = f"{header}\n\n{menu_text}"
+
         # Create main menu keyboard
         keyboard = InlineKeyboard()
         
@@ -302,6 +305,6 @@ class StartHandler:
         
         await client.send_message(
             chat_id=user_id,
-            text="📋 منوی اصلی:",
+            text=menu_text,
             reply_markup=keyboard,
         )

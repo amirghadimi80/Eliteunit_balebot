@@ -13,6 +13,7 @@ from services.reports import ReportService
 from utils.date_utils import (
     format_date_persian,
     get_today_gregorian,
+    get_effective_report_deadline_day,
     get_current_time_iran,
     is_within_report_grace_period,
     gregorian_to_jalali_str,
@@ -48,6 +49,14 @@ class TaskHandler:
         missing = self.report_service.get_missing_report_dates(user.id)
         if missing:
             await self._show_missing_days_picker(client, chat_id, user.id)
+            return
+
+        deadline_day = get_effective_report_deadline_day()
+        if not self.db.report_exists(user.id, deadline_day.strftime("%Y-%m-%d")):
+            is_today = deadline_day == get_today_gregorian()
+            await self._start_report_entry(
+                client, chat_id, user.id, deadline_day, is_today=is_today
+            )
             return
 
         today = get_today_gregorian()
@@ -104,6 +113,16 @@ class TaskHandler:
         """Show list of missing days; only the oldest is selectable."""
         missing = self.report_service.get_missing_report_dates(user_db_id)
         if not missing:
+            deadline_day = get_effective_report_deadline_day()
+            if not self.db.report_exists(
+                user_db_id, deadline_day.strftime("%Y-%m-%d")
+            ):
+                is_today = deadline_day == get_today_gregorian()
+                await self._start_report_entry(
+                    client, chat_id, user_db_id, deadline_day, is_today=is_today
+                )
+                return
+
             today = get_today_gregorian()
             if not self.db.report_exists(user_db_id, today.strftime("%Y-%m-%d")):
                 await self._start_report_entry(

@@ -12,6 +12,8 @@ from database.db import Database
 from models.models import Report, DailyStats, WeeklyStats, MonthlyStats
 from utils.date_utils import (
     get_today_gregorian,
+    get_effective_report_deadline_day,
+    is_within_report_grace_period,
     gregorian_to_jalali,
     gregorian_to_jalali_str,
     get_week_start_end,
@@ -41,13 +43,20 @@ class ReportService:
         self, user_id: int, max_days_back: int = 31
     ) -> List[date]:
         """
-        All calendar days before today without a report, oldest first.
+        Overdue days without a report (must backfill first), oldest first.
+
+        Before 10 AM, yesterday is still in the grace window and is not listed here.
         """
         today = get_today_gregorian()
-        missing: List[date] = []
-        d = today - timedelta(days=1)
-        start = today - timedelta(days=max_days_back)
+        deadline_day = get_effective_report_deadline_day()
 
+        if is_within_report_grace_period():
+            d = deadline_day - timedelta(days=1)
+        else:
+            d = today - timedelta(days=1)
+
+        start = today - timedelta(days=max_days_back)
+        missing: List[date] = []
         while d >= start:
             if not self.db.report_exists(user_id, d.strftime("%Y-%m-%d")):
                 missing.append(d)

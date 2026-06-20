@@ -608,6 +608,29 @@ class Database:
         except sqlite3.Error as e:
             logger.error(f"Error marking all penalties paid: {e}")
             return 0
+
+    def delete_paid_penalties_by_user(self, user_id: int) -> int:
+        """
+        Delete all paid penalties for a user.
+
+        Returns:
+            int: Number of deleted rows
+        """
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                "DELETE FROM penalties WHERE user_id = ? AND status = 'paid'",
+                (user_id,),
+            )
+            deleted = cursor.rowcount
+            conn.commit()
+            conn.close()
+            logger.info(f"Deleted {deleted} paid penalties for user_id={user_id}")
+            return deleted
+        except sqlite3.Error as e:
+            logger.error(f"Error deleting paid penalties: {e}")
+            return 0
     
     def get_missing_report_users(self, date_gregorian: str) -> List[Tuple[int, str]]:
         """
