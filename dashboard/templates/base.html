@@ -689,6 +689,12 @@
     document.getElementById('sidebar').classList.remove('open');
     document.getElementById('sidebarOverlay').classList.remove('show');
   }
+  function formatDuration(hours) {
+    const totalMinutes = Math.round(Number(hours) * 60);
+    const h = Math.floor(totalMinutes / 60);
+    const m = totalMinutes % 60;
+    return h + ':' + String(m).padStart(2, '0');
+  }
 </script>
 {% block extra_scripts %}{% endblock %}
 </body>

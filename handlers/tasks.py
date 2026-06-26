@@ -10,6 +10,7 @@ from balethon.objects import Message, InlineKeyboard, InlineKeyboardButton
 
 from database.db import Database
 from services.reports import ReportService
+from utils.time_utils import parse_time_input, format_duration
 from utils.date_utils import (
     format_date_persian,
     get_today_gregorian,
@@ -196,7 +197,7 @@ class TaskHandler:
                 f"📊 ثبت گزارش روزانه\n\n"
                 f"📅 امروز: {target_persian}\n\n"
                 f"⬛️ لطفاً ساعت کاری اصلی را وارد کنید:\n"
-                f"(مثال: 6 یا 6.5)"
+                f"(مثال: 6 یا 2:30)"
             )
         elif is_within_report_grace_period() and report_date == get_today_gregorian() - timedelta(days=1):
             message_text = (
@@ -204,14 +205,14 @@ class TaskHandler:
                 f"📅 گزارش دیروز: {target_persian}\n"
                 f"⏰ مهلت: تا ساعت ۱۰ صبح امروز\n\n"
                 f"⬛️ لطفاً ساعت کاری اصلی را وارد کنید:\n"
-                f"(مثال: 6 یا 6.5)"
+                f"(مثال: 6 یا 2:30)"
             )
         else:
             message_text = (
                 f"📊 ثبت گزارش معوقه\n\n"
                 f"📅 تاریخ: {target_persian}\n\n"
                 f"⬛️ لطفاً ساعت کاری اصلی را وارد کنید:\n"
-                f"(مثال: 6 یا 6.5)"
+                f"(مثال: 6 یا 2:30)"
             )
 
         await client.send_message(chat_id=chat_id, text=message_text)
@@ -225,32 +226,28 @@ class TaskHandler:
             return
 
         try:
-            main_hours = float(message.text.strip())
+            main_hours = parse_time_input(message.text, max_hours=12)
+        except ValueError as e:
+            if "dot" in str(e):
+                err = "❌ از نقطه استفاده نکنید. فرمت: ساعت:دقیقه (مثال: 2:30)"
+            elif "out of range" in str(e):
+                err = "❌ ساعات اصلی باید بین 0 تا 12 باشد."
+            else:
+                err = "❌ فرمت نامعتبر. مثال: 6 یا 2:30"
+            await client.send_message(chat_id=chat_id, text=err)
+            return
 
-            if main_hours < 0 or main_hours > 12:
-                await client.send_message(
-                    chat_id=chat_id,
-                    text="❌ ساعات اصلی باید بین 0 تا 12 باشد.",
-                )
-                return
+        user_data["state"] = "waiting_side_hours"
+        user_data["main_hours"] = main_hours
 
-            user_data["state"] = "waiting_side_hours"
-            user_data["main_hours"] = main_hours
-
-            await client.send_message(
-                chat_id=chat_id,
-                text=(
-                    f"🔵 لطفاً ساعت کاری فرعی را وارد کنید:\n"
-                    f"(ورزش، پادکست، یادگیری، ...)\n\n"
-                    f"(مثال: 2 یا 2.5)"
-                ),
-            )
-
-        except ValueError:
-            await client.send_message(
-                chat_id=chat_id,
-                text="❌ لطفاً یک عدد معتبر وارد کنید.",
-            )
+        await client.send_message(
+            chat_id=chat_id,
+            text=(
+                f"🔵 لطفاً ساعت کاری فرعی را وارد کنید:\n"
+                f"(ورزش، پادکست، یادگیری، ...)\n\n"
+                f"(مثال: 2 یا 0:30)"
+            ),
+        )
 
     async def handle_side_hours_input(self, client: Client, message: Message):
         """Handle side hours input and submit report."""
@@ -261,15 +258,18 @@ class TaskHandler:
             return
 
         try:
-            side_hours = float(message.text.strip())
+            side_hours = parse_time_input(message.text, max_hours=8)
+        except ValueError as e:
+            if "dot" in str(e):
+                err = "❌ از نقطه استفاده نکنید. فرمت: ساعت:دقیقه (مثال: 2:30)"
+            elif "out of range" in str(e):
+                err = "❌ ساعات فرعی باید بین 0 تا 8 باشد."
+            else:
+                err = "❌ فرمت نامعتبر. مثال: 2 یا 0:30"
+            await client.send_message(chat_id=chat_id, text=err)
+            return
 
-            if side_hours < 0 or side_hours > 8:
-                await client.send_message(
-                    chat_id=chat_id,
-                    text="❌ ساعات فرعی باید بین 0 تا 8 باشد.",
-                )
-                return
-
+        try:
             main_hours = user_data.get("main_hours")
             user_db_id = user_data.get("user_id")
             report_date = user_data.get("report_date") or get_today_gregorian()
@@ -326,9 +326,9 @@ class TaskHandler:
                 confirmation = (
                     f"✅ گزارش شما ثبت شد!\n\n"
                     f"👤 {user.full_name}\n"
-                    f"⬛️ اصلی: {main_hours}\n"
-                    f"🔵 فرعی: {side_hours}\n"
-                    f"➕ مجموع: {main_hours + side_hours}\n\n"
+                    f"⬛️ اصلی: {format_duration(main_hours)}\n"
+                    f"🔵 فرعی: {format_duration(side_hours)}\n"
+                    f"➕ مجموع: {format_duration(main_hours + side_hours)}\n\n"
                     f"📅 {format_date_persian(report_date)}\n"
                     f"🕐 ساعت ثبت: {now_time}"
                     f"{follow_up}"
@@ -351,10 +351,10 @@ class TaskHandler:
             else:
                 await client.send_message(chat_id=chat_id, text=f"❌ {msg}")
 
-        except ValueError:
+        except Exception:
             await client.send_message(
                 chat_id=chat_id,
-                text="❌ لطفاً یک عدد معتبر وارد کنید.",
+                text="❌ خطا در ثبت گزارش. لطفاً دوباره تلاش کنید.",
             )
 
     async def _send_group_notification(

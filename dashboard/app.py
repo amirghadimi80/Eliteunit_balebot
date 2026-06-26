@@ -25,6 +25,7 @@ from utils.date_utils import (
     get_month_start_end,
     format_date_persian,
 )
+from utils.time_utils import parse_time_input, format_duration
 from config.settings import (
     BALE_ADMIN_IDS,
     PAYMENT_APPROVER_NAME,
@@ -39,6 +40,11 @@ app.secret_key = os.getenv("DASHBOARD_SECRET_KEY", "elite-unite-time-secret-2024
 db = Database()
 report_service = ReportService(db)
 penalty_service = PenaltyService(db)
+
+
+@app.template_filter("dur")
+def duration_filter(hours):
+    return format_duration(hours)
 
 
 # ─────────────────────────────────────────────
@@ -253,8 +259,11 @@ def delete_report(report_id):
 def add_report():
     user_id = int(request.form.get("user_id"))
     date_shamsi = request.form.get("date_shamsi")
-    main_hours = float(request.form.get("main_hours"))
-    side_hours = float(request.form.get("side_hours"))
+    try:
+        main_hours = parse_time_input(request.form.get("main_hours", ""), max_hours=12)
+        side_hours = parse_time_input(request.form.get("side_hours", ""), max_hours=8)
+    except ValueError:
+        return "Error: فرمت ساعت نامعتبر است (مثال: 2:30)", 400
     
     # Convert Jalali to Gregorian
     from utils.date_utils import jalali_to_gregorian

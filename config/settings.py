@@ -53,7 +53,9 @@ MISSING_REPORT_CHECK_HOUR = 10
 MISSING_REPORT_CHECK_MINUTE = 0
 
 # Penalty amount (Toman) per missed day — checked daily at 10 AM for yesterday's missing report
-PENALTY_AMOUNT_PER_DAY = int(os.getenv("PENALTY_AMOUNT_PER_DAY", os.getenv("PENALTY_AMOUNT_ONE_DAY", "100")))
+PENALTY_AMOUNT_PER_DAY = int(
+    os.getenv("PENALTY_AMOUNT_PER_DAY", os.getenv("PENALTY_AMOUNT", "100"))
+)
 
 # Payment details shown in penalty notifications
 PAYMENT_CARD_NUMBER = os.getenv("PAYMENT_CARD_NUMBER", "5859831143308848")

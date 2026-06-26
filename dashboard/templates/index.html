@@ -29,17 +29,17 @@
   </div>
   <div class="stat-card purple">
     <div class="label">ساعت امروز</div>
-    <div class="value" id="s-hours">{{ "%.1f"|format(stats.total_hours_today) }}</div>
+    <div class="value" id="s-hours">{{ stats.total_hours_today | dur }}</div>
     <div class="sub">ساعت</div>
   </div>
   <div class="stat-card purple">
     <div class="label">ساعت این هفته</div>
-    <div class="value">{{ "%.1f"|format(stats.total_hours_week) }}</div>
+    <div class="value">{{ stats.total_hours_week | dur }}</div>
     <div class="sub">ساعت</div>
   </div>
   <div class="stat-card purple">
     <div class="label">ساعت این ماه</div>
-    <div class="value">{{ "%.1f"|format(stats.total_hours_month) }}</div>
+    <div class="value">{{ stats.total_hours_month | dur }}</div>
     <div class="sub">ساعت</div>
   </div>
 </div>
@@ -102,9 +102,9 @@
             {% for r in today_rows %}
             <tr>
               <td><strong>{{ r.name }}</strong></td>
-              <td>{{ r.main }}</td>
-              <td>{{ r.side }}</td>
-              <td><span class="badge badge-green">{{ r.total }}</span></td>
+              <td>{{ r.main | dur }}</td>
+              <td>{{ r.side | dur }}</td>
+              <td><span class="badge badge-green">{{ r.total | dur }}</span></td>
             </tr>
             {% endfor %}
           </tbody>
@@ -156,7 +156,7 @@
       document.getElementById('s-total').textContent    = d.total_users;
       document.getElementById('s-reported').textContent = d.reported_today;
       document.getElementById('s-missing').textContent  = d.missing_today;
-      document.getElementById('s-hours').textContent    = d.total_hours_today.toFixed(1);
+      document.getElementById('s-hours').textContent    = formatDuration(d.total_hours_today);
     } catch(e) {}
   }
   setInterval(refreshStats, 30000);

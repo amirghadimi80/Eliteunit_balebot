@@ -144,9 +144,9 @@ async function loadUserChart(userId, viewType = 'daily') {
     const res = await fetch(`/api/user_chart_data/${userId}?view_type=${viewType}`);
     const data = await res.json();
 
-    document.getElementById('statMain').textContent = data.stats.total_main.toFixed(1);
-    document.getElementById('statSide').textContent = data.stats.total_side.toFixed(1);
-    document.getElementById('statAvg').textContent = data.stats.avg_weekly.toFixed(1);
+    document.getElementById('statMain').textContent = formatDuration(data.stats.total_main);
+    document.getElementById('statSide').textContent = formatDuration(data.stats.total_side);
+    document.getElementById('statAvg').textContent = formatDuration(data.stats.avg_weekly);
     document.getElementById('statDays').textContent = data.stats.weeks_reported;
 
     const labels = data.reports.map(r => r.date_shamsi);

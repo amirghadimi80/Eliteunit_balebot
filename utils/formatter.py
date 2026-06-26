@@ -11,6 +11,7 @@ from utils.date_utils import (
     get_jalali_day_name,
     format_date_persian,
 )
+from utils.time_utils import format_duration
 
 
 class MessageFormatter:
@@ -48,9 +49,9 @@ class MessageFormatter:
         message = (
             f"{header}"
             f"👤 {user_name}\n"
-            f"📌 اصلی: {main_hours}\n"
-            f"📌 فرعی: {side_hours}\n"
-            f"➕ مجموع: {total_hours}\n"
+            f"📌 اصلی: {format_duration(main_hours)}\n"
+            f"📌 فرعی: {format_duration(side_hours)}\n"
+            f"➕ مجموع: {format_duration(total_hours)}\n"
             f"📅 {date_str}{time_part}"
         )
         return message
@@ -86,7 +87,7 @@ class MessageFormatter:
             
             message += (
                 f"👤 {report.get('user_name', 'نامشخص')}: "
-                f"{total} ساعت (⬛️{main} + 🔵{side})\n"
+                f"{format_duration(total)} (⬛️{format_duration(main)} + 🔵{format_duration(side)})\n"
             )
             
             total_main += main
@@ -95,8 +96,8 @@ class MessageFormatter:
         
         message += f"\n{'=' * 40}\n"
         message += (
-            f"📈 کل: {total_all} ساعت\n"
-            f"⬛️ اصلی: {total_main} | 🔵 فرعی: {total_side}"
+            f"📈 کل: {format_duration(total_all)}\n"
+            f"⬛️ اصلی: {format_duration(total_main)} | 🔵 فرعی: {format_duration(total_side)}"
         )
         
         return message
@@ -130,9 +131,9 @@ class MessageFormatter:
             f"📈 گزارش هفتگی\n"
             f"👤 {user_name}\n"
             f"📅 {date_range}\n\n"
-            f"⬛️ ساعت اصلی: {main_hours}\n"
-            f"🔵 ساعت فرعی: {side_hours}\n"
-            f"➕ مجموع: {total_hours}"
+            f"⬛️ ساعت اصلی: {format_duration(main_hours)}\n"
+            f"🔵 ساعت فرعی: {format_duration(side_hours)}\n"
+            f"➕ مجموع: {format_duration(total_hours)}"
         )
         return message
     
@@ -167,9 +168,9 @@ class MessageFormatter:
             f"📅 گزارش ماهانه\n"
             f"👤 {user_name}\n"
             f"🗓️  {year:04d}/{month:02d}\n\n"
-            f"⬛️ ساعت اصلی: {main_hours}\n"
-            f"🔵 ساعت فرعی: {side_hours}\n"
-            f"➕ مجموع: {total_hours}\n\n"
+            f"⬛️ ساعت اصلی: {format_duration(main_hours)}\n"
+            f"🔵 ساعت فرعی: {format_duration(side_hours)}\n"
+            f"➕ مجموع: {format_duration(total_hours)}\n\n"
             f"📊 روزهای ثبت شده: {days_reported}/{days_total}"
         )
         return message
@@ -310,7 +311,7 @@ class MessageFormatter:
             
             message += (
                 f"{report.get('user_name', 'نامشخص')}: "
-                f"{total}h ({main}+{side})\n"
+                f"{format_duration(total)} ({format_duration(main)}+{format_duration(side)})\n"
             )
             
             total_main += main
@@ -323,10 +324,10 @@ class MessageFormatter:
         message += f"\n{'=' * 40}\n"
         message += (
             f"👥 کل کاربران: {user_count}\n"
-            f"⬛️ کل اصلی: {total_main}\n"
-            f"🔵 کل فرعی: {total_side}\n"
-            f"📈 کل کل: {total_all}\n"
-            f"📊 میانگین: {avg_total:.1f}"
+            f"⬛️ کل اصلی: {format_duration(total_main)}\n"
+            f"🔵 کل فرعی: {format_duration(total_side)}\n"
+            f"📈 کل کل: {format_duration(total_all)}\n"
+            f"📊 میانگین: {format_duration(avg_total)}"
         )
         
         return message
