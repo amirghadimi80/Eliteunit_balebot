@@ -15,6 +15,41 @@
 {% endif %}
 
 <div class="card" style="margin-bottom:20px;">
+  <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+    <div>
+      <div class="card-title">وضعیت اعمال جریمه</div>
+      <div class="payment-info" style="margin-top:4px;">
+        {% if penalties_enabled %}
+        جریمه‌های جدید برای همه فعال است
+        {% else %}
+        جریمه جدیدی برای هیچ‌کس اعمال نمی‌شود
+        {% endif %}
+      </div>
+    </div>
+    <form method="POST" action="{{ url_for('toggle_penalties') }}" style="margin:0;">
+      {% if penalties_enabled %}
+      <button type="submit" class="btn btn-danger"
+              onclick="return confirm('جریمه‌ها غیرفعال شوند؟ از این لحظه جریمه جدیدی ثبت نمی‌شود.')">
+        غیرفعال کردن جریمه‌ها
+      </button>
+      {% else %}
+      <button type="submit" class="btn btn-success"
+              onclick="return confirm('جریمه‌ها فعال شوند؟ از این لحظه جریمه جدید اعمال می‌شود.')">
+        فعال کردن جریمه‌ها
+      </button>
+      {% endif %}
+    </form>
+  </div>
+  <div class="card-body" style="padding-top:0;">
+    {% if penalties_enabled %}
+    <span class="badge badge-green">فعال</span>
+    {% else %}
+    <span class="badge badge-red">غیرفعال</span>
+    {% endif %}
+  </div>
+</div>
+
+<div class="card" style="margin-bottom:20px;">
   <div class="card-header">
     <div>
       <div class="card-title">اطلاعات واریز</div>

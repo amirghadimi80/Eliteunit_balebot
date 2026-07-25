@@ -751,3 +751,41 @@ class Database:
         except sqlite3.Error as e:
             logger.error(f"Error deleting all penalties: {e}")
             return 0
+
+    # =====================
+    # APP SETTINGS
+    # =====================
+
+    def get_setting(self, key: str, default: Optional[str] = None) -> Optional[str]:
+        """Get an app setting value by key."""
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute("SELECT value FROM app_settings WHERE key = ?", (key,))
+            row = cursor.fetchone()
+            conn.close()
+            return row["value"] if row else default
+        except sqlite3.Error as e:
+            logger.error(f"Error getting setting '{key}': {e}")
+            return default
+
+    def set_setting(self, key: str, value: str) -> bool:
+        """Create or update an app setting."""
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                """INSERT INTO app_settings (key, value, updated_at)
+                   VALUES (?, ?, CURRENT_TIMESTAMP)
+                   ON CONFLICT(key) DO UPDATE SET
+                     value = excluded.value,
+                     updated_at = CURRENT_TIMESTAMP""",
+                (key, value),
+            )
+            conn.commit()
+            conn.close()
+            logger.info(f"Setting updated: {key}={value}")
+            return True
+        except sqlite3.Error as e:
+            logger.error(f"Error setting '{key}': {e}")
+            return False

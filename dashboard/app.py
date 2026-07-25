@@ -308,6 +308,7 @@ def penalties():
     return render_template(
         "penalties.html",
         rows=rows,
+        penalties_enabled=penalty_service.is_penalties_enabled(),
         approver_name=PAYMENT_APPROVER_NAME,
         payment_card=PAYMENT_CARD_NUMBER,
         payment_holder=PAYMENT_CARD_HOLDER,
@@ -315,6 +316,20 @@ def penalties():
         flash_msg=request.args.get("msg"),
         flash_type=request.args.get("type", "ok"),
     )
+
+
+@app.route("/penalties/toggle", methods=["POST"])
+@login_required
+def toggle_penalties():
+    currently_enabled = penalty_service.is_penalties_enabled()
+    new_state = not currently_enabled
+    if penalty_service.set_penalties_enabled(new_state):
+        if new_state:
+            msg = "جریمه‌ها از این لحظه فعال شد — جریمه جدید اعمال می‌شود"
+        else:
+            msg = "جریمه‌ها از این لحظه غیرفعال شد — جریمه جدیدی اعمال نمی‌شود"
+        return redirect(url_for("penalties", msg=msg, type="ok"))
+    return redirect(url_for("penalties", msg="خطا در تغییر وضعیت جریمه‌ها", type="error"))
 
 
 @app.route("/penalties/approver", methods=["POST"])

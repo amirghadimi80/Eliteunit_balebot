@@ -145,4 +145,15 @@ DATABASE_SCHEMA = {
             FOREIGN KEY(user_id) REFERENCES users(id)
         )
     """,
+    "app_settings": """
+        CREATE TABLE IF NOT EXISTS app_settings (
+            key TEXT PRIMARY KEY NOT NULL,
+            value TEXT NOT NULL,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """,
 }
+
+# Default: new penalties are off until enabled from the dashboard
+PENALTIES_ENABLED_DEFAULT = False
+PENALTIES_ENABLED_KEY = "penalties_enabled"

@@ -14,7 +14,11 @@ from utils.date_utils import (
     get_yesterday,
     gregorian_to_jalali_str,
 )
-from config.settings import PENALTY_AMOUNT_PER_DAY
+from config.settings import (
+    PENALTY_AMOUNT_PER_DAY,
+    PENALTIES_ENABLED_DEFAULT,
+    PENALTIES_ENABLED_KEY,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +42,17 @@ class PenaltyService:
     def __init__(self, db: Database):
         self.db = db
 
+    def is_penalties_enabled(self) -> bool:
+        """Whether automatic creation of new penalties is enabled."""
+        raw = self.db.get_setting(PENALTIES_ENABLED_KEY)
+        if raw is None:
+            return PENALTIES_ENABLED_DEFAULT
+        return raw.strip().lower() in ("1", "true", "yes", "on")
+
+    def set_penalties_enabled(self, enabled: bool) -> bool:
+        """Enable or disable creation of new penalties from this moment."""
+        return self.db.set_setting(PENALTIES_ENABLED_KEY, "1" if enabled else "0")
+
     def check_and_create_missing_report_penalties(self) -> List[CreatedPenalty]:
         """
         Check yesterday's reports and create penalties for missing ones.
@@ -47,6 +62,10 @@ class PenaltyService:
         Returns:
             List of newly created penalties (for notifications).
         """
+        if not self.is_penalties_enabled():
+            logger.info("Penalty creation skipped: penalties are disabled")
+            return []
+
         yesterday = get_yesterday()
         yesterday_gregorian = yesterday.strftime("%Y-%m-%d")
         missing_users = self.db.get_missing_report_users(yesterday_gregorian)
