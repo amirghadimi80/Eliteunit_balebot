@@ -901,3 +901,156 @@ class Database:
         except sqlite3.Error as e:
             logger.error(f"Error setting '{key}': {e}")
             return False
+
+    # =====================
+    # BROADCAST OPERATIONS
+    # =====================
+
+    def add_broadcast(
+        self,
+        message_type: str,
+        body: str,
+        formatted_text: str,
+        to_users: bool,
+        to_group: bool,
+        users_ok: int,
+        users_fail: int,
+        groups_ok: int,
+        created_at: str,
+        deliveries: Optional[List[dict]] = None,
+    ) -> Optional[int]:
+        """Save a dashboard broadcast and its per-chat message_ids."""
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                """INSERT INTO broadcasts
+                   (message_type, body, formatted_text, to_users, to_group,
+                    users_ok, users_fail, groups_ok, created_at)
+                   VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+                (
+                    message_type,
+                    body,
+                    formatted_text,
+                    1 if to_users else 0,
+                    1 if to_group else 0,
+                    users_ok,
+                    users_fail,
+                    groups_ok,
+                    created_at,
+                ),
+            )
+            broadcast_id = cursor.lastrowid
+            for d in deliveries or []:
+                cursor.execute(
+                    """INSERT INTO broadcast_deliveries
+                       (broadcast_id, chat_id, message_id, target_type, deleted)
+                       VALUES (?, ?, ?, ?, 0)""",
+                    (
+                        broadcast_id,
+                        int(d["chat_id"]),
+                        int(d["message_id"]),
+                        d.get("target_type", "user"),
+                    ),
+                )
+            conn.commit()
+            conn.close()
+            return broadcast_id
+        except sqlite3.Error as e:
+            logger.error(f"Error saving broadcast: {e}")
+            return None
+
+    def get_broadcasts(self, limit: int = 50) -> List[dict]:
+        """List recent broadcasts (newest first)."""
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                """SELECT b.*,
+                          (SELECT COUNT(*) FROM broadcast_deliveries d
+                           WHERE d.broadcast_id = b.id AND d.deleted = 0) AS active_count,
+                          (SELECT COUNT(*) FROM broadcast_deliveries d
+                           WHERE d.broadcast_id = b.id) AS delivery_count
+                   FROM broadcasts b
+                   ORDER BY b.id DESC
+                   LIMIT ?""",
+                (limit,),
+            )
+            rows = [dict(r) for r in cursor.fetchall()]
+            conn.close()
+            return rows
+        except sqlite3.Error as e:
+            logger.error(f"Error listing broadcasts: {e}")
+            return []
+
+    def get_broadcast_by_id(self, broadcast_id: int) -> Optional[dict]:
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute("SELECT * FROM broadcasts WHERE id = ?", (broadcast_id,))
+            row = cursor.fetchone()
+            conn.close()
+            return dict(row) if row else None
+        except sqlite3.Error as e:
+            logger.error(f"Error getting broadcast {broadcast_id}: {e}")
+            return None
+
+    def get_broadcast_deliveries(
+        self, broadcast_id: int, only_active: bool = True
+    ) -> List[dict]:
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            if only_active:
+                cursor.execute(
+                    """SELECT * FROM broadcast_deliveries
+                       WHERE broadcast_id = ? AND deleted = 0""",
+                    (broadcast_id,),
+                )
+            else:
+                cursor.execute(
+                    """SELECT * FROM broadcast_deliveries
+                       WHERE broadcast_id = ?""",
+                    (broadcast_id,),
+                )
+            rows = [dict(r) for r in cursor.fetchall()]
+            conn.close()
+            return rows
+        except sqlite3.Error as e:
+            logger.error(f"Error getting deliveries for broadcast {broadcast_id}: {e}")
+            return []
+
+    def mark_deliveries_deleted(self, delivery_ids: List[int]) -> bool:
+        if not delivery_ids:
+            return True
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            placeholders = ",".join("?" * len(delivery_ids))
+            cursor.execute(
+                f"UPDATE broadcast_deliveries SET deleted = 1 WHERE id IN ({placeholders})",
+                delivery_ids,
+            )
+            conn.commit()
+            conn.close()
+            return True
+        except sqlite3.Error as e:
+            logger.error(f"Error marking deliveries deleted: {e}")
+            return False
+
+    def delete_broadcast_record(self, broadcast_id: int) -> bool:
+        """Remove broadcast row and its deliveries from DB."""
+        try:
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                "DELETE FROM broadcast_deliveries WHERE broadcast_id = ?",
+                (broadcast_id,),
+            )
+            cursor.execute("DELETE FROM broadcasts WHERE id = ?", (broadcast_id,))
+            conn.commit()
+            conn.close()
+            return True
+        except sqlite3.Error as e:
+            logger.error(f"Error deleting broadcast record {broadcast_id}: {e}")
+            return False

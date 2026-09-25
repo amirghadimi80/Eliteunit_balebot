@@ -54,11 +54,11 @@
 
 <div class="stats-grid" id="statsGrid" style="display:none;">
   <div class="stat-card blue">
-    <div class="label">ساعت اصلی</div>
+    <div class="label">کل ساعت مفید</div>
     <div class="value" id="statMain">0</div>
   </div>
   <div class="stat-card green">
-    <div class="label">ساعت فرعی</div>
+    <div class="label">ساعت رشد</div>
     <div class="value" id="statSide">0</div>
   </div>
   <div class="stat-card purple">
@@ -74,7 +74,7 @@
 <div class="chart-grid" id="chartsRow">
   <div class="card">
     <div class="card-header">
-      <div class="card-title">ساعات کاری</div>
+      <div class="card-title">ساعات</div>
     </div>
     <div class="card-body chart-box">
       <canvas id="barChart"></canvas>
@@ -82,7 +82,7 @@
   </div>
   <div class="card">
     <div class="card-header">
-      <div class="card-title">نسبت اصلی / فرعی</div>
+      <div class="card-title">نسبت مفید / رشد</div>
     </div>
     <div class="card-body chart-box">
       <canvas id="pieChart"></canvas>
@@ -161,8 +161,8 @@ async function loadUserChart(userId, viewType = 'daily') {
       data: {
         labels,
         datasets: [
-          { label: 'اصلی', data: mainData, backgroundColor: chartColors.main, borderRadius: 6 },
-          { label: 'فرعی', data: sideData, backgroundColor: chartColors.side, borderRadius: 6 },
+          { label: 'مفید', data: mainData, backgroundColor: chartColors.main, borderRadius: 6 },
+          { label: 'رشد', data: sideData, backgroundColor: chartColors.side, borderRadius: 6 },
         ],
       },
       options: chartOptions(true),
@@ -174,7 +174,7 @@ async function loadUserChart(userId, viewType = 'daily') {
     pieChart = new Chart(pieCtx, {
       type: 'doughnut',
       data: {
-        labels: ['اصلی', 'فرعی'],
+        labels: ['مفید', 'رشد'],
         datasets: [{
           data: [data.stats.total_main, data.stats.total_side],
           backgroundColor: [chartColors.main, chartColors.side],
@@ -211,8 +211,8 @@ async function loadAllUsersChart() {
       data: {
         labels: data.map(d => d.name),
         datasets: [
-          { label: 'اصلی', data: data.map(d => d.main), backgroundColor: chartColors.main, borderRadius: 6 },
-          { label: 'فرعی', data: data.map(d => d.side), backgroundColor: chartColors.side, borderRadius: 6 },
+          { label: 'مفید', data: data.map(d => d.main), backgroundColor: chartColors.main, borderRadius: 6 },
+          { label: 'رشد', data: data.map(d => d.side), backgroundColor: chartColors.side, borderRadius: 6 },
         ],
       },
       options: chartOptions(false),

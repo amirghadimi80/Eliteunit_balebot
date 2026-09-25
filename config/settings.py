@@ -66,7 +66,7 @@ PAYMENT_APPROVER_PIN = os.getenv("PAYMENT_APPROVER_PIN", "1234")
 # ======================
 # REPORT CONFIGURATION
 # ======================
-# Maximum hours per day allowed
+# Legacy limits (before 1405/07/04). From that date see utils.hours_model.
 MAX_MAIN_HOURS = 12
 MAX_SIDE_HOURS = 8
 MAX_TOTAL_HOURS = 20
@@ -80,8 +80,8 @@ MESSAGES = {
     "enter_phone": "لطفاً شماره تماس خود را ارسال کنید:",
     "registration_complete": "ثبت نام شما با موفقیت انجام شد! 🎉",
     "today_date": "امروز: {day_name} {date_shamsi}",
-    "enter_main_hours": "ساعت کاری اصلی را وارد کن:",
-    "enter_side_hours": "ساعت کاری فرعی را وارد کن:",
+    "enter_main_hours": "ساعت را وارد کن:",
+    "enter_side_hours": "ساعت دوم را وارد کن:",
     "report_saved": "گزارش شما با موفقیت ثبت شد! ✅",
     "missing_report": "گزارش روز {date_shamsi} را ثبت نکردید",
     "penalty_created": "مجازات ایجاد شد: {reason}",
@@ -151,6 +151,31 @@ DATABASE_SCHEMA = {
             key TEXT PRIMARY KEY NOT NULL,
             value TEXT NOT NULL,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    """,
+    "broadcasts": """
+        CREATE TABLE IF NOT EXISTS broadcasts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            message_type TEXT NOT NULL,
+            body TEXT NOT NULL,
+            formatted_text TEXT NOT NULL,
+            to_users INTEGER DEFAULT 0,
+            to_group INTEGER DEFAULT 0,
+            users_ok INTEGER DEFAULT 0,
+            users_fail INTEGER DEFAULT 0,
+            groups_ok INTEGER DEFAULT 0,
+            created_at TEXT NOT NULL
+        )
+    """,
+    "broadcast_deliveries": """
+        CREATE TABLE IF NOT EXISTS broadcast_deliveries (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            broadcast_id INTEGER NOT NULL,
+            chat_id INTEGER NOT NULL,
+            message_id INTEGER NOT NULL,
+            target_type TEXT NOT NULL,
+            deleted INTEGER DEFAULT 0,
+            FOREIGN KEY(broadcast_id) REFERENCES broadcasts(id) ON DELETE CASCADE
         )
     """,
 }

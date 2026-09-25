@@ -13,7 +13,7 @@
 <div class="alert alert-{{ flash_type }}">{{ flash_msg }}</div>
 {% endif %}
 
-<div class="card form-card" style="max-width:720px;">
+<div class="card form-card" style="max-width:720px; margin-bottom:24px;">
   <div class="card-header">
     <div>
       <div class="card-title">نوشتن پیام</div>
@@ -74,6 +74,76 @@
       </button>
     </form>
   </div>
+</div>
+
+<div class="card" style="max-width:900px;">
+  <div class="card-header">
+    <div>
+      <div class="card-title">پیام‌های ارسال‌شده</div>
+      <div class="card-subtitle">حذف، پیام را از چت کاربران و گروه پاک می‌کند</div>
+    </div>
+    <span class="page-meta">{{ broadcasts|length }} مورد</span>
+  </div>
+  {% if broadcasts %}
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>تاریخ و ساعت</th>
+          <th>نوع</th>
+          <th>متن</th>
+          <th>مقصد</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for b in broadcasts %}
+        <tr>
+          <td style="white-space:nowrap;">{{ b.created_at_display }}</td>
+          <td>
+            {% if b.message_type == 'admin' %}
+            <span class="badge badge-blue">{{ b.type_label }}</span>
+            {% else %}
+            <span class="badge badge-purple" style="background:var(--purple-soft);color:var(--purple);">{{ b.type_label }}</span>
+            {% endif %}
+          </td>
+          <td>
+            <div style="max-width:320px; white-space:pre-wrap; font-size:.84rem; color:var(--text-secondary); line-height:1.6;">
+              {{ b.body[:200] }}{% if b.body|length > 200 %}…{% endif %}
+            </div>
+          </td>
+          <td class="cell-muted" style="font-size:.8rem; white-space:nowrap;">
+            {% if b.to_users %}کاربران: {{ b.users_ok }}{% if b.users_fail %} / {{ b.users_fail }} ناموفق{% endif %}<br>{% endif %}
+            {% if b.to_group %}گروه: {{ b.groups_ok }}{% endif %}
+          </td>
+          <td>
+            {% if b.can_delete %}
+            <form method="POST" action="{{ url_for('delete_broadcast', broadcast_id=b.id) }}" style="margin:0;">
+              <button type="submit" class="btn btn-sm btn-danger"
+                      onclick="return confirm('این پیام از گروه و چت کاربران حذف شود؟')">
+                حذف پیام
+              </button>
+            </form>
+            {% else %}
+            <span class="badge badge-yellow">بدون شناسه حذف</span>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="card-body">
+    <div class="empty">
+      <div class="icon">📭</div>
+      <div>هنوز پیامی از این صفحه ارسال نشده</div>
+      <div style="font-size:.8rem; margin-top:6px; color:var(--muted);">
+        پیام‌های قبلی که قبل از این قابلیت فرستاده شده‌اند اینجا نیستند و قابل حذف خودکار نیستند
+      </div>
+    </div>
+  </div>
+  {% endif %}
 </div>
 
 <style>

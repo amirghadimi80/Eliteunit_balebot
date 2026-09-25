@@ -17,6 +17,9 @@
 <div class="card form-card" style="margin-bottom:20px;">
   <div class="card-header">
     <div class="card-title">ثبت گزارش دستی</div>
+    <div class="card-subtitle">
+      از ۴ مهر ۱۴۰۵: {{ hour_labels.first }} + {{ hour_labels.second }} (بدون جمع)
+    </div>
   </div>
   <div class="card-body">
     <form method="POST" action="{{ url_for('add_report') }}" class="filters">
@@ -31,14 +34,14 @@
       </div>
       <div class="filter-group">
         <label>تاریخ شمسی</label>
-        <input type="text" name="date_shamsi" placeholder="1405/03/24" required />
+        <input type="text" name="date_shamsi" placeholder="1405/07/04" required />
       </div>
       <div class="filter-group">
-        <label>ساعت اصلی</label>
+        <label>{{ hour_labels.first }}</label>
         <input type="text" name="main_hours" placeholder="6 یا 2:30" pattern="[0-9]+(:[0-9]{1,2})?" required />
       </div>
       <div class="filter-group">
-        <label>ساعت فرعی</label>
+        <label>{{ hour_labels.second }}</label>
         <input type="text" name="side_hours" placeholder="2 یا 0:30" pattern="[0-9]+(:[0-9]{1,2})?" required />
       </div>
       <button type="submit" class="btn btn-success">ذخیره</button>
@@ -82,17 +85,26 @@
 {% set total_all  = rows | sum(attribute='total') %}
 <div class="grid-stats-inline">
   <div class="stat-card blue compact">
-    <div class="label">کل اصلی</div>
+    <div class="label">کل {{ hour_labels.first_short }}</div>
     <div class="value">{{ total_main | dur }}</div>
   </div>
   <div class="stat-card purple compact">
-    <div class="label">کل فرعی</div>
+    <div class="label">کل {{ hour_labels.second_short }}</div>
     <div class="value">{{ total_side | dur }}</div>
   </div>
+  {% if hours_v2 %}
+  <div class="stat-card green compact">
+    <div class="label">٪ رشد میانگین</div>
+    <div class="value" style="font-size:1.2rem;">
+      {% if total_main > 0 %}{{ ((total_side / total_main) * 100) | round | int }}٪{% else %}0٪{% endif %}
+    </div>
+  </div>
+  {% else %}
   <div class="stat-card green compact">
     <div class="label">مجموع</div>
     <div class="value">{{ total_all | dur }}</div>
   </div>
+  {% endif %}
 </div>
 {% endif %}
 
@@ -105,9 +117,13 @@
           <th>#</th>
           <th>نام</th>
           <th>تاریخ</th>
-          <th>اصلی</th>
-          <th>فرعی</th>
+          <th>{{ hour_labels.first_short }}</th>
+          <th>{{ hour_labels.second_short }}</th>
+          {% if hours_v2 %}
+          <th>٪ رشد</th>
+          {% else %}
           <th>مجموع</th>
+          {% endif %}
           <th>ثبت</th>
           <th></th>
         </tr>
@@ -120,11 +136,19 @@
           <td>{{ r.date_shamsi }}</td>
           <td>{{ r.main | dur }}</td>
           <td>{{ r.side | dur }}</td>
+          {% if hours_v2 %}
+          <td>
+            <span class="badge badge-blue">
+              {% if r.main > 0 %}{{ ((r.side / r.main) * 100) | round | int }}٪{% else %}0٪{% endif %}
+            </span>
+          </td>
+          {% else %}
           <td>
             <span class="badge {% if r.total >= 8 %}badge-green{% elif r.total >= 4 %}badge-yellow{% else %}badge-red{% endif %}">
               {{ r.total | dur }}
             </span>
           </td>
+          {% endif %}
           <td class="cell-muted">{{ r.created_at }}</td>
           <td>
             <button type="button" class="btn btn-sm btn-danger btn-delete-report" data-id="{{ r.id }}">حذف</button>

@@ -43,8 +43,15 @@ class Report:
     updated_at: Optional[datetime] = None
     
     def __post_init__(self):
-        """Calculate total hours after initialization."""
-        self.total_hours = self.main_hours + self.side_hours
+        """
+        Recalculate total for the active hours model.
+        V1 (before 1405/07/04): main + side
+        V2 (from 1405/07/04): total = useful (main); growth is a subset
+        """
+        from utils.hours_model import compute_total_hours
+        self.total_hours = compute_total_hours(
+            self.main_hours, self.side_hours, self.date_gregorian
+        )
     
     def __repr__(self) -> str:
         """String representation of Report."""

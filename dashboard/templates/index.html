@@ -93,9 +93,13 @@
           <thead>
             <tr>
               <th>نام</th>
-              <th>اصلی</th>
-              <th>فرعی</th>
+              <th>{{ hour_labels.first_short }}</th>
+              <th>{{ hour_labels.second_short }}</th>
+              {% if hours_v2 %}
+              <th>٪ رشد</th>
+              {% else %}
               <th>مجموع</th>
+              {% endif %}
             </tr>
           </thead>
           <tbody>
@@ -104,7 +108,11 @@
               <td><strong>{{ r.name }}</strong></td>
               <td>{{ r.main | dur }}</td>
               <td>{{ r.side | dur }}</td>
+              {% if hours_v2 %}
+              <td><span class="badge badge-blue">{{ r.growth_pct }}٪</span></td>
+              {% else %}
               <td><span class="badge badge-green">{{ r.total | dur }}</span></td>
+              {% endif %}
             </tr>
             {% endfor %}
           </tbody>

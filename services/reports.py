@@ -19,6 +19,11 @@ from utils.date_utils import (
     get_week_start_end,
     get_month_start_end,
 )
+from utils.hours_model import (
+    compute_total_hours,
+    validate_hours,
+    uses_v2_hours,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -107,12 +112,9 @@ class ReportService:
         if self.db.report_exists(user_id, date_gregorian):
             return False, "گزارش برای این تاریخ قبلاً ثبت شده است"
         
-        # Validate hours
-        if main_hours < 0 or side_hours < 0:
-            return False, "ساعات نمی‌تواند منفی باشند"
-        
-        if main_hours > 12 or side_hours > 8:
-            return False, "ساعات از حد مجاز بیشتر است"
+        ok, err = validate_hours(main_hours, side_hours, report_date)
+        if not ok:
+            return False, err
         
         # Create report
         date_shamsi = gregorian_to_jalali_str(report_date)
@@ -172,7 +174,10 @@ class ReportService:
         
         total_main = sum(r.main_hours for r in reports)
         total_side = sum(r.side_hours for r in reports)
-        total = total_main + total_side
+        total = sum(
+            compute_total_hours(r.main_hours, r.side_hours, r.date_gregorian)
+            for r in reports
+        )
         
         missing = len(all_users) - len(reports)
         
@@ -217,7 +222,10 @@ class ReportService:
         
         total_main = sum(r.main_hours for r in reports)
         total_side = sum(r.side_hours for r in reports)
-        total = total_main + total_side
+        total = sum(
+            compute_total_hours(r.main_hours, r.side_hours, r.date_gregorian)
+            for r in reports
+        )
         
         stats = WeeklyStats(
             user_id=user_id,
@@ -285,7 +293,10 @@ class ReportService:
         
         total_main = sum(r.main_hours for r in reports)
         total_side = sum(r.side_hours for r in reports)
-        total = total_main + total_side
+        total = sum(
+            compute_total_hours(r.main_hours, r.side_hours, r.date_gregorian)
+            for r in reports
+        )
         
         # Calculate days in month
         days_in_month = (month_end - month_start).days + 1
@@ -360,9 +371,7 @@ class ReportService:
             
             export_data.append({
                 "نام کاربر": user_name,
-                "ساعت اصلی": stats.main_hours,
-                "ساعت فرعی": stats.side_hours,
-                "کل ساعات": stats.total_hours,
+                "کل ساعت مفید": stats.main_hours,
                 "جریمه‌ها": penalty_count,
                 "تاریخ": date_str,
             })

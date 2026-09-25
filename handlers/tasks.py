@@ -20,6 +20,13 @@ from utils.date_utils import (
     gregorian_to_jalali_str,
 )
 from utils.formatter import MessageFormatter
+from utils.hours_model import (
+    labels_for,
+    uses_v2_hours,
+    growth_percent,
+    compute_total_hours,
+    validate_hours,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -192,46 +199,50 @@ class TaskHandler:
         }
 
         target_persian = format_date_persian(report_date)
+        labels = labels_for(report_date)
+        prompt = labels["prompt_first"]
+
         if is_today:
             message_text = (
                 f"📊 ثبت گزارش روزانه\n\n"
                 f"📅 امروز: {target_persian}\n\n"
-                f"⬛️ لطفاً ساعت کاری اصلی را وارد کنید:\n"
-                f"(مثال: 6 یا 2:30)"
+                f"{prompt}"
             )
         elif is_within_report_grace_period() and report_date == get_today_gregorian() - timedelta(days=1):
             message_text = (
                 f"📊 ثبت گزارش روزانه\n\n"
                 f"📅 گزارش دیروز: {target_persian}\n"
                 f"⏰ مهلت: تا ساعت ۱۰ صبح امروز\n\n"
-                f"⬛️ لطفاً ساعت کاری اصلی را وارد کنید:\n"
-                f"(مثال: 6 یا 2:30)"
+                f"{prompt}"
             )
         else:
             message_text = (
                 f"📊 ثبت گزارش معوقه\n\n"
                 f"📅 تاریخ: {target_persian}\n\n"
-                f"⬛️ لطفاً ساعت کاری اصلی را وارد کنید:\n"
-                f"(مثال: 6 یا 2:30)"
+                f"{prompt}"
             )
 
         await client.send_message(chat_id=chat_id, text=message_text)
 
     async def handle_main_hours_input(self, client: Client, message: Message):
-        """Handle main working hours input."""
+        """Handle first hours field (main / useful)."""
         chat_id = self._chat_id(message)
         user_data = self.user_states.get(chat_id)
 
         if not user_data or user_data.get("state") != "waiting_main_hours":
             return
 
+        report_date = user_data.get("report_date") or get_today_gregorian()
+        labels = labels_for(report_date)
+        max_first = labels["max_first"]
+
         try:
-            main_hours = parse_time_input(message.text, max_hours=12)
+            main_hours = parse_time_input(message.text, max_hours=max_first)
         except ValueError as e:
             if "dot" in str(e):
                 err = "❌ از نقطه استفاده نکنید. فرمت: ساعت:دقیقه (مثال: 2:30)"
             elif "out of range" in str(e):
-                err = "❌ ساعات اصلی باید بین 0 تا 12 باشد."
+                err = f"❌ {labels['first']} باید بین 0 تا {max_first} باشد."
             else:
                 err = "❌ فرمت نامعتبر. مثال: 6 یا 2:30"
             await client.send_message(chat_id=chat_id, text=err)
@@ -242,37 +253,41 @@ class TaskHandler:
 
         await client.send_message(
             chat_id=chat_id,
-            text=(
-                f"🔵 لطفاً ساعت کاری فرعی را وارد کنید:\n"
-                f"(ورزش، پادکست، یادگیری، ...)\n\n"
-                f"(مثال: 2 یا 0:30)"
-            ),
+            text=labels["prompt_second"],
         )
 
     async def handle_side_hours_input(self, client: Client, message: Message):
-        """Handle side hours input and submit report."""
+        """Handle second hours field (side / growth) and submit report."""
         chat_id = self._chat_id(message)
         user_data = self.user_states.get(chat_id)
 
         if not user_data or user_data.get("state") != "waiting_side_hours":
             return
 
+        report_date = user_data.get("report_date") or get_today_gregorian()
+        labels = labels_for(report_date)
+        max_second = labels["max_second"]
+        main_hours = user_data.get("main_hours") or 0
+
         try:
-            side_hours = parse_time_input(message.text, max_hours=8)
+            side_hours = parse_time_input(message.text, max_hours=max_second)
         except ValueError as e:
             if "dot" in str(e):
                 err = "❌ از نقطه استفاده نکنید. فرمت: ساعت:دقیقه (مثال: 2:30)"
             elif "out of range" in str(e):
-                err = "❌ ساعات فرعی باید بین 0 تا 8 باشد."
+                err = f"❌ {labels['second']} باید بین 0 تا {max_second} باشد."
             else:
                 err = "❌ فرمت نامعتبر. مثال: 2 یا 0:30"
             await client.send_message(chat_id=chat_id, text=err)
             return
 
+        ok, err_msg = validate_hours(main_hours, side_hours, report_date)
+        if not ok:
+            await client.send_message(chat_id=chat_id, text=f"❌ {err_msg}")
+            return
+
         try:
-            main_hours = user_data.get("main_hours")
             user_db_id = user_data.get("user_id")
-            report_date = user_data.get("report_date") or get_today_gregorian()
 
             success, msg = self.report_service.submit_daily_report(
                 user_db_id,
@@ -323,12 +338,25 @@ class TaskHandler:
                 elif report_date < get_today_gregorian():
                     follow_up = "\n\n✅ حالا می‌توانید گزارش امروز را ثبت کنید."
 
+                if uses_v2_hours(report_date):
+                    pct = growth_percent(main_hours, side_hours)
+                    hours_block = (
+                        f"⬛️ {labels['first']}: {format_duration(main_hours)}\n"
+                        f"🟢 {labels['second']}: {format_duration(side_hours)}\n"
+                        f"📈 درصد رشد از ساعت کار: {pct} درصد"
+                    )
+                else:
+                    total = compute_total_hours(main_hours, side_hours, report_date)
+                    hours_block = (
+                        f"⬛️ {labels['first_short']}: {format_duration(main_hours)}\n"
+                        f"🔵 {labels['second_short']}: {format_duration(side_hours)}\n"
+                        f"➕ مجموع: {format_duration(total)}"
+                    )
+
                 confirmation = (
                     f"✅ گزارش شما ثبت شد!\n\n"
                     f"👤 {user.full_name}\n"
-                    f"⬛️ اصلی: {format_duration(main_hours)}\n"
-                    f"🔵 فرعی: {format_duration(side_hours)}\n"
-                    f"➕ مجموع: {format_duration(main_hours + side_hours)}\n\n"
+                    f"{hours_block}\n\n"
                     f"📅 {format_date_persian(report_date)}\n"
                     f"🕐 ساعت ثبت: {now_time}"
                     f"{follow_up}"
@@ -369,7 +397,7 @@ class TaskHandler:
         """Send report notification to group."""
         from config.settings import BALE_GROUP_IDS
 
-        total = main_hours + side_hours
+        total = compute_total_hours(main_hours, side_hours, report_date)
         now_time = get_current_time_iran().strftime("%H:%M")
         message = MessageFormatter.format_daily_report_group(
             user.full_name,

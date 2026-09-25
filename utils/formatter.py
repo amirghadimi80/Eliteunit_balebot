@@ -12,6 +12,14 @@ from utils.date_utils import (
     format_date_persian,
 )
 from utils.time_utils import format_duration
+from utils.hours_model import (
+    uses_v2_hours,
+    period_uses_v2,
+    growth_percent,
+    labels_for,
+    compute_total_hours,
+    HOURS_V2_START,
+)
 
 
 class MessageFormatter:
@@ -30,30 +38,34 @@ class MessageFormatter:
         """
         Format a daily report message for group notification.
 
-        Args:
-            user_name: User's full name
-            main_hours: Main working hours
-            side_hours: Secondary hours
-            total_hours: Total hours
-            report_date: Date of the report
-            submit_time: Time of submission (HH:MM, Iran time)
-            is_late: True for backfilled reports of past days
-
-        Returns:
-            str: Formatted report message
+        From 1405/07/04: useful + growth + growth percent (no sum).
+        Before that: main + side + total.
         """
         date_str = format_date_persian(report_date)
         time_part = f"  🕐 {submit_time}" if submit_time else ""
         header = "📋 گزارش معوقه\n" if is_late else ""
+        labels = labels_for(report_date)
 
-        message = (
-            f"{header}"
-            f"👤 {user_name}\n"
-            f"📌 اصلی: {format_duration(main_hours)}\n"
-            f"📌 فرعی: {format_duration(side_hours)}\n"
-            f"➕ مجموع: {format_duration(total_hours)}\n"
-            f"📅 {date_str}{time_part}"
-        )
+        if uses_v2_hours(report_date):
+            pct = growth_percent(main_hours, side_hours)
+            message = (
+                f"{header}"
+                f"👤 {user_name}\n"
+                f"📌 {labels['first']}: {format_duration(main_hours)}\n"
+                f"📌 {labels['second']}: {format_duration(side_hours)}\n"
+                f"📈 درصد رشد از ساعت کار: {pct} درصد\n"
+                f"📅 {date_str}{time_part}"
+            )
+        else:
+            total = compute_total_hours(main_hours, side_hours, report_date)
+            message = (
+                f"{header}"
+                f"👤 {user_name}\n"
+                f"📌 {labels['first_short']}: {format_duration(main_hours)}\n"
+                f"📌 {labels['second_short']}: {format_duration(side_hours)}\n"
+                f"➕ مجموع: {format_duration(total)}\n"
+                f"📅 {date_str}{time_part}"
+            )
         return message
     
     @staticmethod
@@ -73,6 +85,8 @@ class MessageFormatter:
         
         report_date = reports[0].get("report_date") if reports else None
         date_str = format_date_persian(report_date) if report_date else "نامشخص"
+        labels = labels_for(report_date)
+        v2 = uses_v2_hours(report_date)
         
         message = f"📊 خلاصه روزانه - {date_str}\n{'=' * 40}\n"
         
@@ -83,22 +97,40 @@ class MessageFormatter:
         for report in reports:
             main = report.get("main_hours", 0)
             side = report.get("side_hours", 0)
-            total = report.get("total_hours", 0)
+            rdate = report.get("report_date", report_date)
+            total = compute_total_hours(main, side, rdate)
             
-            message += (
-                f"👤 {report.get('user_name', 'نامشخص')}: "
-                f"{format_duration(total)} (⬛️{format_duration(main)} + 🔵{format_duration(side)})\n"
-            )
+            if v2:
+                pct = growth_percent(main, side)
+                message += (
+                    f"👤 {report.get('user_name', 'نامشخص')}: "
+                    f"{format_duration(main)} مفید · "
+                    f"{format_duration(side)} رشد ({pct}%)\n"
+                )
+            else:
+                message += (
+                    f"👤 {report.get('user_name', 'نامشخص')}: "
+                    f"{format_duration(total)} "
+                    f"(⬛️{format_duration(main)} + 🔵{format_duration(side)})\n"
+                )
             
             total_main += main
             total_side += side
             total_all += total
         
         message += f"\n{'=' * 40}\n"
-        message += (
-            f"📈 کل: {format_duration(total_all)}\n"
-            f"⬛️ اصلی: {format_duration(total_main)} | 🔵 فرعی: {format_duration(total_side)}"
-        )
+        if v2:
+            pct = growth_percent(total_main, total_side)
+            message += (
+                f"📈 کل {labels['first']}: {format_duration(total_main)}\n"
+                f"🟢 کل {labels['second']}: {format_duration(total_side)}\n"
+                f"📊 درصد رشد از ساعت کار: {pct} درصد"
+            )
+        else:
+            message += (
+                f"📈 کل: {format_duration(total_all)}\n"
+                f"⬛️ اصلی: {format_duration(total_main)} | 🔵 فرعی: {format_duration(total_side)}"
+            )
         
         return message
     
@@ -111,30 +143,29 @@ class MessageFormatter:
         side_hours: float,
         total_hours: float,
     ) -> str:
-        """
-        Format a weekly report for a user.
-        
-        Args:
-            user_name: User's full name
-            week_start: Start date of the week
-            week_end: End date of the week
-            main_hours: Total main hours
-            side_hours: Total side hours
-            total_hours: Total hours
-            
-        Returns:
-            str: Formatted weekly report
-        """
+        """Format a weekly report for a user."""
         date_range = f"{gregorian_to_jalali_str(week_start)} تا {gregorian_to_jalali_str(week_end)}"
-        
-        message = (
-            f"📈 گزارش هفتگی\n"
-            f"👤 {user_name}\n"
-            f"📅 {date_range}\n\n"
-            f"⬛️ ساعت اصلی: {format_duration(main_hours)}\n"
-            f"🔵 ساعت فرعی: {format_duration(side_hours)}\n"
-            f"➕ مجموع: {format_duration(total_hours)}"
-        )
+        labels = labels_for(week_end if period_uses_v2(week_start, week_end) else week_start)
+
+        if period_uses_v2(week_start, week_end):
+            pct = growth_percent(main_hours, side_hours)
+            message = (
+                f"📈 گزارش هفتگی\n"
+                f"👤 {user_name}\n"
+                f"📅 {date_range}\n\n"
+                f"⬛️ {labels['first']}: {format_duration(main_hours)}\n"
+                f"🟢 {labels['second']}: {format_duration(side_hours)}\n"
+                f"📈 درصد رشد از ساعت کار: {pct} درصد"
+            )
+        else:
+            message = (
+                f"📈 گزارش هفتگی\n"
+                f"👤 {user_name}\n"
+                f"📅 {date_range}\n\n"
+                f"⬛️ ساعت اصلی: {format_duration(main_hours)}\n"
+                f"🔵 ساعت فرعی: {format_duration(side_hours)}\n"
+                f"➕ مجموع: {format_duration(total_hours)}"
+            )
         return message
     
     @staticmethod
@@ -147,32 +178,38 @@ class MessageFormatter:
         total_hours: float,
         days_reported: int,
         days_total: int,
+        month_end: date = None,
     ) -> str:
-        """
-        Format a monthly report for a user.
-        
-        Args:
-            user_name: User's full name
-            year: Jalali year
-            month: Jalali month
-            main_hours: Total main hours
-            side_hours: Total side hours
-            total_hours: Total hours
-            days_reported: Number of days with reports
-            days_total: Total days in month
-            
-        Returns:
-            str: Formatted monthly report
-        """
-        message = (
-            f"📅 گزارش ماهانه\n"
-            f"👤 {user_name}\n"
-            f"🗓️  {year:04d}/{month:02d}\n\n"
-            f"⬛️ ساعت اصلی: {format_duration(main_hours)}\n"
-            f"🔵 ساعت فرعی: {format_duration(side_hours)}\n"
-            f"➕ مجموع: {format_duration(total_hours)}\n\n"
-            f"📊 روزهای ثبت شده: {days_reported}/{days_total}"
-        )
+        """Format a monthly report for a user."""
+        # Prefer v2 labels once the month reaches/passes 4 Mehr 1405
+        use_v2 = False
+        if month_end is not None:
+            use_v2 = period_uses_v2(month_end, month_end)
+        elif year > 1405 or (year == 1405 and month >= 7):
+            use_v2 = True
+
+        if use_v2:
+            labels = labels_for(HOURS_V2_START)
+            pct = growth_percent(main_hours, side_hours)
+            message = (
+                f"📅 گزارش ماهانه\n"
+                f"👤 {user_name}\n"
+                f"🗓️  {year:04d}/{month:02d}\n\n"
+                f"⬛️ {labels['first']}: {format_duration(main_hours)}\n"
+                f"🟢 {labels['second']}: {format_duration(side_hours)}\n"
+                f"📈 درصد رشد از ساعت کار: {pct} درصد\n\n"
+                f"📊 روزهای ثبت شده: {days_reported}/{days_total}"
+            )
+        else:
+            message = (
+                f"📅 گزارش ماهانه\n"
+                f"👤 {user_name}\n"
+                f"🗓️  {year:04d}/{month:02d}\n\n"
+                f"⬛️ ساعت اصلی: {format_duration(main_hours)}\n"
+                f"🔵 ساعت فرعی: {format_duration(side_hours)}\n"
+                f"➕ مجموع: {format_duration(total_hours)}\n\n"
+                f"📊 روزهای ثبت شده: {days_reported}/{days_total}"
+            )
         return message
     
     @staticmethod
@@ -310,6 +347,8 @@ class MessageFormatter:
             str: Formatted admin summary
         """
         date_range = f"{gregorian_to_jalali_str(week_start)} تا {gregorian_to_jalali_str(week_end)}"
+        v2 = period_uses_v2(week_start, week_end)
+        labels = labels_for(week_end if v2 else week_start)
         
         message = f"📊 خلاصه هفتگی\n{date_range}\n{'=' * 40}\n"
         
@@ -321,28 +360,46 @@ class MessageFormatter:
         for report in reports:
             main = report.get("main_hours", 0)
             side = report.get("side_hours", 0)
-            total = report.get("total_hours", 0)
+            total = report.get("total_hours", main if v2 else main + side)
             
-            message += (
-                f"{report.get('user_name', 'نامشخص')}: "
-                f"{format_duration(total)} ({format_duration(main)}+{format_duration(side)})\n"
-            )
+            if v2:
+                pct = growth_percent(main, side)
+                message += (
+                    f"{report.get('user_name', 'نامشخص')}: "
+                    f"{format_duration(main)} مفید · "
+                    f"{format_duration(side)} رشد ({pct}%)\n"
+                )
+            else:
+                message += (
+                    f"{report.get('user_name', 'نامشخص')}: "
+                    f"{format_duration(total)} ({format_duration(main)}+{format_duration(side)})\n"
+                )
             
             total_main += main
             total_side += side
             total_all += total
             user_count += 1
         
-        avg_total = total_all / user_count if user_count > 0 else 0
+        avg_total = (total_main if v2 else total_all) / user_count if user_count > 0 else 0
         
         message += f"\n{'=' * 40}\n"
-        message += (
-            f"👥 کل کاربران: {user_count}\n"
-            f"⬛️ کل اصلی: {format_duration(total_main)}\n"
-            f"🔵 کل فرعی: {format_duration(total_side)}\n"
-            f"📈 کل کل: {format_duration(total_all)}\n"
-            f"📊 میانگین: {format_duration(avg_total)}"
-        )
+        if v2:
+            pct = growth_percent(total_main, total_side)
+            message += (
+                f"👥 کل کاربران: {user_count}\n"
+                f"⬛️ کل {labels['first']}: {format_duration(total_main)}\n"
+                f"🟢 کل {labels['second']}: {format_duration(total_side)}\n"
+                f"📈 درصد رشد از ساعت کار: {pct} درصد\n"
+                f"📊 میانگین مفید: {format_duration(avg_total)}"
+            )
+        else:
+            message += (
+                f"👥 کل کاربران: {user_count}\n"
+                f"⬛️ کل اصلی: {format_duration(total_main)}\n"
+                f"🔵 کل فرعی: {format_duration(total_side)}\n"
+                f"📈 کل کل: {format_duration(total_all)}\n"
+                f"📊 میانگین: {format_duration(avg_total)}"
+            )
         
         return message
     
@@ -388,9 +445,7 @@ class MessageFormatter:
         """
         return [
             "نام کاربر",
-            "ساعت اصلی",
-            "ساعت فرعی",
-            "کل ساعات",
+            "کل ساعت مفید",
             "جریمه‌ها",
             "تاریخ",
         ]

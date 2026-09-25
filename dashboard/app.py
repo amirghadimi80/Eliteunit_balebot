@@ -21,6 +21,7 @@ from services.notifications import (
     notify_penalty_created,
     notify_penalty_paid,
     broadcast_dashboard_message,
+    delete_broadcast_deliveries,
 )
 from utils.date_utils import (
     gregorian_to_jalali_str,
@@ -30,6 +31,7 @@ from utils.date_utils import (
     format_date_persian,
 )
 from utils.time_utils import parse_time_input, format_duration
+from utils.hours_model import uses_v2_hours, growth_percent, labels_for
 from config.settings import (
     BALE_ADMIN_IDS,
     BALE_GROUP_IDS,
@@ -141,6 +143,7 @@ def index():
                 "main": r.main_hours,
                 "side": r.side_hours,
                 "total": r.total_hours,
+                "growth_pct": growth_percent(r.main_hours, r.side_hours),
                 "time": r.created_at,
             })
 
@@ -150,6 +153,9 @@ def index():
     unpaid_penalties = penalty_service.get_recent_unpaid_penalties(limit=10)
     all_unpaid = [p for p in db.get_all_penalties() if p.status == "unpaid"]
     total_unpaid_toman = sum(p.amount for p in all_unpaid)
+
+    hours_v2 = uses_v2_hours(today)
+    hour_labels = labels_for(today)
 
     return render_template(
         "index.html",
@@ -161,6 +167,8 @@ def index():
         total_unpaid_toman=total_unpaid_toman,
         payment_card=PAYMENT_CARD_NUMBER,
         payment_holder=PAYMENT_CARD_HOLDER,
+        hours_v2=hours_v2,
+        hour_labels=hour_labels,
     )
 
 
@@ -270,6 +278,10 @@ def reports():
     # Sort by date desc
     rows.sort(key=lambda x: x["date_gregorian"], reverse=True)
 
+    # Prefer v2 labels once the filter range includes the cutoff
+    hours_v2 = uses_v2_hours(end_date)
+    hour_labels = labels_for(end_date if hours_v2 else start_date)
+
     return render_template(
         "reports.html",
         rows=rows,
@@ -277,6 +289,8 @@ def reports():
         start_date=start_date,
         end_date=end_date,
         filter_user=filter_user,
+        hours_v2=hours_v2,
+        hour_labels=hour_labels,
     )
 
 
@@ -293,17 +307,23 @@ def delete_report(report_id):
 def add_report():
     user_id = int(request.form.get("user_id"))
     date_shamsi = request.form.get("date_shamsi")
-    try:
-        main_hours = parse_time_input(request.form.get("main_hours", ""), max_hours=12)
-        side_hours = parse_time_input(request.form.get("side_hours", ""), max_hours=8)
-    except ValueError:
-        return "Error: فرمت ساعت نامعتبر است (مثال: 2:30)", 400
-    
-    # Convert Jalali to Gregorian
     from utils.date_utils import jalali_to_gregorian
+    from utils.hours_model import labels_for as _labels_for
+
     parts = date_shamsi.split('/')
     g_date = jalali_to_gregorian(int(parts[0]), int(parts[1]), int(parts[2]))
-    
+    labels = _labels_for(g_date)
+
+    try:
+        main_hours = parse_time_input(
+            request.form.get("main_hours", ""), max_hours=labels["max_first"]
+        )
+        side_hours = parse_time_input(
+            request.form.get("side_hours", ""), max_hours=labels["max_second"]
+        )
+    except ValueError:
+        return "Error: فرمت ساعت نامعتبر است (مثال: 2:30)", 400
+
     success, message = report_service.submit_daily_report(
         user_id=user_id,
         main_hours=main_hours,
@@ -454,11 +474,25 @@ def api_today_reports():
 # Broadcast message (web dashboard → bot users + group)
 # ─────────────────────────────────────────────
 
+def _format_broadcast_created_at(raw: str) -> str:
+    """Pretty Iran datetime for broadcast list."""
+    text = (raw or "").strip()
+    if not text:
+        return "—"
+    try:
+        # Stored as YYYY-MM-DD HH:MM:SS
+        dt = datetime.strptime(text[:19], "%Y-%m-%d %H:%M:%S")
+        from utils.date_utils import gregorian_to_jalali_str
+        return f"{gregorian_to_jalali_str(dt.date())}  {dt.strftime('%H:%M')}"
+    except ValueError:
+        return text
+
+
 @app.route("/broadcast", methods=["GET", "POST"])
 @login_required
 def broadcast():
-    flash_msg = None
-    flash_type = "ok"
+    flash_msg = request.args.get("msg")
+    flash_type = request.args.get("type", "ok")
     last_message = ""
 
     if request.method == "POST":
@@ -498,6 +532,20 @@ def broadcast():
                     send_to_users=to_users,
                     send_to_group=to_group,
                 )
+                from utils.date_utils import get_current_time_iran
+                created_at = get_current_time_iran().strftime("%Y-%m-%d %H:%M:%S")
+                db.add_broadcast(
+                    message_type=message_type,
+                    body=message,
+                    formatted_text=result["formatted"],
+                    to_users=to_users,
+                    to_group=to_group,
+                    users_ok=result["users_ok"],
+                    users_fail=result["users_fail"],
+                    groups_ok=result["groups_ok"],
+                    created_at=created_at,
+                    deliveries=result.get("deliveries") or [],
+                )
                 parts = []
                 if to_users:
                     parts.append(
@@ -510,13 +558,60 @@ def broadcast():
                 flash_type = "ok" if (result["users_ok"] or result["groups_ok"]) else "error"
                 if flash_type == "ok":
                     last_message = ""
+                    return redirect(url_for("broadcast", msg=flash_msg, type=flash_type))
+
+    broadcasts = db.get_broadcasts(limit=50)
+    for b in broadcasts:
+        b["created_at_display"] = _format_broadcast_created_at(b.get("created_at", ""))
+        b["type_label"] = "پیام ادمین" if b.get("message_type") == "admin" else "پیام ربات"
+        b["can_delete"] = int(b.get("active_count") or 0) > 0
 
     return render_template(
         "broadcast.html",
         flash_msg=flash_msg,
         flash_type=flash_type,
         last_message=last_message,
+        broadcasts=broadcasts,
     )
+
+
+@app.route("/broadcast/delete/<int:broadcast_id>", methods=["POST"])
+@login_required
+def delete_broadcast(broadcast_id):
+    record = db.get_broadcast_by_id(broadcast_id)
+    if not record:
+        return redirect(url_for("broadcast", msg="پیام پیدا نشد", type="error"))
+
+    deliveries = db.get_broadcast_deliveries(broadcast_id, only_active=True)
+    if not deliveries:
+        db.delete_broadcast_record(broadcast_id)
+        return redirect(
+            url_for("broadcast", msg="رکورد از لیست حذف شد (پیامی برای پاک کردن در بله نبود)", type="ok")
+        )
+
+    result = delete_broadcast_deliveries(deliveries)
+    if result["deleted_ids"]:
+        db.mark_deliveries_deleted(result["deleted_ids"])
+
+    # If everything deleted (or nothing left active), remove list row
+    still_active = db.get_broadcast_deliveries(broadcast_id, only_active=True)
+    if not still_active:
+        db.delete_broadcast_record(broadcast_id)
+
+    if result["deleted"] and not result["failed"]:
+        msg = f"پیام از {result['deleted']} چت حذف شد"
+        flash_type = "ok"
+    elif result["deleted"]:
+        msg = (
+            f"{result['deleted']} پیام حذف شد، "
+            f"{result['failed']} مورد ناموفق بود"
+        )
+        flash_type = "error"
+    else:
+        msg = "حذف از بله ناموفق بود — ممکن است پیام خیلی قدیمی باشد یا دسترسی نباشد"
+        flash_type = "error"
+
+    return redirect(url_for("broadcast", msg=msg, type=flash_type))
 
 
 # ─────────────────────────────────────────────
@@ -671,9 +766,7 @@ def export_excel():
                 "Name": u.full_name,
                 "Date (Shamsi)": r.date_shamsi,
                 "Date (Gregorian)": r.date_gregorian,
-                "Main Hours": r.main_hours,
-                "Side Hours": r.side_hours,
-                "Total Hours": r.total_hours,
+                "کل ساعت مفید": r.main_hours,
             })
     
     df = pd.DataFrame(rows)

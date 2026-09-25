@@ -18,11 +18,14 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 
-def send_bale_message(chat_id: int, text: str) -> bool:
-    """Send a text message via Bale bot API."""
+def send_bale_message(chat_id: int, text: str) -> Optional[int]:
+    """
+    Send a text message via Bale bot API.
+    Returns message_id on success, None on failure.
+    """
     if not BALE_API_TOKEN:
         logger.error("BALE_API_TOKEN not set — cannot send message")
-        return False
+        return None
     try:
         response = httpx.post(
             f"https://tapi.bale.ai/bot{BALE_API_TOKEN}/sendMessage",
@@ -31,10 +34,40 @@ def send_bale_message(chat_id: int, text: str) -> bool:
         )
         if response.status_code != 200:
             logger.error(f"Bale API error {response.status_code}: {response.text[:200]}")
-            return False
-        return True
+            return None
+        data = response.json()
+        result = data.get("result") or {}
+        message_id = result.get("message_id")
+        if message_id is None:
+            logger.warning(f"Bale sendMessage ok but no message_id for chat {chat_id}")
+            return None
+        return int(message_id)
     except Exception as e:
         logger.error(f"Failed to send Bale message to {chat_id}: {e}")
+        return None
+
+
+def delete_bale_message(chat_id: int, message_id: int) -> bool:
+    """Delete a message via Bale bot API (deleteMessage)."""
+    if not BALE_API_TOKEN:
+        logger.error("BALE_API_TOKEN not set — cannot delete message")
+        return False
+    try:
+        response = httpx.post(
+            f"https://tapi.bale.ai/bot{BALE_API_TOKEN}/deleteMessage",
+            json={"chat_id": chat_id, "message_id": message_id},
+            timeout=15,
+        )
+        if response.status_code != 200:
+            logger.error(
+                f"Bale deleteMessage error {response.status_code}: "
+                f"{response.text[:200]}"
+            )
+            return False
+        data = response.json()
+        return bool(data.get("ok", True))
+    except Exception as e:
+        logger.error(f"Failed to delete Bale message {message_id} in {chat_id}: {e}")
         return False
 
 
@@ -45,6 +78,20 @@ def send_to_groups(text: str) -> int:
         if send_bale_message(group_id, text):
             sent += 1
     return sent
+
+
+def send_to_groups_with_ids(text: str) -> list:
+    """Send to groups; return list of {chat_id, message_id, target_type}."""
+    deliveries = []
+    for group_id in BALE_GROUP_IDS:
+        mid = send_bale_message(group_id, text)
+        if mid is not None:
+            deliveries.append({
+                "chat_id": group_id,
+                "message_id": mid,
+                "target_type": "group",
+            })
+    return deliveries
 
 
 def notify_penalty_created(
@@ -85,21 +132,31 @@ def broadcast_dashboard_message(
 ) -> dict:
     """
     Broadcast a message written in the web dashboard to users and/or groups.
+    Returns counts plus deliveries [{chat_id, message_id, target_type}, ...].
     """
     formatted = MessageFormatter.format_broadcast_message(text, message_type)
     users_ok = 0
     users_fail = 0
     groups_ok = 0
+    deliveries = []
 
     if send_to_users and user_bale_ids:
         for bale_id in user_bale_ids:
-            if send_bale_message(bale_id, formatted):
+            mid = send_bale_message(bale_id, formatted)
+            if mid is not None:
                 users_ok += 1
+                deliveries.append({
+                    "chat_id": bale_id,
+                    "message_id": mid,
+                    "target_type": "user",
+                })
             else:
                 users_fail += 1
 
     if send_to_group:
-        groups_ok = send_to_groups(formatted)
+        group_deliveries = send_to_groups_with_ids(formatted)
+        groups_ok = len(group_deliveries)
+        deliveries.extend(group_deliveries)
 
     logger.info(
         f"Dashboard broadcast ({message_type}): "
@@ -110,7 +167,31 @@ def broadcast_dashboard_message(
         "users_ok": users_ok,
         "users_fail": users_fail,
         "groups_ok": groups_ok,
+        "deliveries": deliveries,
     }
+
+
+def delete_broadcast_deliveries(deliveries: list) -> dict:
+    """
+    Delete previously sent broadcast messages from Bale.
+    deliveries: list of dicts with chat_id, message_id (and optional id).
+    """
+    deleted = 0
+    failed = 0
+    deleted_ids = []
+    for d in deliveries:
+        chat_id = d.get("chat_id")
+        message_id = d.get("message_id")
+        if chat_id is None or message_id is None:
+            failed += 1
+            continue
+        if delete_bale_message(int(chat_id), int(message_id)):
+            deleted += 1
+            if d.get("id") is not None:
+                deleted_ids.append(d["id"])
+        else:
+            failed += 1
+    return {"deleted": deleted, "failed": failed, "deleted_ids": deleted_ids}
 
 
 async def _download_bale_file(client: "Client", file_id: str) -> bytes:
