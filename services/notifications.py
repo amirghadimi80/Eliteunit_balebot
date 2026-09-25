@@ -76,6 +76,43 @@ def notify_penalty_paid(user_name: str, bale_id: Optional[int], amount: int) -> 
     logger.info(f"Penalty paid notifications sent for {user_name}")
 
 
+def broadcast_dashboard_message(
+    text: str,
+    message_type: str = "admin",
+    user_bale_ids: Optional[list] = None,
+    send_to_users: bool = True,
+    send_to_group: bool = True,
+) -> dict:
+    """
+    Broadcast a message written in the web dashboard to users and/or groups.
+    """
+    formatted = MessageFormatter.format_broadcast_message(text, message_type)
+    users_ok = 0
+    users_fail = 0
+    groups_ok = 0
+
+    if send_to_users and user_bale_ids:
+        for bale_id in user_bale_ids:
+            if send_bale_message(bale_id, formatted):
+                users_ok += 1
+            else:
+                users_fail += 1
+
+    if send_to_group:
+        groups_ok = send_to_groups(formatted)
+
+    logger.info(
+        f"Dashboard broadcast ({message_type}): "
+        f"users={users_ok}/{users_ok + users_fail}, groups={groups_ok}"
+    )
+    return {
+        "formatted": formatted,
+        "users_ok": users_ok,
+        "users_fail": users_fail,
+        "groups_ok": groups_ok,
+    }
+
+
 async def _download_bale_file(client: "Client", file_id: str) -> bytes:
     """Download file bytes from Bale (file_id from user chat may not work in groups)."""
     file = await client.get_file(file_id)

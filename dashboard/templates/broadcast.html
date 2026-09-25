@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+{% block title %}ارسال پیام{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h2>ارسال پیام</h2>
+    <p>پیام از داشبورد برای همه کاربران بات و گروه ارسال می‌شود</p>
+  </div>
+</div>
+
+{% if flash_msg %}
+<div class="alert alert-{{ flash_type }}">{{ flash_msg }}</div>
+{% endif %}
+
+<div class="card form-card" style="max-width:720px;">
+  <div class="card-header">
+    <div>
+      <div class="card-title">نوشتن پیام</div>
+      <div class="card-subtitle">نوع پیام بالای متن نمایش داده می‌شود</div>
+    </div>
+  </div>
+  <div class="card-body">
+    <form method="POST" action="{{ url_for('broadcast') }}" id="broadcastForm">
+      <div class="filter-group" style="margin-bottom:18px; min-width:100%;">
+        <label>نوع پیام</label>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:4px;">
+          <label class="msg-type-option">
+            <input type="radio" name="message_type" value="admin" checked />
+            <span>📢 پیام ادمین</span>
+          </label>
+          <label class="msg-type-option">
+            <input type="radio" name="message_type" value="bot" />
+            <span>🤖 پیام ربات</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="filter-group" style="margin-bottom:18px; min-width:100%;">
+        <label for="message_text">متن پیام</label>
+        <textarea
+          id="message_text"
+          name="message"
+          rows="7"
+          required
+          placeholder="متن پیام را اینجا بنویسید..."
+          style="width:100%; resize:vertical; background:var(--bg-elevated); border:1px solid var(--border); color:var(--text); border-radius:var(--radius-sm); padding:12px 14px; font-family:inherit; font-size:.9rem; outline:none; line-height:1.7;"
+        >{{ last_message or '' }}</textarea>
+      </div>
+
+      <div style="display:flex; gap:20px; flex-wrap:wrap; margin-bottom:20px;">
+        <label style="display:flex; align-items:center; gap:8px; font-size:.88rem; color:var(--text-secondary); cursor:pointer;">
+          <input type="checkbox" name="to_users" value="1" checked />
+          ارسال به همه کاربران بات
+        </label>
+        <label style="display:flex; align-items:center; gap:8px; font-size:.88rem; color:var(--text-secondary); cursor:pointer;">
+          <input type="checkbox" name="to_group" value="1" checked />
+          ارسال به گروه
+        </label>
+      </div>
+
+      <div class="card" style="margin-bottom:20px; background:var(--bg-elevated); border-style:dashed;">
+        <div class="card-body" style="padding:14px 16px;">
+          <div style="font-size:.76rem; color:var(--muted); margin-bottom:8px;">پیش‌نمایش</div>
+          <div id="preview" style="white-space:pre-wrap; font-size:.9rem; color:var(--text-secondary); line-height:1.7;">📢 پیام ادمین
+────────────────────
+</div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary"
+              onclick="return confirm('پیام برای گیرندگان انتخاب‌شده ارسال شود؟')">
+        ارسال پیام
+      </button>
+    </form>
+  </div>
+</div>
+
+<style>
+  .msg-type-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: .88rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: border-color .15s, background .15s, color .15s;
+  }
+  .msg-type-option:has(input:checked) {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    color: var(--text);
+  }
+  .msg-type-option input { accent-color: var(--accent); }
+</style>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+  const headers = {
+    admin: '📢 پیام ادمین',
+    bot: '🤖 پیام ربات',
+  };
+  const sep = '─'.repeat(20);
+
+  function updatePreview() {
+    const type = document.querySelector('input[name="message_type"]:checked')?.value || 'admin';
+    const text = document.getElementById('message_text').value.trim();
+    document.getElementById('preview').textContent =
+      headers[type] + '\n' + sep + '\n' + (text || '');
+  }
+
+  document.querySelectorAll('input[name="message_type"]').forEach(el => {
+    el.addEventListener('change', updatePreview);
+  });
+  document.getElementById('message_text').addEventListener('input', updatePreview);
+  updatePreview();
+</script>
+{% endblock %}

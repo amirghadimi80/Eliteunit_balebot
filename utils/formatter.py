@@ -277,7 +277,21 @@ class MessageFormatter:
             f"📅 تعداد روز گزارش ثبت‌نشده: {days_count} روز\n"
             f"💰 مبلغ: {amount:,} تومان"
         )
-    
+
+    BROADCAST_HEADERS = {
+        "admin": "📢 پیام ادمین",
+        "bot": "🤖 پیام ربات",
+    }
+
+    @staticmethod
+    def format_broadcast_message(text: str, message_type: str = "admin") -> str:
+        """Format a dashboard broadcast with admin/bot header."""
+        header = MessageFormatter.BROADCAST_HEADERS.get(
+            message_type, MessageFormatter.BROADCAST_HEADERS["admin"]
+        )
+        body = (text or "").strip()
+        return f"{header}\n{'─' * 20}\n{body}"
+
     @staticmethod
     def format_admin_weekly_summary(
         week_start: date,

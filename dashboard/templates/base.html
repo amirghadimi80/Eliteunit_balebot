@@ -663,6 +663,10 @@
          class="nav-item {% if request.endpoint == 'analytics' %}active{% endif %}">
         <span class="icon">📈</span> نمودارها
       </a>
+      <a href="{{ url_for('broadcast') }}"
+         class="nav-item {% if request.endpoint == 'broadcast' %}active{% endif %}">
+        <span class="icon">📣</span> ارسال پیام
+      </a>
     </div>
 
     <div class="sidebar-footer">

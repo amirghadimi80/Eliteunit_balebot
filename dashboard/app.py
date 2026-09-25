@@ -17,7 +17,11 @@ from datetime import datetime, date, timedelta
 from database.db import Database
 from services.reports import ReportService
 from services.penalty import PenaltyService
-from services.notifications import notify_penalty_created, notify_penalty_paid
+from services.notifications import (
+    notify_penalty_created,
+    notify_penalty_paid,
+    broadcast_dashboard_message,
+)
 from utils.date_utils import (
     gregorian_to_jalali_str,
     get_today_gregorian,
@@ -28,6 +32,7 @@ from utils.date_utils import (
 from utils.time_utils import parse_time_input, format_duration
 from config.settings import (
     BALE_ADMIN_IDS,
+    BALE_GROUP_IDS,
     PAYMENT_APPROVER_NAME,
     PAYMENT_APPROVER_PIN,
     PAYMENT_CARD_HOLDER,
@@ -443,6 +448,75 @@ def api_today_reports():
                 "total": r.total_hours,
             })
     return jsonify(rows)
+
+
+# ─────────────────────────────────────────────
+# Broadcast message (web dashboard → bot users + group)
+# ─────────────────────────────────────────────
+
+@app.route("/broadcast", methods=["GET", "POST"])
+@login_required
+def broadcast():
+    flash_msg = None
+    flash_type = "ok"
+    last_message = ""
+
+    if request.method == "POST":
+        message = (request.form.get("message") or "").strip()
+        message_type = request.form.get("message_type", "admin")
+        to_users = request.form.get("to_users") == "1"
+        to_group = request.form.get("to_group") == "1"
+        last_message = message
+
+        if message_type not in ("admin", "bot"):
+            message_type = "admin"
+
+        if not message:
+            flash_msg = "متن پیام خالی است"
+            flash_type = "error"
+        elif not to_users and not to_group:
+            flash_msg = "حداقل یک مقصد را انتخاب کنید (کاربران یا گروه)"
+            flash_type = "error"
+        else:
+            user_bale_ids = []
+            if to_users:
+                for u in db.get_all_users():
+                    if u.bale_id and not db.is_placeholder_bale_id(u.bale_id):
+                        user_bale_ids.append(u.bale_id)
+
+            if to_users and not user_bale_ids:
+                flash_msg = "هیچ کاربر متصل به بات پیدا نشد"
+                flash_type = "error"
+            elif to_group and not BALE_GROUP_IDS:
+                flash_msg = "شناسه گروه (BALE_GROUP_ID) تنظیم نشده است"
+                flash_type = "error"
+            else:
+                result = broadcast_dashboard_message(
+                    text=message,
+                    message_type=message_type,
+                    user_bale_ids=user_bale_ids,
+                    send_to_users=to_users,
+                    send_to_group=to_group,
+                )
+                parts = []
+                if to_users:
+                    parts.append(
+                        f"کاربران: {result['users_ok']} موفق"
+                        + (f" / {result['users_fail']} ناموفق" if result["users_fail"] else "")
+                    )
+                if to_group:
+                    parts.append(f"گروه: {result['groups_ok']} موفق")
+                flash_msg = "ارسال شد — " + " · ".join(parts)
+                flash_type = "ok" if (result["users_ok"] or result["groups_ok"]) else "error"
+                if flash_type == "ok":
+                    last_message = ""
+
+    return render_template(
+        "broadcast.html",
+        flash_msg=flash_msg,
+        flash_type=flash_type,
+        last_message=last_message,
+    )
 
 
 # ─────────────────────────────────────────────
