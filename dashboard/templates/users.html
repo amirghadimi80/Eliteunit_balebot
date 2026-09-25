@@ -5,7 +5,7 @@
 <div class="page-header">
   <div>
     <h2>کاربران</h2>
-    <p>مدیریت اعضای ثبت‌نام‌شده در بات</p>
+    <p>مدیریت اعضای ثبت‌نام‌شده در بات — تاریخ شروع گزارش از داشبورد قابل تنظیم است</p>
   </div>
   <span class="page-meta">{{ users|length }} کاربر</span>
 </div>
@@ -22,8 +22,7 @@
           <th>گزارش‌ها</th>
           <th>جریمه</th>
           <th>بات</th>
-          <th>بیوگرافی</th>
-          <th>علاقه‌مندی</th>
+          <th>شروع گزارش</th>
           <th>عضویت</th>
           <th></th>
         </tr>
@@ -49,8 +48,22 @@
             <span class="badge badge-yellow">منتظر ثبت‌نام</span>
             {% endif %}
           </td>
-          <td class="cell-truncate cell-muted">{{ u.bio }}</td>
-          <td class="cell-truncate cell-muted">{{ u.interests }}</td>
+          <td>
+            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+              <input
+                type="date"
+                id="start-{{ u.id }}"
+                value="{{ u.reports_start_date }}"
+                class="cell-ltr"
+                style="padding:4px 8px;border:1px solid var(--border, #ddd);border-radius:6px;background:transparent;color:inherit;"
+              />
+              <button
+                class="btn btn-sm"
+                type="button"
+                onclick="saveStartDate({{ u.id }}, '{{ u.name }}')"
+              >ذخیره</button>
+            </div>
+          </td>
           <td class="cell-muted">{{ u.joined }}</td>
           <td>
             <button class="btn btn-sm btn-danger" onclick="deleteUser({{ u.id }}, '{{ u.name }}')">حذف</button>
@@ -73,6 +86,32 @@
 
 {% block extra_scripts %}
 <script>
+async function saveStartDate(userId, userName) {
+  const input = document.getElementById(`start-${userId}`);
+  const startDate = (input && input.value) ? input.value : '';
+  if (!startDate) {
+    if (!confirm(`تاریخ شروع «${userName}» پاک شود؟ (برمی‌گردد به تاریخ عضویت)`)) return;
+  } else if (!confirm(`تاریخ شروع گزارش «${userName}» روی ${startDate} تنظیم شود؟\n\nروزهای قبل از این تاریخ دیگر از او خواسته نمی‌شود.`)) {
+    return;
+  }
+  try {
+    const res = await fetch(`/users/${userId}/reports-start-date`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ start_date: startDate }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && data.success) {
+      alert('ذخیره شد.');
+      location.reload();
+    } else {
+      alert(data.error || 'خطا در ذخیره');
+    }
+  } catch (e) {
+    alert('خطا: ' + e.message);
+  }
+}
+
 async function deleteUser(userId, userName) {
   if (!confirm(`حذف کاربر «${userName}» و تمام داده‌هایش؟\n\nاین عمل برگشت‌پذیر نیست.`)) return;
   try {

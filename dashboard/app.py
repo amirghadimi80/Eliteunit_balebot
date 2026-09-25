@@ -173,6 +173,7 @@ def users():
         total_reports = len(db.get_reports_by_user_and_date(
             u.id, "2000-01-01", get_today_gregorian().strftime("%Y-%m-%d")
         ))
+        start = db.get_user_reports_start_date(u)
         user_data.append({
             "id": u.id,
             "name": u.full_name,
@@ -182,6 +183,8 @@ def users():
             "total_reports": total_reports,
             "unpaid_penalties": len(penalties),
             "joined": u.created_at,
+            "reports_start_date": start.strftime("%Y-%m-%d") if start else "",
+            "reports_start_date_raw": u.reports_start_date or "",
             "bot_linked": not db.is_placeholder_bale_id(u.bale_id),
         })
     return render_template("users.html", users=user_data)
@@ -193,6 +196,32 @@ def delete_user(user_id):
     if db.delete_user(user_id):
         return jsonify({"success": True})
     return jsonify({"success": False}), 400
+
+
+@app.route("/users/<int:user_id>/reports-start-date", methods=["POST"])
+@login_required
+def set_reports_start_date(user_id):
+    """Set the first day a user must submit daily reports (YYYY-MM-DD)."""
+    payload = request.get_json(silent=True) or {}
+    start_date = payload.get("start_date") or request.form.get("start_date") or ""
+    start_date = str(start_date).strip()
+
+    if not db.get_user_by_id(user_id):
+        return jsonify({"success": False, "error": "کاربر پیدا نشد"}), 404
+
+    if start_date:
+        try:
+            datetime.strptime(start_date, "%Y-%m-%d")
+        except ValueError:
+            return jsonify(
+                {"success": False, "error": "فرمت تاریخ باید YYYY-MM-DD باشد"}
+            ), 400
+    else:
+        start_date = None
+
+    if db.set_user_reports_start_date(user_id, start_date):
+        return jsonify({"success": True, "start_date": start_date})
+    return jsonify({"success": False, "error": "خطا در ذخیره"}), 400
 
 
 # ─────────────────────────────────────────────

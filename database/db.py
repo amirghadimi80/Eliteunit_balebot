@@ -53,12 +53,24 @@ class Database:
             for table_name, schema in DATABASE_SCHEMA.items():
                 cursor.execute(schema)
                 logger.info(f"Table '{table_name}' initialized successfully")
+
+            self._migrate_schema(cursor)
             
             conn.commit()
             conn.close()
         except sqlite3.Error as e:
             logger.error(f"Database initialization error: {e}")
             raise
+
+    def _migrate_schema(self, cursor: sqlite3.Cursor):
+        """Apply lightweight column migrations for existing databases."""
+        cursor.execute("PRAGMA table_info(users)")
+        columns = {row[1] for row in cursor.fetchall()}
+        if "reports_start_date" not in columns:
+            cursor.execute(
+                "ALTER TABLE users ADD COLUMN reports_start_date TEXT"
+            )
+            logger.info("Added column users.reports_start_date")
     
     # =====================
     # USER OPERATIONS
@@ -98,10 +110,19 @@ class Database:
         try:
             conn = self.get_connection()
             cursor = conn.cursor()
+            start_date = user.reports_start_date or get_today_gregorian().strftime(
+                "%Y-%m-%d"
+            )
             cursor.execute(
-                """INSERT INTO users (bale_id, full_name, phone, bio)
-                   VALUES (?, ?, ?, ?)""",
-                (user.bale_id, user.full_name, user.phone or "", user.bio or "")
+                """INSERT INTO users (bale_id, full_name, phone, bio, reports_start_date)
+                   VALUES (?, ?, ?, ?, ?)""",
+                (
+                    user.bale_id,
+                    user.full_name,
+                    user.phone or "",
+                    user.bio or "",
+                    start_date,
+                ),
             )
             conn.commit()
             user_id = cursor.lastrowid
@@ -123,9 +144,81 @@ class Database:
             phone=d.get("phone", ""),
             bio=d.get("bio", ""),
             interests=d.get("interests", ""),
+            reports_start_date=d.get("reports_start_date"),
             created_at=d.get("created_at"),
             updated_at=d.get("updated_at"),
         )
+
+    @staticmethod
+    def parse_user_created_date(created_at) -> Optional[date]:
+        """Parse users.created_at (str or datetime) to a date."""
+        if not created_at:
+            return None
+        if isinstance(created_at, datetime):
+            return created_at.date()
+        if isinstance(created_at, date):
+            return created_at
+        text = str(created_at).strip()
+        if not text:
+            return None
+        # SQLite CURRENT_TIMESTAMP: "YYYY-MM-DD HH:MM:SS"
+        try:
+            return datetime.fromisoformat(text.replace(" ", "T", 1)).date()
+        except ValueError:
+            try:
+                return datetime.strptime(text[:10], "%Y-%m-%d").date()
+            except ValueError:
+                return None
+
+    def get_user_reports_start_date(self, user: User) -> Optional[date]:
+        """
+        First day this user is expected to submit reports.
+
+        Priority: explicit reports_start_date, then created_at date.
+        """
+        if user.reports_start_date:
+            try:
+                return datetime.strptime(
+                    str(user.reports_start_date)[:10], "%Y-%m-%d"
+                ).date()
+            except ValueError:
+                pass
+        return self.parse_user_created_date(user.created_at)
+
+    def set_user_reports_start_date(
+        self, user_id: int, start_date: Optional[str]
+    ) -> bool:
+        """
+        Set (or clear) the first required report day for a user.
+
+        Args:
+            user_id: User ID
+            start_date: YYYY-MM-DD, or None/empty to clear (falls back to created_at)
+        """
+        try:
+            value = None
+            if start_date:
+                value = str(start_date).strip()[:10]
+                datetime.strptime(value, "%Y-%m-%d")  # validate
+            conn = self.get_connection()
+            cursor = conn.cursor()
+            cursor.execute(
+                """UPDATE users
+                   SET reports_start_date = ?, updated_at = CURRENT_TIMESTAMP
+                   WHERE id = ?""",
+                (value, user_id),
+            )
+            conn.commit()
+            ok = cursor.rowcount > 0
+            conn.close()
+            if ok:
+                logger.info(
+                    f"User {user_id} reports_start_date set to {value!r}"
+                )
+            return ok
+        except (sqlite3.Error, ValueError) as e:
+            logger.error(f"Error setting reports_start_date: {e}")
+            return False
 
     @staticmethod
     def normalize_name(name: str) -> str:
@@ -646,7 +739,8 @@ class Database:
             conn = self.get_connection()
             cursor = conn.cursor()
             cursor.execute(
-                """SELECT u.id, u.full_name FROM users u
+                """SELECT u.id, u.full_name, u.reports_start_date, u.created_at
+                   FROM users u
                    WHERE u.id NOT IN (
                        SELECT user_id FROM reports WHERE date_gregorian = ?
                    )
@@ -655,7 +749,25 @@ class Database:
             )
             results = cursor.fetchall()
             conn.close()
-            return [(row["id"], row["full_name"]) for row in results]
+            try:
+                target = datetime.strptime(date_gregorian, "%Y-%m-%d").date()
+            except ValueError:
+                return []
+
+            missing = []
+            for row in results:
+                user = User(
+                    id=row["id"],
+                    bale_id=0,
+                    full_name=row["full_name"],
+                    reports_start_date=row["reports_start_date"],
+                    created_at=row["created_at"],
+                )
+                start = self.get_user_reports_start_date(user)
+                if start and target < start:
+                    continue
+                missing.append((row["id"], row["full_name"]))
+            return missing
         except sqlite3.Error as e:
             logger.error(f"Error getting missing report users: {e}")
             return []

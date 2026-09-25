@@ -113,6 +113,7 @@ DATABASE_SCHEMA = {
             phone TEXT,
             bio TEXT DEFAULT '',
             interests TEXT DEFAULT '',
+            reports_start_date TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )

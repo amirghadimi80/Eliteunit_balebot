@@ -46,6 +46,7 @@ class ReportService:
         Overdue days without a report (must backfill first), oldest first.
 
         Before 10 AM, yesterday is still in the grace window and is not listed here.
+        Only days on/after the user's reports_start_date (or created_at) count.
         """
         today = get_today_gregorian()
         deadline_day = get_effective_report_deadline_day()
@@ -56,6 +57,13 @@ class ReportService:
             d = today - timedelta(days=1)
 
         start = today - timedelta(days=max_days_back)
+
+        user = self.db.get_user_by_id(user_id)
+        if user:
+            user_start = self.db.get_user_reports_start_date(user)
+            if user_start and user_start > start:
+                start = user_start
+
         missing: List[date] = []
         while d >= start:
             if not self.db.report_exists(user_id, d.strftime("%Y-%m-%d")):

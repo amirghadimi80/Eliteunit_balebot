@@ -18,6 +18,8 @@ class User:
     bio: Optional[str] = None
     interests: Optional[str] = None
     id: Optional[int] = None
+    # First day the user must submit reports (YYYY-MM-DD). Days before this are ignored.
+    reports_start_date: Optional[str] = None
     created_at: Optional[datetime] = None
     updated_at: Optional[datetime] = None
     

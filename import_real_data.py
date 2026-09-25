@@ -22,7 +22,7 @@ from models.models import User
 
 # Real users from the Excel file
 REAL_USERS = [
-    "علی کرباسی زاده",
+
     "محمدرضا عابدینی",
     "امیرحسین قدیمی",
     "یاسین عسگری",
@@ -150,7 +150,7 @@ def import_real_data(excel_path: str):
     print(f"="*60)
 
 if __name__ == "__main__":
-    excel_file = r"c:\Users\afraa\Downloads\ساعت.xlsx"
+    excel_file = r"C:\Users\afraa\Desktop\EliteUniteTime\ساعت.xlsx"
     
     if not Path(excel_file).exists():
         print(f"❌ File not found: {excel_file}")
