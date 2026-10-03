@@ -369,11 +369,23 @@ class ReportService:
             penalties = db.get_penalties_by_user(stats.user_id, status="unpaid")
             penalty_count = sum(p.amount for p in penalties)
             
-            export_data.append({
-                "نام کاربر": user_name,
-                "کل ساعت مفید": stats.main_hours,
-                "جریمه‌ها": penalty_count,
-                "تاریخ": date_str,
-            })
+            period_end = getattr(stats, "week_end", None) or getattr(stats, "report_date", None)
+            if period_end is not None and uses_v2_hours(period_end):
+                export_data.append({
+                    "نام کاربر": user_name,
+                    "کل ساعت مفید": stats.main_hours,
+                    "ساعت رشد": stats.side_hours,
+                    "جریمه‌ها": penalty_count,
+                    "تاریخ": date_str,
+                    "استراتژی": "جدید",
+                })
+            else:
+                export_data.append({
+                    "نام کاربر": user_name,
+                    "مجموع": stats.total_hours,
+                    "جریمه‌ها": penalty_count,
+                    "تاریخ": date_str,
+                    "استراتژی": "قبلی",
+                })
         
         return export_data

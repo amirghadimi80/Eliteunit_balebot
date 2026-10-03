@@ -199,14 +199,15 @@ class AdminHandler:
             
             # Prepare data for Excel
             export_data = self.report_service.get_excel_export_data(stats_list)
-            
-            # Create DataFrame
-            df = pd.DataFrame(export_data)
-            
-            # Create Excel file
+            new_rows = [r for r in export_data if r.get("استراتژی") == "جدید"]
+            old_rows = [r for r in export_data if r.get("استراتژی") != "جدید"]
+            for row in new_rows + old_rows:
+                row.pop("استراتژی", None)
+
             excel_buffer = BytesIO()
             with pd.ExcelWriter(excel_buffer, engine="openpyxl") as writer:
-                df.to_excel(writer, sheet_name="گزارش", index=False)
+                pd.DataFrame(new_rows).to_excel(writer, sheet_name="استراتژی جدید", index=False)
+                pd.DataFrame(old_rows).to_excel(writer, sheet_name="استراتژی قبلی", index=False)
             
             excel_buffer.seek(0)
             

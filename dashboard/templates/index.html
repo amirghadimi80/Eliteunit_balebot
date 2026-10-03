@@ -83,7 +83,10 @@
     <div class="card-header">
       <div>
         <div class="card-title">گزارش‌های امروز</div>
-        <div class="card-subtitle">{{ today_rows|length }} نفر ثبت کرده‌اند</div>
+        <div class="card-subtitle">
+          {{ today_rows|length }} نفر ثبت کرده‌اند
+          · {% if hours_v2 %}استراتژی جدید{% else %}استراتژی ساعت‌زنی قبلی{% endif %}
+        </div>
       </div>
     </div>
     <div class="card-body" style="padding:0;">

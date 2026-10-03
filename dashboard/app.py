@@ -264,32 +264,32 @@ def reports():
             continue
         reps = db.get_reports_by_user_and_date(u.id, start_date, end_date)
         for r in reps:
-            rows.append({
+            row = {
                 "id": r.id,
                 "user_name": u.full_name,
                 "date_shamsi": r.date_shamsi,
                 "date_gregorian": r.date_gregorian,
                 "main": r.main_hours,
                 "side": r.side_hours,
-                "total": r.total_hours,
+                "total": r.main_hours + r.side_hours,
                 "created_at": r.created_at,
-            })
+            }
+            rows.append(row)
 
-    # Sort by date desc
     rows.sort(key=lambda x: x["date_gregorian"], reverse=True)
-
-    # Prefer v2 labels once the filter range includes the cutoff
-    hours_v2 = uses_v2_hours(end_date)
-    hour_labels = labels_for(end_date if hours_v2 else start_date)
+    new_rows = [r for r in rows if uses_v2_hours(r["date_gregorian"])]
+    old_rows = [r for r in rows if not uses_v2_hours(r["date_gregorian"])]
+    hour_labels = labels_for(today)
 
     return render_template(
         "reports.html",
         rows=rows,
+        new_rows=new_rows,
+        old_rows=old_rows,
         users=all_users,
         start_date=start_date,
         end_date=end_date,
         filter_user=filter_user,
-        hours_v2=hours_v2,
         hour_labels=hour_labels,
     )
 
@@ -756,22 +756,43 @@ def export_excel():
     all_users = db.get_all_users()
     today = get_today_gregorian()
     
-    rows = []
+    new_rows = []
+    old_rows = []
     for u in all_users:
         reps = db.get_reports_by_user_and_date(
             u.id, "2000-01-01", today.strftime("%Y-%m-%d")
         )
         for r in reps:
-            rows.append({
-                "Name": u.full_name,
-                "Date (Shamsi)": r.date_shamsi,
-                "Date (Gregorian)": r.date_gregorian,
-                "کل ساعت مفید": r.main_hours,
-            })
-    
-    df = pd.DataFrame(rows)
+            base = {
+                "نام": u.full_name,
+                "تاریخ شمسی": r.date_shamsi,
+                "تاریخ میلادی": r.date_gregorian,
+            }
+            if uses_v2_hours(r.date_gregorian):
+                new_rows.append({
+                    **base,
+                    "کل ساعت مفید": r.main_hours,
+                    "ساعت رشد": r.side_hours,
+                })
+            else:
+                old_rows.append({
+                    **base,
+                    "مجموع": r.main_hours + r.side_hours,
+                })
+
+    new_rows.sort(key=lambda x: x["تاریخ میلادی"], reverse=True)
+    old_rows.sort(key=lambda x: x["تاریخ میلادی"], reverse=True)
+
     output = BytesIO()
-    df.to_excel(output, index=False)
+    with pd.ExcelWriter(output, engine="openpyxl") as writer:
+        pd.DataFrame(
+            new_rows,
+            columns=["نام", "تاریخ شمسی", "تاریخ میلادی", "کل ساعت مفید", "ساعت رشد"],
+        ).to_excel(writer, sheet_name="استراتژی جدید", index=False)
+        pd.DataFrame(
+            old_rows,
+            columns=["نام", "تاریخ شمسی", "تاریخ میلادی", "مجموع"],
+        ).to_excel(writer, sheet_name="استراتژی قبلی", index=False)
     output.seek(0)
     
     return send_file(
